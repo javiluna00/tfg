@@ -7,6 +7,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Icon } from '@iconify/react';
 import Button from '@/components/ui/Button';
+import { Spotify } from 'react-spotify-embed';
+
 
 function Proyectos() {
 
@@ -127,16 +129,17 @@ function Proyectos() {
           <div className='izq relative w-[50%] z-2'>
             <div className='textos m-auto w-[80%]'>
               {proyectos.map((proyecto) => (
-              <div className='card w-full flex flex-col items-center justify-center h-[100vh]'>
+              <div className='card w-full flex flex-col items-center justify-center h-[100vh]' key={proyecto.id}>
 
                 <div className='izquierda-bl flex-col justify-start items-start'>
 
                   <h5 className='font-bold text-7xl text-white tracking-widest uppercase'>{proyecto.name}</h5>
                   <p className='text-white mt-4 text-lg'>{proyecto.short_description}</p>
                 <div className='flex justify-start items-center h-12 mt-10 gap-4'>
-                  <div className=''><Button className='text-white rounded-full border-2 border-white hover:bg-white hover:text-[#0f0f0f] duration-300' href={proyecto.website}>Saber más...</Button></div>
+                  <div className=''><Button className='text-white rounded-full border-2 border-white hover:bg-red-500 hover:border-red-500 duration-300' href={proyecto.website}>Saber más...</Button></div>
                   <div className='w-12 h-full'><Icon icon="ant-design:youtube-filled" className="text-white aspect-square text-5xl cursor-pointer hover:text-red-500 duration-300" /></div>
                   <div className='w-24 h-full flex justify-start items-center'><Icon icon="mdi:spotify" className="text-white aspect-square text-4xl cursor-pointer hover:text-green-500 duration-300" /></div>
+                  <Spotify link="https://open.spotify.com/track/5ihDGnhQgMA0F0tk9fNLlA?si=4472348a63dd4f83" />
                 </div>  
                 
               </div>

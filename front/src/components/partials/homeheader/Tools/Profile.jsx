@@ -81,7 +81,7 @@ const Profile = ({user}) => {
               onClick={() => item.action()}
               className={`${
                 active
-                  ? "bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-300 dark:bg-opacity-50"
+                  ? "bg-red-100 text-red-900 dark:bg-slate-600 dark:text-slate-300 dark:bg-opacity-50"
                   : "text-slate-600 dark:text-slate-300"
               } block     ${
                 item.hasDivider

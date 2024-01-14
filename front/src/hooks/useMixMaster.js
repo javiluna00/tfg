@@ -1,4 +1,8 @@
 import { useState } from "react"
+import image_mix from "@/assets/images/mixmaster/mix.png"
+import image_mixmaster from "@/assets/images/mixmaster/mixmaster.png"
+import image_ep from "@/assets/images/mixmaster/ep.png"
+import image_misbeats from "@/assets/images/mixmaster/mixmisbeats.png"
 
 const useMixMaster = () => {
     
@@ -13,6 +17,7 @@ const useMixMaster = () => {
                 precio: 30,
                 description : "Mixing de una canción.",
                 new: false,
+                image: image_mix
             },
             {
                 id: 2,
@@ -20,13 +25,15 @@ const useMixMaster = () => {
                 precio: 50,
                 description : "Mixing y master de una canción.",
                 new: false,
+                image: image_mixmaster
             },
             {
                 id: 3,
                 nombre: 'Mis beats',
-                description : "Mixing y master sobre alguno de mis beats.",
+                description : "Mixing y master sobre mis beats.",
                 precio: 30,
                 new: true,
+                image: image_misbeats
             },
             {
                 id: 4,
@@ -34,6 +41,7 @@ const useMixMaster = () => {
                 description : "Mixing y master de un EP/LP.",
                 precio: "Desde 50€",
                 new: true,
+                image: image_ep
             }
         ]
 

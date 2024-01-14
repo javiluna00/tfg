@@ -2283,6 +2283,14 @@ react-smooth@^2.0.2:
     fast-equals "^5.0.0"
     react-transition-group "2.9.0"
 
+react-spotify-embed@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.npmjs.org/react-spotify-embed/-/react-spotify-embed-2.0.3.tgz"
+  integrity sha512-buiiaaPrGTyOlciJFJiHz1o2a4iSJMuH9ewi2KaIjVGcedz6szM8plz7Y6HtcDxApxCv2Rwx38xS1z8Zs3M/ZA==
+  dependencies:
+    react "^18.2.0"
+    react-dom "^18.2.0"
+
 react-table@^7.8.0:
   version "7.8.0"
   resolved "https://registry.npmjs.org/react-table/-/react-table-7.8.0.tgz"
