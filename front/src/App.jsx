@@ -96,7 +96,9 @@ const BlogPage = lazy(() => import("./pages/utility/blog"));
 const BlogDetailsPage = lazy(() => import("./pages/utility/blog/blog-details"));
 const FaqPage = lazy(() => import("./pages/utility/faq"));
 const Settings = lazy(() => import("./pages/utility/settings"));
-const Profile = lazy(() => import("./pages/utility/profile"));
+const Perfil = lazy(() => import("./pages/perfil"));
+const Guardados = lazy(() => import("./pages/perfil/guardados"));
+const Compras = lazy(() => import("./pages/perfil/compras"));
 const IconPage = lazy(() => import("./pages/icons"));
 const NotificationPage = lazy(() => import("./pages/utility/notifications"));
 const ChangelogPage = lazy(() => import("./pages/changelog"));
@@ -136,18 +138,29 @@ import InvoiceEPage from "./pages/ecommerce/invoice-ecompage";
 import HomeLayout from "./layout/HomeLayout";
 import Bienvenida from './pages/home';
 import BeatDetails from './pages/BeatDetails';
+import PerfilLayout from "./layout/PerfilLayout";
 
 function App() {
   return (
     <main className="App relative">
       <Routes>
+          
           <Route path="/" element={<Bienvenida />}/>
+
+          <Route path="/perfil/*" element={<PerfilLayout />}>
+            <Route index element={<Perfil />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="guardados" element={<Guardados />} />
+            <Route path="compras" element={<Compras />} />
+          </Route>
+
           <Route path="/*" element={<HomeLayout />}>
             <Route path="feed" element={<Feed />} />
             <Route path="mixmaster" element={<Mixmaster />} />
             <Route path="proyectos" element={<Proyectos />} />
             <Route path="contacto" element={<Contacto />} />
             <Route path="beat/:beatId" element={<BeatDetails />} />
+            
             {/* <Route path="/login2" element={<Login2 />} />
             <Route path="/login3" element={<Login3 />} />
             <Route path="/register" element={<Register />} />
@@ -160,6 +173,8 @@ function App() {
             <Route path="/lock-screen2" element={<LockScreen2 />} />
             <Route path="/lock-screen3" element={<LockScreen3 />} /> */}
           </Route>
+
+        
         <Route path="/*" element={<Layout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="ecommerce" element={<Ecommerce />} />
@@ -222,7 +237,7 @@ function App() {
           <Route path="blog-details" element={<BlogDetailsPage />} />
           <Route path="faq" element={<FaqPage />} />
           <Route path="settings" element={<Settings />} />
-          <Route path="profile" element={<Profile />} />
+          <Route path="perfil" element={<Perfil />} />
           <Route path="basic" element={<BasicWidget />} />
           <Route path="statistic" element={<StatisticWidget />} />
           <Route path="icons" element={<IconPage />} />

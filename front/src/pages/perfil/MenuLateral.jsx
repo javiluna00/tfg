@@ -1,0 +1,43 @@
+import Button from '@/components/ui/Button';
+import Card from '@/components/ui/Card';
+import useMenuHidden from '@/hooks/useMenuHidden';
+import useMenulayout from '@/hooks/useMenulayout';
+import useSidebar from '@/hooks/useSidebar';
+import useWidth from '@/hooks/useWidth';
+import React from 'react'
+import SimpleBar from "simplebar-react";
+
+function MenuLateral() {
+
+    const { width, breakpoints } = useWidth();
+    const [collapsed] = useSidebar();
+    const [menuType] = useMenulayout();
+    const [menuHidden] = useMenuHidden();
+
+    return (
+        <div
+          className={`my-[30px] transition-all duration-150 flex-none min-w-[260px] h-full sticky top-[30px]
+        ${
+          width < breakpoints.lg
+            ? "absolute h-full top-0 md:w-[260px] w-[200px] z-[999]"
+            : "flex-none min-w-[260px]"
+        }
+        ${
+          width < breakpoints.lg && mobileEmailSidebar
+            ? "left-0 "
+            : "-left-full "
+        }
+        `}
+        >
+          <Card bodyClass="bg-white rounded-lg ml-6 py-6 h-full flex flex-col" className="h-full">
+            <SimpleBar className="h-full px-6 ">
+              <Button icon="heroicons-outline:home" text="Perfil" className="bg-primary-400 hover:bg-primary-500 duration-150 text-white w-full block " />
+              <Button icon="heroicons-outline:credit-card" text="Compras" className="bg-primary-400 hover:bg-primary-500 duration-150 text-white w-full block mt-6" />
+              <Button icon="heroicons-outline:heart" text="Guardados" className="bg-primary-400 hover:bg-primary-500 duration-150 text-white w-full block mt-6" />
+            </SimpleBar>
+          </Card>
+        </div>
+  )
+}
+
+export default MenuLateral

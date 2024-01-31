@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import useProyectos from '@/hooks/useProyectos'
-import Lenis from '@studio-freight/lenis'
+
 import logolambda from '@/assets/videos/home/logolambda.mp4'
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -16,7 +16,7 @@ function Proyectos() {
 
   const [proyectos] = useProyectos()
   const playerRef = useRef(null);
-  const lenis = new Lenis()
+
 
 
 
@@ -92,12 +92,7 @@ function Proyectos() {
   };
 
   
-  function raf(time) {
-    lenis.raf(time)
-    requestAnimationFrame(raf)
-  }
-  
-  requestAnimationFrame(raf)
+
 
 
 

@@ -150,7 +150,7 @@ function BeatFilter() {
 
     <div className='flex justify-center items-center gap-3 '>
         {filters.map((filter) => (
-          <BeatFilterItem filter={filter} options={options[filter.name]} />
+          <BeatFilterItem filter={filter} options={options[filter.name]} key={filter.name}/>
         ))}
         <BeatSearch filter={filter} setBeatData={setBeatData}/>
     </div>

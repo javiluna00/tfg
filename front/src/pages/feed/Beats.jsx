@@ -13,7 +13,7 @@ function Beats() {
 
     const beatsPopularesRender = beatsPopulares.map((beat) => {
         return (
-            <BeatCard beat={beat} key={beat.name} />
+            <BeatCard beat={beat} key={beat.id} />
         )
     })
 

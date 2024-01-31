@@ -11,6 +11,17 @@ import store from "./store";
 import "react-toastify/dist/ReactToastify.css";
 import "./server";
 import { RecoilRoot } from "recoil";
+import Lenis from '@studio-freight/lenis'
+
+// const lenis = new Lenis()
+// function raf(time) {
+//   lenis.raf(time)
+//   requestAnimationFrame(raf)
+// }
+
+// requestAnimationFrame(raf)
+
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <>
     <BrowserRouter>

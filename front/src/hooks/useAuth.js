@@ -1,16 +1,24 @@
 import { useSelector } from "react-redux";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {authState} from "@/store/authStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 const useAuth = () => {
 
     const [auth, setAuth] = useRecoilState(authState)
-
-    const isLogged = auth.token ? true : false
+    const [isLogged, setIsLogged] = useState(!!auth.token);
+    const navigate = useNavigate()
     const userLogged = auth.user
 
+    useEffect(() => {
+        setIsLogged(auth.token ? true : false)
+    }, [auth.token])
+
+    useEffect(() => {
+        console.log("isLogged : ", isLogged)
+    }, [isLogged])
 
     const userFavved = (beatId) => {
         if(isLogged)
@@ -23,9 +31,7 @@ const useAuth = () => {
         }
     }
 
-    useEffect(() => {
-        console.log("UserLogged : ", userLogged)
-    }, [userLogged])
+
 
     const toogleFav = (beatId) => {
         if(isLogged)
@@ -57,6 +63,8 @@ const useAuth = () => {
             })
             localStorage.removeItem("token")
             localStorage.removeItem("user")
+            
+            navigate("/feed")
         }
         else
         {
@@ -66,15 +74,15 @@ const useAuth = () => {
     }
 
     const logIn = () => {
-        console.log("Ha entrado")
         if(!isLogged)
         {
+            localStorage.setItem("token", "mecagoentupadre")
+            localStorage.setItem("user", JSON.stringify({email: "javpuntoillo@gmail.com", password: "123456", id:1, favorites: []}))
             setAuth({
                 token: "mecagoentupadre",
                 user: {email: "javpuntoillo@gmail.com", password: "123456", id:1, favorites: []},
             })
-            localStorage.setItem("token", "mecagoentupadre")
-            localStorage.setItem("user", JSON.stringify({email: "javpuntoillo@gmail.com", password: "123456", id:1, favorites: []}))
+
         }
         else
         {
@@ -82,9 +90,14 @@ const useAuth = () => {
         }
     }
 
+    const isUserLogged = () => {
+        return isLogged
+    }
+
     return{
         userLogged,
         isLogged,
+        isUserLogged,
         userFavved, 
         toogleFav,
         logIn, 

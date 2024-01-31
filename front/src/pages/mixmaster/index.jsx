@@ -3,6 +3,9 @@ import React, { useEffect } from 'react'
 import Card from '@/components/ui/Card'
 import { Icon } from '@iconify/react'
 import gsap from 'gsap'
+import Button from '@/components/ui/Button'
+import CompararMix from './components/CompararMix'
+import { Link } from 'react-router-dom'
 
 function Mixmaster() {
 
@@ -39,11 +42,11 @@ function Mixmaster() {
   return (
     <div className='container'>
 
-      <div id='tarifas' className='flex flex-col justify-center items-start my-10'>
-        <h3 className='text-3xl font-semibold text-white'>Tarifas</h3>
-        <div className='flex justify-start items-start gap-10 mt-10'>
+      <div id='tarifas' className='flex flex-col justify-center items-start my-10 bg-white p-10 rounded-xl'>
+        <h3 className='text-3xl font-semibold'>¡Conoce mis servicios de mezcla y master!</h3>
+        <div className='flex justify-start items-start gap-4 mt-10'>
           {tarifas.map((tarifa) => (
-            <Card bodyClass="p-0" className="" key={tarifa.id}>
+            <Card bodyClass="p-0" className={`relative overflow-hidden shadow-md`} key={tarifa.id}>
               <div className="image-box ">
                 <img
                   src={tarifa.image}
@@ -51,31 +54,40 @@ function Mixmaster() {
                   className="rounded-t-md w-full h-full object-cover"
                 />
               </div>
-              <div className="p-6 bg-white rounded-b-lg">
-                <div className="card-title mb-5">{tarifa.nombre}</div>
+
+              {tarifa.ribon ?                 
+                <div className="text-sm font-medium bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-300 py-2 text-center absolute ltr:-right-[43px] rtl:-left-[43px] top-6 px-10 transform ltr:rotate-[45deg] rtl:-rotate-45">
+                  {tarifa.ribon}
+                </div>
+                :
+                <></>
+              }
+
+              <div className={`p-6 ${tarifa.destacado ? 'bg-red-500 text-white' : ''} rounded-b-lg`}>
+                <div className={`card-title mb-5 ${tarifa.destacado ? 'text-white' : ''}`}>{tarifa.nombre}</div>
                 <div className="text-sm">
                   {tarifa.description}
                 </div>
+                <div className={`text-xl mt-5 font-bold ${tarifa.destacado ? 'text-white' : 'text-red-500'}`}>
+                  {tarifa.precio}
+                </div>
               </div>
             </Card>
+            
           ))}
+        </div>
+        <div className='my-10 h-px w-[70%] mx-auto bg-red-500'/>
+        <div className='flex flex-col justify-center items-center  w-full gap-4'>
+            <p className='text-xl'>Si necesitas alguno de estos <span className='text-red-500 font-bold'>servicios</span>, ponte en contacto conmigo</p>
+            <Link to="/contacto"><Button className='text-white hover:text-white duration-300 text-xl bg-red-500 rounded-full'>¡Contacto!</Button></Link>
         </div>
       </div>
       
 
-      <div className='flex flex-col justify-center items-start mt-10'>
-          <h3 className='text-3xl font-semibold mt-10 text-white'>¡Escucha el cambio!</h3>
-          <div className='flex justify-start items-start gap-10 mt-10 bg-white w-[70%] rounded-full m-auto h-24'>
-              <div className='flex justify-center items-center cursor-pointer rounded-full w-24 h-24 bg-red-500'><Icon icon="ic:baseline-play-arrow"  className='text-white text-5xl'/></div>
-              <div className='onda-audio'>
-                <svg>  
-                  <g>    
-                    <line id="line" x1="0" x2="100%" />
-                    <polyline id="wave" />
-                  </g>  
-                </svg>
-              </div>
-          </div>
+      <div className='flex flex-col justify-center items-start my-10 bg-white p-10 rounded-xl'>
+          <h3 className='text-3xl font-semibold '>¡Escucha el cambio!</h3>
+          <CompararMix/>
+          <CompararMix/>
       </div>
     </div>
   )

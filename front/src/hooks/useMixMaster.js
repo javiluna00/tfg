@@ -14,7 +14,7 @@ const useMixMaster = () => {
             {
                 id: 1,
                 nombre: 'Mix',
-                precio: 30,
+                precio: "30€",
                 description : "Mixing de una canción.",
                 new: false,
                 image: image_mix
@@ -22,7 +22,7 @@ const useMixMaster = () => {
             {
                 id: 2,
                 nombre: 'Mix & Master',
-                precio: 50,
+                precio: "50€",
                 description : "Mixing y master de una canción.",
                 new: false,
                 image: image_mixmaster
@@ -31,9 +31,11 @@ const useMixMaster = () => {
                 id: 3,
                 nombre: 'Mis beats',
                 description : "Mixing y master sobre mis beats.",
-                precio: 30,
+                precio: "20€",
                 new: true,
-                image: image_misbeats
+                image: image_misbeats,
+                ribon: "Recomendado",
+                destacado: true
             },
             {
                 id: 4,

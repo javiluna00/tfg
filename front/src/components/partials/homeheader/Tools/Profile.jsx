@@ -22,7 +22,7 @@ const profileLabel = ({user}) => {
       </div>
       <div className="flex-none text-slate-600 dark:text-white text-sm font-normal items-center lg:flex hidden overflow-hidden text-ellipsis whitespace-nowrap">
         <span className="overflow-hidden text-ellipsis whitespace-nowrap w-[85px] block text-white">
-          {user.email}
+          {user?.email}
         </span>
         <span className="text-base inline-block ltr:ml-[10px] rtl:mr-[10px] ">
           <Icon icon="heroicons-outline:chevron-down" className={"text-white"}></Icon>
@@ -39,11 +39,6 @@ const Profile = ({user}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleLogout = () => {
-    // Clear user data from local storage
-    localStorage.removeItem("user");
-    dispatch(logOut());
-  };
 
   const ProfileMenu = [
     {
@@ -51,7 +46,7 @@ const Profile = ({user}) => {
       icon: "heroicons-outline:user",
 
       action: () => {
-        navigate("/profile");
+        navigate("/perfil");
       },
     },
 
@@ -59,10 +54,16 @@ const Profile = ({user}) => {
       label: "Compras",
       icon: "heroicons-outline:credit-card",
       action: () => {
-        navigate("/compras");
+        navigate("/perfil/compras");
       },
     },
-
+    {
+      label: "Guardados",
+      icon: "heroicons-outline:heart",
+      action: () => {
+        navigate("/perfil/guardados");
+      }
+    },
     {
       label: "Cerrar sesión",
       icon: "heroicons-outline:login",
@@ -70,6 +71,7 @@ const Profile = ({user}) => {
         logOut()
       },
     },
+
   ];
 
   return (
