@@ -101,7 +101,7 @@ function Proyectos() {
     <>
     <div className='container'>
       <div className='flex justify-center items-center mt-10'>
-        <h1 className='font-bold text-white font-laira tracking-widest responsive-text' >Lambda Beats</h1>
+        <h1 className=' text-white font-laira text-10xl tracking-widest ' >Lambda Beats</h1>
         
       </div>
       <div className='w-full h-[300px]'></div>

@@ -7,6 +7,8 @@ const useReproductor = ( ) => {
 
     const [data, setData] = useRecoilState(reproductorState);
 
+    const [shown, setShown] = useState(false);
+
     const [porcentajePlayed, setPorcentagePlayed] = useState(0);
 
     useEffect(() => {
@@ -17,14 +19,21 @@ const useReproductor = ( ) => {
     }, [data.currentDuration, data.totalDuration])
 
     useEffect(() => {
-        console.log("porcentajePlayed : ", porcentajePlayed)
+        console.log("porcentaje played : ", porcentajePlayed)
     }, [porcentajePlayed])
-
+    
     const setReproductorData = (song) => {
         if(song != null)
         {
             console.log("Nueva song sonando : ", song)
             setData({song : song, isPlaying : true, currentDuration : 0, totalDuration : song.duration, looping : false, volume : 100, isMuted : false} )
+            setShown(true)
+        }
+        else
+        {
+            setData({song : null, isPlaying : false, currentDuration : 0, totalDuration : 0, looping : false, volume : 100, isMuted : false})
+            setPorcentagePlayed(0)
+            setShown(false)
         }
             
     }
@@ -43,7 +52,20 @@ const useReproductor = ( ) => {
         setData({...data, isPlaying : !data.isPlaying})
     }
 
-    return {reproductorData : data, setReproductorData, porcentajePlayed, setLooping, toogleMute, tooglePlay, setVolume}
+    const closeReproductor = () => {
+        
+        setData({...data, song : null, isPlaying : false, currentDuration : 0, totalDuration : 0, looping : false, volume : 100, isMuted : false})
+        setShown(false)
+
+    }
+
+    const reproducirCancion = (song) => {
+        setReproductorData(song)
+        tooglePlay()
+        setShown(true)
+    }
+
+    return {reproductorData : data, setReproductorData, porcentajePlayed, setLooping, toogleMute, tooglePlay, setVolume, shown, closeReproductor, reproducirCancion}
 
 }
 

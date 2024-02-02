@@ -13,7 +13,10 @@ function Beats() {
 
     const beatsPopularesRender = beatsPopulares.map((beat) => {
         return (
-            <BeatCard beat={beat} key={beat.id} />
+            <div className='flex justify-center items-center w-full' key={beat.id}>
+                <BeatCard beat={beat} key={beat.id} />
+            </div>
+            
         )
     })
 
@@ -28,10 +31,10 @@ function Beats() {
 
             <div className='container' style={{width: "100%"}}>
                 <div className='mt-10'>
-                    <span className='text-2xl font-inter font-semibold text-white'>Beats populares jeje</span>
+                    <span className='text-2xl font-inter font-semibold text-white'>Beats populares</span>
                     <hr className='mt-2 mb-10'/>
-                    <div className='w-full grid gap-y-20 md:grid-cols-3 lg:grid-cols-5 sm:grid-cols-3 justify-center items-center'>
-                        {beatsPopularesRender}
+                    <div className='w-full grid gap-y-20 md:grid-cols-3 lg:grid-cols-5 sm:grid-cols-3 justify-center items-center bg-red-500 rounded-lg p-5'>
+                        {beatsPopularesRender}         
                     </div>
                 </div>
 
@@ -44,7 +47,9 @@ function Beats() {
                     
                     <div className='w-full grid gap-y-20 md:grid-cols-3 lg:grid-cols-5 sm:grid-cols-3 justify-center items-center'>
                         {filteredBeats.map((beat, index) => (
-                            <BeatCard beat={beat} key={index}/>
+                            <div className='flex justify-center items-center w-full'>
+                                <BeatCard beat={beat} key={index}/>
+                            </div>
                         ))}
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import useReproductor from '@/hooks/useReproductor'
 import {Icon} from '@iconify/react';
 import "@/components/partials/reproductor/index.css";
@@ -8,12 +8,14 @@ import Button from '@/components/ui/Button';
 import Marquee from "react-fast-marquee";
 import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import useAuth from '@/hooks/useAuth';
+
 function Reproductor() {
 
-    const {reproductorData, setReproductorData, setLooping, toogleMute, tooglePlay, setVolume} = useReproductor()
+    const {reproductorData, setReproductorData, setLooping, toogleMute, tooglePlay, setVolume, shown, closeReproductor} = useReproductor()
     
     const navigate = useNavigate();
     const {isLogged, userFavved, toogleFav} = useAuth()
+
 
     const handleComprar = (e) => {
         e.preventDefault()
@@ -83,13 +85,18 @@ function Reproductor() {
 
                 <div className='w-3/12 flex flex-row justify-center items-center gap-3'>
                     <Icon icon={reproductorData.isMuted ? "ic:baseline-volume-off" : (reproductorData.volume < 50 ? "ic:baseline-volume-down" : "ic:baseline-volume-up")} className='text-white w-6 h-6 cursor-pointer hover:text-red-500 transition duration-300' onClick={(e) => handleMuteButton(e)}/>
-                    <input type="range" className='w-24 h-0.5' defaultValue={reproductorData.volume} value={reproductorData.isMuted ? 0 : reproductorData.volume} min={0} max={100} step="any" onChange={(e) => setVolume(e.target.value)}/>
+                    <input type="range" className='w-24 h-0.5' value={reproductorData.isMuted ? 0 : reproductorData.volume} min={0} max={100} step="any" onChange={(e) => setVolume(e.target.value)}/>
                 </div>
 
                 <div className='-top-4 absolute left-0 h-px w-full'>
-                    <input type="range" className='w-full h-px' defaultValue={0} step="any"/>
+                    <input type="range" className='w-full h-px' value={reproductorData.currentTime} min={0} max={reproductorData.duration} step="any"/>
                 </div>
                 
+
+                <div className='absolute top-0 right-0 p-2'>
+                    <Icon icon="ic:baseline-close" className='text-white w-6 h-6 cursor-pointer hover:text-red-500 transition duration-300' onClick={(e) => closeReproductor(e)}/>
+                </div>
+
                 
             </div>
         )

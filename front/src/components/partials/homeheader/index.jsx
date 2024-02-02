@@ -18,11 +18,15 @@ import useMobileMenu from "@/hooks/useMobileMenu";
 import MonoChrome from "./Tools/MonoChrome";
 import HeaderCart from "./Tools/cart";
 import useAuth from '@/hooks/useAuth'
+import { useNavigate } from "react-router-dom";
 
 const Header = ({ className = "custom-class" }) => {
   const [collapsed, setMenuCollapsed] = useSidebar();
   const { width, breakpoints } = useWidth();
   const [navbarType] = useNavbarType();
+
+  const navigate = useNavigate()
+
   const navbarTypeClass = () => {
     switch (navbarType) {
       case "floating":
@@ -111,7 +115,7 @@ const Header = ({ className = "custom-class" }) => {
           :
           
           <div className="nav-tools flex items-center lg:space-x-6 space-x-3 rtl:space-x-reverse">
-            <button className="btn btn-primary btn-sm bg-white text-[#000000]" onClick={(e) => logIn()}>Iniciar sesión</button>
+            <button className="btn btn-primary btn-sm bg-white text-[#000000]" onClick={(e) => navigate("/login")}>Iniciar sesión</button>
             <button className="btn btn-outline btn-sm text-white">Registrarse</button>
           </div>
           

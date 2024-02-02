@@ -31,7 +31,12 @@ const useAuth = () => {
         }
     }
 
-
+    const numFavs = () => {
+        if(isLogged)
+        {
+            return userLogged.favorites.length
+        }
+    }
 
     const toogleFav = (beatId) => {
         if(isLogged)
@@ -77,10 +82,10 @@ const useAuth = () => {
         if(!isLogged)
         {
             localStorage.setItem("token", "mecagoentupadre")
-            localStorage.setItem("user", JSON.stringify({email: "javpuntoillo@gmail.com", password: "123456", id:1, favorites: []}))
+            localStorage.setItem("user", JSON.stringify({email: "javpuntoillo@gmail.com", password: "123456", nombre: "Javi Luna", nombre_artistico: "Lambda Beats", id:1, favorites: []}))
             setAuth({
                 token: "mecagoentupadre",
-                user: {email: "javpuntoillo@gmail.com", password: "123456", id:1, favorites: []},
+                user: {email: "javpuntoillo@gmail.com", password: "123456", nombre: "Javi Luna", nombre_artistico: "Lambda Beats", id:1, favorites: []},
             })
 
         }
@@ -101,7 +106,8 @@ const useAuth = () => {
         userFavved, 
         toogleFav,
         logIn, 
-        logOut
+        logOut, 
+        numFavs
     }
 
 }

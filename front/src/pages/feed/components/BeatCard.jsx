@@ -10,7 +10,7 @@ function BeatCard({beat}) {
     const [isHovered, setIsHovered] = useState(false);
 
     const [modal, setModal] = useState(false);
-    const {reproductorData, setReproductorData} = useReproductor();
+    const {reproductorData, reproducirCancion, setReproductorData} = useReproductor();
 
     const navigate = useNavigate();
 

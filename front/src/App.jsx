@@ -8,6 +8,7 @@ const Feed = lazy(() => import("./pages/feed"));
 const Mixmaster = lazy(() => import("./pages/mixmaster"));
 const Proyectos = lazy(() => import("./pages/proyectos"));
 const Contacto = lazy(() => import("./pages/contacto"));
+const Login = lazy(() => import("./pages/login"));
 
 const Dashboard = lazy(() => import("./pages/dashboard"));
 const Ecommerce = lazy(() => import("./pages/dashboard/ecommerce"));
@@ -15,7 +16,6 @@ const CrmPage = lazy(() => import("./pages/dashboard/crm"));
 const ProjectPage = lazy(() => import("./pages/dashboard/project"));
 const BankingPage = lazy(() => import("./pages/dashboard/banking"));
 
-const Login = lazy(() => import("./pages/auth/login"));
 const Login2 = lazy(() => import("./pages/auth/login2"));
 const Login3 = lazy(() => import("./pages/auth/login3"));
 const Register = lazy(() => import("./pages/auth/register"));
@@ -160,6 +160,7 @@ function App() {
             <Route path="proyectos" element={<Proyectos />} />
             <Route path="contacto" element={<Contacto />} />
             <Route path="beat/:beatId" element={<BeatDetails />} />
+            <Route path="login" element={<Login />} />
             
             {/* <Route path="/login2" element={<Login2 />} />
             <Route path="/login3" element={<Login3 />} />

@@ -48,8 +48,9 @@ function PerfilLayout() {
                   <MenuLateral/>
                   <div className='w-full'><Outlet /></div>
                   
-                {width > breakpoints.md ? <Reproductor/> : <ReproductorMobile/>}
+                
                 </div>
+                {width > breakpoints.md ? <Reproductor/> : <ReproductorMobile/>}
               </Suspense>
           </>
       )
