@@ -18,7 +18,7 @@ const Perfil = () => {
   const { width, breakpoints } = useWidth();
 
 
-  const { logOut, numFavs } = useAuth();
+  const { logOut, numFavs, userLogged } = useAuth();
 
   return (
     <div className="my-[30px] w-full">
@@ -35,7 +35,7 @@ const Perfil = () => {
                   </div>
                   <div className="flex-1">
                     <div className="text-2xl font-medium text-slate-900 dark:text-slate-200 mb-[3px]">
-                      Albert Flores
+                      {userLogged?.nombre}
                     </div>
                   </div>
                 </div>

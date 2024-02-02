@@ -9,9 +9,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { Provider } from "react-redux";
 import store from "./store";
 import "react-toastify/dist/ReactToastify.css";
-import "./server";
 import { RecoilRoot } from "recoil";
 import Lenis from '@studio-freight/lenis'
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 // const lenis = new Lenis()
 // function raf(time) {
@@ -24,12 +24,14 @@ import Lenis from '@studio-freight/lenis'
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <>
-    <BrowserRouter>
-    <RecoilRoot>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </RecoilRoot>
-    </BrowserRouter>
+    <GoogleOAuthProvider clientId="580307751006-9umaamkk0nmhadd739l92f1gacv4pqmm.apps.googleusercontent.com">
+      <BrowserRouter>
+        <RecoilRoot>
+          <Provider store={store}>
+            <App />
+          </Provider>
+        </RecoilRoot>
+      </BrowserRouter>
+    </GoogleOAuthProvider>
   </>
 );

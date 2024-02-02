@@ -130,12 +130,23 @@ function Proyectos() {
 
                   <h5 className='font-bold text-7xl text-white tracking-widest uppercase'>{proyecto.name}</h5>
                   <p className='text-white mt-4 text-lg'>{proyecto.short_description}</p>
-                <div className='flex justify-start items-center h-12 mt-10 gap-4'>
+                <div className='flex justify-start items-center max-h-12 mt-10 gap-4'>
                   <div className=''><Button className='text-white rounded-full border-2 border-white hover:bg-red-500 hover:border-red-500 duration-300' href={proyecto.website}>Saber más...</Button></div>
                   <div className='w-12 h-full'><Icon icon="ant-design:youtube-filled" className="text-white aspect-square text-5xl cursor-pointer hover:text-red-500 duration-300" /></div>
-                  <div className='w-24 h-full flex justify-start items-center'><Icon icon="mdi:spotify" className="text-white aspect-square text-4xl cursor-pointer hover:text-green-500 duration-300" /></div>
-                  <Spotify link="https://open.spotify.com/track/5ihDGnhQgMA0F0tk9fNLlA?si=4472348a63dd4f83" />
-                </div>  
+                  {/* <div className='w-24 h-full flex justify-start items-center'><Icon icon="mdi:spotify" className="text-white aspect-square text-4xl cursor-pointer hover:text-green-500 duration-300" /></div> */}
+                  
+                </div> 
+                {proyecto.url_spotify &&
+                  <div className='w-96 flex justify-start items-center mt-10'>
+
+                    {/* <Spotify link={proyecto.url_spotify} className='w-full h-24' /> */}
+                    {/* <Spotify link={"https://open.spotify.com/track/5ihDGnhQgMA0F0tk9fNLlA?si=4472348a63dd4f83"} className='w-full h-24' /> */}
+
+                    <iframe  src={`https://open.spotify.com/embed${proyecto.url_spotify}?utm_source=generator`} width="100%" height="100%" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                    
+                  </div>             
+                } 
+
                 
               </div>
 

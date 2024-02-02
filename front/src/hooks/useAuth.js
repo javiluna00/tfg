@@ -78,14 +78,14 @@ const useAuth = () => {
 
     }
 
-    const logIn = () => {
+    const logIn = ({email, password, nombre, apellidos, nombre_artistico,imagen,  id, token}) => {
         if(!isLogged)
         {
-            localStorage.setItem("token", "mecagoentupadre")
-            localStorage.setItem("user", JSON.stringify({email: "javpuntoillo@gmail.com", password: "123456", nombre: "Javi Luna", nombre_artistico: "Lambda Beats", id:1, favorites: []}))
+            localStorage.setItem("token", token)
+            localStorage.setItem("user", JSON.stringify({email: email, nombre: nombre + " " + apellidos, imagen: imagen, nombre_artistico: nombre_artistico || "Sin datos", id, favorites: []}))
             setAuth({
-                token: "mecagoentupadre",
-                user: {email: "javpuntoillo@gmail.com", password: "123456", nombre: "Javi Luna", nombre_artistico: "Lambda Beats", id:1, favorites: []},
+                token: token,
+                user: {email: email, nombre: nombre + " " +  apellidos, imagen: imagen, nombre_artistico: nombre_artistico  || "Sin datos", id, favorites: []},
             })
 
         }

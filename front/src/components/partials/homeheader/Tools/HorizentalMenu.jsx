@@ -30,7 +30,7 @@ const HorizentalMenu = () => {
           >
             {/* Single menu*/}
             {!item.child && !item.megamenu && (
-              <Link to={"http://www.localhost:5173" + "/" + item.link}>
+              <Link to={"/" + item.link}>
 
                 <div className={`flex flex-1 items-center space-x-[6px] rtl:space-x-reverse`}>
                   <span className="icon-box">
