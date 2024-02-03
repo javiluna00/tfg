@@ -73,7 +73,7 @@ const CartPanel = ({ open, close }) => {
       <motion.div
         className={`
         setting-wrapper fixed ltr:right-0 rtl:left-0 top-0 md:w-[400px] w-[300px]
-         bg-white dark:bg-slate-800 h-screen z-[9999]   shadow-base2
+         bg-white h-screen z-[9999]   shadow-base2
           dark:shadow-base3 border border-slate-200 dark:border-slate-700 
           ${open ? "ml-0" : " ml-[-400px]"}
         `}
@@ -84,10 +84,10 @@ const CartPanel = ({ open, close }) => {
           <header className=" sticky flex-none top-0 bg-white dark:bg-slate-800 flex items-center justify-between border-b border-slate-100 dark:border-slate-700 -mx-5 px-6 py-[15px] mb-6">
             <div>
               <span className="block text-xl text-slate-900 font-medium dark:text-[#eee]">
-                Cart
+                Carro
               </span>
               <span className="block text-sm font-light text-[#68768A] dark:text-[#eee]">
-                Total Price ${totalPrice}
+                Precio total : {totalPrice}€
               </span>
             </div>
             <div

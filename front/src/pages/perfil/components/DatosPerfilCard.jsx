@@ -8,11 +8,13 @@ import React, { useEffect, useState } from 'react'
 
 function DatosPerfilCard() {
 
-    const { startEditing, saveEditing, profileData, isEditing, modificarDatos } = useProfile()
+    const { startEditing, saveEditing, profileData, isEditing, modificarDatos, cancelEditing } = useProfile()
 
     const [inputNombre, setInputNombre] = useState(profileData?.nombre)
     const [inputEmail, setInputEmail] = useState(profileData?.email)
     const [inputNombreArtistico, setInputNombreArtistico] = useState(profileData?.nombre_artistico)
+
+    const [previousData, setPreviousData] = useState(null)
 
     useEffect(() => {
         setInputNombre(profileData?.nombre)
@@ -20,13 +22,27 @@ function DatosPerfilCard() {
         setInputNombreArtistico(profileData?.nombre_artistico)
     }, [profileData])
 
+    const hdlStartEditing = () => {
+        setPreviousData({
+            nombre: profileData?.nombre,
+            email: profileData?.email,
+            nombre_artistico: profileData?.nombre_artistico,
+        })
+        startEditing()
+    }
+    const hdlCancelEditing = () => {
+        setInputNombre(previousData?.nombre)
+        setInputEmail(previousData?.email)
+        setInputNombreArtistico(previousData?.nombre_artistico)
+        cancelEditing()
+    }
     const { userLogged } = useAuth()
 
   return (
     <div className="lg:col-span-4 col-span-12">
     <Card title="Info" className="w-full">
       <div className="text-base text-slate-600 dark:text-slate-300 leading-7 flex justify-end mb-3">
-        <Icon icon="heroicons:pencil-square" className={"text-2xl text-slate-600 dark:text-slate-300 cursor-pointer"} alt="Editar" onClick={startEditing}/>
+        <Icon icon="heroicons:pencil-square" className={"text-2xl text-slate-600 dark:text-slate-300 cursor-pointer"} alt="Editar" onClick={hdlStartEditing}/>
       </div>
       <ul className={`list space-y-8 ${ isEditing ? "border-2 border-red-200" : "" } rounded-lg p-6 box-content`}>
         <li className="flex space-x-3 rtl:space-x-reverse">
@@ -79,7 +95,7 @@ function DatosPerfilCard() {
       && 
         <div className='flex justify-start items-center mt-3'>
             <Button className="w-full bg-primary-500 text-white hover:bg-primary-600 transition-all duration-150" variant="outlined" onClick={(e) => saveEditing({nombre: inputNombre, email: inputEmail, nombre_artistico:inputNombreArtistico,})}>Guardar</Button>
-            <Button className="w-full bg-primary-500 text-white hover:bg-primary-600 transition-all duration-150 ml-2" variant="outlined">Cancelar</Button>
+            <Button className="w-full bg-primary-500 text-white hover:bg-primary-600 transition-all duration-150 ml-2" variant="outlined" onClick={hdlCancelEditing}>Cancelar</Button>
         </div>
       }
       

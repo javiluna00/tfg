@@ -16,7 +16,7 @@ import Language from "./Tools/Language";
 import useRtl from "@/hooks/useRtl";
 import useMobileMenu from "@/hooks/useMobileMenu";
 import MonoChrome from "./Tools/MonoChrome";
-import HeaderCart from "./Tools/cart";
+import HeaderCart from "./Tools/Cart";
 import useAuth from '@/hooks/useAuth'
 import { useNavigate } from "react-router-dom";
 
@@ -103,6 +103,7 @@ const Header = ({ className = "custom-class" }) => {
           <div className="nav-tools flex items-center lg:space-x-6 space-x-3 rtl:space-x-reverse">
             {/* <HeaderCart /> */}
             {/* {width >= breakpoints.md && <Notification />} */}
+            <HeaderCart />
             <Profile user={userLogged} />
           </div>
 

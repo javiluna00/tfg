@@ -6,7 +6,7 @@ import ComprasTabla from './components/ComprasTabla'
 function Compras() {
   return (
     <div className='flex'>
-        <div className='flex grow px-6 my-[30px]'>
+        <div className='flex grow px-6 my-[30px] w-full'>
           <ComprasTabla/>
         </div>
     </div>

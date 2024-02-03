@@ -15,7 +15,7 @@ const profileLabel = ({user}) => {
   return (
     <div className="flex items-center">
       <div className="flex-1 ltr:mr-[10px] rtl:ml-[10px]">
-        <div className="lg:h-8 lg:w-8 h-7 w-7 rounded-full">
+        <div className="h-7 w-7 rounded-full">
           <img
             src={userLogged?.imagen || UserAvatar}
             alt=""

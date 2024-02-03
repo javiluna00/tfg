@@ -39,11 +39,16 @@ function useProfile() {
         console.log(profileData)
     }
 
+    const cancelEditing = () => {
+        setIsEditing(false)
+        
+    }
+
     const modificarDatos = (newData) => {
         setProfileData(newData)
     }
 
-    return { startEditing, saveEditing, profileData, isEditing, modificarDatos }
+    return { startEditing, saveEditing, profileData, isEditing, modificarDatos, cancelEditing}
 
 }
 
