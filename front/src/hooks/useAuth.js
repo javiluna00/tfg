@@ -3,6 +3,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {authState} from "@/store/authStore";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 const useAuth = () => {
@@ -15,6 +16,20 @@ const useAuth = () => {
     useEffect(() => {
         setIsLogged(auth.token ? true : false)
     }, [auth.token])
+
+
+    useEffect(() => {
+        if(!isLogged)
+        {
+            localStorage.removeItem("token")
+            localStorage.removeItem("user")
+        }
+        else
+        {
+            localStorage.setItem("token", auth.token)
+            localStorage.setItem("user", JSON.stringify(userLogged))
+        }
+    }, [auth])
 
     useEffect(() => {
         console.log("isLogged : ", isLogged)
@@ -68,7 +83,7 @@ const useAuth = () => {
             })
             localStorage.removeItem("token")
             localStorage.removeItem("user")
-            
+            toast.success("Sesión cerrada")
             navigate("/feed")
         }
         else
@@ -87,7 +102,7 @@ const useAuth = () => {
                 token: token,
                 user: {email: email, nombre: nombre + " " +  apellidos, imagen: imagen, nombre_artistico: nombre_artistico  || "Sin datos", id, favorites: []},
             })
-
+            toast.success("Sesión iniciada")
         }
         else
         {

@@ -44,7 +44,7 @@ function PerfilLayout() {
               <Suspense fallback={<Loading />}>
                 <ToastContainer />
                 <HomeHeader className={width > breakpoints.xl ? switchHeaderClass() : ""} />
-                <div className="flex justify-center items-start gap-4">
+                <div className={`${width > breakpoints.md ? "flex justify-center items-start gap-4" : ""}`}>
                   <MenuLateral/>
                   <div className='w-full'><Outlet /></div>
                   

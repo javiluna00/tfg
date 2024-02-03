@@ -15,11 +15,7 @@ const Logo = () => {
   return (
     <div>
       <Link to="/">
-        {width >= breakpoints.xl ? (
           <video className='w-14 h-14 object-cover mix-blend-screen' loop autoPlay muted src={logolambda} />
-        ) : (
-          <img src={isDark ? MobileLogoWhite : MobileLogo} alt="" />
-        )}
       </Link>
     </div>
   );

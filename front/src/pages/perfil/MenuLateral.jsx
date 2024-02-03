@@ -17,17 +17,7 @@ function MenuLateral() {
 
     return (
         <div
-          className={`my-[30px] transition-all duration-150 flex-none min-w-[260px] h-full sticky top-[30px]
-        ${
-          width < breakpoints.lg
-            ? "absolute h-full top-0 md:w-[260px] w-[200px] z-[999]"
-            : "flex-none min-w-[260px]"
-        }
-        ${
-          width < breakpoints.lg && mobileEmailSidebar
-            ? "left-0 "
-            : "-left-full "
-        }
+          className={`my-[30px] transition-all duration-150  ${width > breakpoints.md ? "sticky top-[100px]" : "w-full"} 
         `}
         >
           <Card bodyClass="bg-white rounded-lg ml-6 py-6 h-full flex flex-col" className="h-full">

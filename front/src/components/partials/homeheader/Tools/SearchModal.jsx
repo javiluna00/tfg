@@ -1,15 +1,14 @@
 import { Dialog, Transition, Combobox } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import Icon from "@/components/ui/Icon";
-const SearchModal = () => {
-  let [isOpen, setIsOpen] = useState(false);
+const SearchModal = ({open, setOpen}) => {
 
   function closeModal() {
-    setIsOpen(false);
+    setOpen(false);
   }
 
   function openModal() {
-    setIsOpen(true);
+    setOpen(true);
   }
   const [query, setQuery] = useState(" ");
   const searchList = [
@@ -58,7 +57,7 @@ const SearchModal = () => {
         </button>
       </div>
 
-      <Transition show={isOpen} as={Fragment}>
+      <Transition show={open} as={Fragment}>
         <Dialog
           as="div"
           className="fixed inset-0 z-[9999] overflow-y-auto p-4 md:pt-[25vh] pt-20"

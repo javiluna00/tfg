@@ -63,12 +63,12 @@ const Header = ({ className = "custom-class" }) => {
     }
   };
   return (
-    <header>
+    <header className="h-[70px] sticky top-0 z-[999]">
       <div
-        className={`app-header md:px-6 px-[15px]  dark:bg-slate-800 shadow-base dark:shadow-base3 bg-zinc-900 border-b border-red-400 
+        className={` app-header md:px-6 px-[15px]  dark:bg-slate-800 shadow-base dark:shadow-base3 bg-zinc-900 border-b border-red-400 
         ${borderSwicthClass()}
              ${
-               menuType === "horizontal" && width > breakpoints.xl
+               menuType === "horizontal" && width > breakpoints.md
                  ? "py-1"
                  : "md:py-6 py-3"
              }
@@ -80,36 +80,30 @@ const Header = ({ className = "custom-class" }) => {
             <div className="flex items-center space-x-4 rtl:space-x-reverse">
               <Logo />
               {/* open mobile menu handlaer*/}
-              {width <= breakpoints.xl && (
+              {width <= breakpoints.md && (
                 <div
                   className="cursor-pointer text-slate-900 dark:text-white text-2xl"
                   onClick={handleOpenMobileMenu}
                 >
-                  <Icon icon="heroicons-outline:menu-alt-3" />
+                  <Icon icon="heroicons-outline:menu-alt-3" className={"text-white"}/>
                 </div>
               )}
             </div>
           )}
           {/*  Horizontal  Main Menu */}
-          {menuType === "horizontal" && width >= breakpoints.xl ? (
+          {menuType === "horizontal" && width >= breakpoints.md ? (
             <HorizentalMenu />
           ) : null}
           {/* Nav Tools  */}
+
+          {width < breakpoints.md && <SearchModal open={mobileMenu} setOpen={setMobileMenu}/>}
 
           {isLogged == true ?
           
           <div className="nav-tools flex items-center lg:space-x-6 space-x-3 rtl:space-x-reverse">
             {/* <HeaderCart /> */}
             {/* {width >= breakpoints.md && <Notification />} */}
-            {width >= breakpoints.md && <Profile user={userLogged} />}
-            {width <= breakpoints.md && (
-              <div
-                className="cursor-pointer text-slate-900 dark:text-white text-2xl"
-                onClick={handleOpenMobileMenu}
-              >
-                <Icon icon="heroicons-outline:menu-alt-3" />
-              </div>
-            )}
+            <Profile user={userLogged} />
           </div>
 
           :
