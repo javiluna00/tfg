@@ -10,6 +10,7 @@ import { Outlet } from 'react-router-dom';
 import Loading from "@/components/Loading";
 import Reproductor from "@/components/partials/reproductor";
 import ReproductorMobile from "@/components/partials/reproductormobile"
+import LicensesModal from '@/pages/feed/components/LicensesModal';
 function HomeLayout() {
 
 
@@ -17,6 +18,10 @@ function HomeLayout() {
     const [collapsed] = useSidebar();
     const [menuType] = useMenulayout();
     const [menuHidden] = useMenuHidden();
+
+    const [modalBeat, setModalBeat] = React.useState(false);
+    const [activeBeat, setActiveBeat] = React.useState({});
+
 
 
     const switchHeaderClass = () => {
@@ -33,10 +38,11 @@ function HomeLayout() {
     return (
         <>
             <Suspense fallback={<Loading />}>
-              <ToastContainer />
+              <ToastContainer className={"mt-[64px]"}/>
               <HomeHeader className={width > breakpoints.xl ? switchHeaderClass() : ""} />
-              {<Outlet />}
-              {width > breakpoints.md ? <Reproductor/> : <ReproductorMobile/>}
+              {<Outlet context={{setActiveBeat, setModalBeat}}/>}
+              {width > breakpoints.md ? <Reproductor setActiveBeat={setActiveBeat} setModalBeat={setModalBeat}/> : <ReproductorMobile/>}
+              <LicensesModal beat={activeBeat} activeModal={modalBeat} setActiveModal={setModalBeat}/> 
             </Suspense>
         </>
     )

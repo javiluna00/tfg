@@ -1,26 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Beats from './Beats';
 import Demos from './Demos';
 import Reproductor from '@/components/partials/reproductor';
+import { useOutletContext } from "react-router-dom";
 
 function Feed() {
 
-
-  const [activeSection, setActiveSection] = useState("beats");
-
-  const handleSectionChange = (section) => {
-    setActiveSection(section);
-  };
-
-  const scrollStyle = {
-    transform: `translateX(-${activeSection === "beats" ? 0 : "100%"})`, // Mueve la sección activa a la vista
-  };
+  const {setActiveBeat, setModalBeat} = useOutletContext();
 
 
+  useEffect(() => {
+    console.log("setActiveBeat", setActiveBeat)
+    console.log("setModalBeat", setModalBeat)
+  }, [setActiveBeat, setModalBeat])
   return (
     <div className='bg-[#000000] h-full pb-20'>
-            <Beats/>
+            <Beats setActiveBeat={setActiveBeat} setModalBeat={setModalBeat}/>
 
     </div>
 

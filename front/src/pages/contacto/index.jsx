@@ -31,17 +31,17 @@ function Contacto() {
     return (
       <div className='min-h-screen' style={{ backgroundImage: `url(${fondo})`, backgroundSize: 'cover', backgroundPosition: 'center'}}>
         <div className='container py-20'>
-          <div className='flex flex-col justify-center items-center bg-white p-10 rounded-lg w-2/5 mx-auto' id='contact'>
-            <form>
-              <div className='flex flex-col'>
+          <div className='flex flex-col justify-center items-center bg-white p-10 rounded-lg lg:w-2/5 max-w-[512px] mx-auto' id='contact'>
+            <form className='w-full' >
+              <div className='flex flex-col items-start w-full h-full'>
                 <label htmlFor="name" className='text-md mb-2 text-slate-900'>Nombre</label>
-                <input type="text" name="name" id="name" value={contactoData.nombre} className='border border-gray-300 py-3 px-6 w-96 rounded-md outline-none focus:border-red-400 focus:shadow-md' placeholder='Ingresa tu nombre...' onChange={(e) => setContactoData({...contactoData, nombre: e.target.value})}/>
+                <input type="text" name="name" id="name" value={contactoData.nombre} className='border border-gray-300 py-3 px-6 w-full rounded-md outline-none focus:border-red-400 focus:shadow-md' placeholder='Ingresa tu nombre...' onChange={(e) => setContactoData({...contactoData, nombre: e.target.value})}/>
                 <div className='separator my-4'></div>
                 <label htmlFor="email" className='text-md mb-2 text-slate-900'>E-mail</label>
-                <input type="email" name="email" id="email" value={contactoData.email} className='border border-gray-300 py-3 px-6 rounded-md outline-none focus:border-red-400 focus:shadow-md' placeholder='Ingresa tu email...' onChange={(e) => setContactoData({...contactoData, email: e.target.value})}/>
+                <input type="email" name="email" id="email" value={contactoData.email} className='border border-gray-300 py-3 px-6 w-full rounded-md outline-none focus:border-red-400 focus:shadow-md' placeholder='Ingresa tu email...' onChange={(e) => setContactoData({...contactoData, email: e.target.value})}/>
                 <div className='separator my-4'></div>
                 <label htmlFor="asunto" className='text-md mb-2 text-slate-900'>Asunto</label>
-                <input type="text" name="asunto" id="asunto" value={contactoData.asunto} className='border border-gray-300 py-3 px-6 rounded-md outline-none focus:border-red-400 focus:shadow-md' placeholder='Asunto...' onChange={(e) => setContactoData({...contactoData, asunto: e.target.value})}/>
+                <input type="text" name="asunto" id="asunto" value={contactoData.asunto} className='border border-gray-300 py-3 px-6 w-full rounded-md outline-none focus:border-red-400 focus:shadow-md' placeholder='Asunto...' onChange={(e) => setContactoData({...contactoData, asunto: e.target.value})}/>
                 <div className='separator my-4'></div>
                 <label htmlFor="mensaje" className='text-md mb-2 text-slate-900'>Mensaje</label>
                 <textarea
@@ -50,12 +50,12 @@ function Contacto() {
                   id="mensaje"
                   placeholder="Escribe tu mensaje"
                   value={contactoData.mensaje}
-                  class="w-full resize-none rounded-md border border-gray-300 bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-red-400 focus:shadow-md"
+                  class="w-full resize-none rounded-md border border-gray-300 bg-white py-3 px-6 w-full text-base font-medium text-[#6B7280] outline-none focus:border-red-400 focus:shadow-md"
                   onChange={(e) => setContactoData({...contactoData, mensaje: e.target.value})}
                 ></textarea>
                 <div className='separator my-4'></div>
   
-                <Button type="submit" className='w-96 bg-red-500 text-white' onClick={handleSubmit}>Enviar</Button>
+                <Button type="submit" className='w-96 bg-red-500 text-white w-full' onClick={handleSubmit}>Enviar</Button>
   
               </div>
   

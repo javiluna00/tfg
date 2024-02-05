@@ -8,7 +8,7 @@ import useNavbarType from "@/hooks/useNavbarType";
 import useMenulayout from "@/hooks/useMenulayout";
 import useSkin from "@/hooks/useSkin";
 import Logo from "./Tools/Logo";
-import SearchModal from "./Tools/SearchModal";
+import MobileMenu from "./Tools/MobileMenu";
 import Profile from "./Tools/Profile";
 import Notification from "./Tools/Notification";
 import Message from "./Tools/Message";
@@ -96,7 +96,7 @@ const Header = ({ className = "custom-class" }) => {
           ) : null}
           {/* Nav Tools  */}
 
-          {width < breakpoints.md && <SearchModal open={mobileMenu} setOpen={setMobileMenu}/>}
+          {width < breakpoints.md && <MobileMenu open={mobileMenu} setOpen={setMobileMenu}/>}
 
           {isLogged == true ?
           

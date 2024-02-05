@@ -9,13 +9,17 @@ import Marquee from "react-fast-marquee";
 import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import useAuth from '@/hooks/useAuth';
 
-function Reproductor() {
+function Reproductor({setActiveBeat, setModalBeat}) {
 
     const {reproductorData, setReproductorData, setLooping, toogleMute, tooglePlay, setVolume, shown, closeReproductor} = useReproductor()
     
     const navigate = useNavigate();
     const {isLogged, userFavved, toogleFav} = useAuth()
 
+    const hdlClickComprar = () => {
+        setModalBeat(true)
+        setActiveBeat(reproductorData.song)
+    }
 
     const handleComprar = (e) => {
         e.preventDefault()
@@ -54,7 +58,7 @@ function Reproductor() {
 
                     </div>
                     <div className='ml-0 xs:ml-10 flex flex-row justify-center items-center'>
-                        <Button className='h-10 bg-red-500 text-white hover:bg-red-600 hover:border-white' onClick={(e) => handleComprar(e)}>
+                        <Button className='h-10 bg-red-500 text-white hover:bg-red-600 hover:border-white' onClick={hdlClickComprar}>
                             <div className='flex flex-row justify-center items-center gap-2'>
                                 <Icon icon="ic:round-shopping-cart"/>
                                 <span className='hidden sm:block'>{reproductorData.song.precio}€</span>

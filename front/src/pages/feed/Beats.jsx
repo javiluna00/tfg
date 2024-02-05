@@ -6,7 +6,7 @@ import { beatState } from "@/store/beatStore";
 import useBeatFinder from '@/hooks/useBeatFinder'
 
 
-function Beats() {
+function Beats({setModalBeat, setActiveBeat}) {
 
     const {filteredBeats, allBeats, beatsPopulares, filter, setFilter} = useRecoilValue(beatState);
 
@@ -14,11 +14,12 @@ function Beats() {
     const beatsPopularesRender = beatsPopulares.map((beat) => {
         return (
             <div className='flex justify-center items-center w-full' key={beat.id}>
-                <BeatCard beat={beat} key={beat.id} />
+                <BeatCard beat={beat} key={beat.id} setModalBeat={setModalBeat} setActiveBeat={setActiveBeat}/>
             </div>
             
         )
     })
+
 
     useEffect(() => {
         console.log("filteredBeats en el archivo de renderizado : ", filteredBeats)
@@ -48,7 +49,7 @@ function Beats() {
                     <div className='w-full grid gap-y-20 md:grid-cols-3 lg:grid-cols-5 sm:grid-cols-3 justify-center items-center'>
                         {filteredBeats.map((beat, index) => (
                             <div className='flex justify-center items-center w-full'>
-                                <BeatCard beat={beat} key={index}/>
+                                <BeatCard beat={beat} key={index} setModalBeat={setModalBeat} setActiveBeat={setActiveBeat}/>
                             </div>
                         ))}
                     </div>

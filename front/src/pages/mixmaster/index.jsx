@@ -44,7 +44,7 @@ function Mixmaster() {
 
       <div id='tarifas' className='flex flex-col justify-center items-start my-10 bg-white p-10 rounded-xl'>
         <h3 className='text-3xl font-semibold'>¡Profesionaliza tu canción y saca un buen sonido!</h3>
-        <div className='flex justify-start items-start gap-4 mt-10'>
+        <div className='xl:flex xl:justify-start xl:items-start grid grid-cols-1 justify-center items-center sm:grid-cols-2 w-full gap-4 mt-10'>
           {tarifas.map((tarifa) => (
             <Card bodyClass="p-0" className={`relative overflow-hidden shadow-md`} key={tarifa.id}>
               <div className="image-box ">
