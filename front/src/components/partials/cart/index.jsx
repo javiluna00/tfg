@@ -8,6 +8,7 @@ import { removeFromCart, updateQuantity } from "@/store/api/shop/cartSlice";
 import CartItem from "./cart-item";
 import NoItem from "./no-item";
 import clsx from "clsx";
+import { useCartActions } from "@/hooks/useCartActions";
 const variants = {
   open: (height = 1000) => ({
     clipPath: `circle(${height * 2 + 200}px at 40px 40px)`,
@@ -46,12 +47,14 @@ const variants2 = {
 };
 
 const CartPanel = ({ open, close }) => {
-  const { items, totalPrice } = useSelector((state) => state.cart);
+
+
+  const { clearCart, removeItem, totalPrice, cart } = useCartActions();
 
   const dispatch = useDispatch();
 
   const handleRemoveFromCart = (productId) => {
-    dispatch(removeFromCart(productId));
+    removeItem(productId);
   };
   const handleIncreaseQuantity = (productId) => {
     const item = items.find((item) => item.id === productId);
@@ -87,7 +90,7 @@ const CartPanel = ({ open, close }) => {
                 Carro
               </span>
               <span className="block text-sm font-light text-[#68768A] dark:text-[#eee]">
-                Precio total : {totalPrice}€
+                Precio total : {totalPrice(cart)}€
               </span>
             </div>
             <div
@@ -101,12 +104,12 @@ const CartPanel = ({ open, close }) => {
             className={clsx(
               "divide-y divide-slate-200 dark:divide-slate-700 flex-1",
               {
-                "flex flex-col justify-center": items.length <= 0,
+                "flex flex-col justify-center": cart.length <= 0,
               }
             )}
           >
-            {items.length > 0 ? (
-              items?.map((item, i) => (
+            {cart.length > 0 ? (
+              cart?.map((item, i) => (
                 <motion.div
                   variants={variants2}
                   key={i}
@@ -128,9 +131,9 @@ const CartPanel = ({ open, close }) => {
           <footer className="bg-white dark:bg-slate-800 py-6 sticky  flex-none bottom-0 -mx-6 px-6  space-y-4 border-t border-slate-200 dark:border-slate-700">
             <div className=" flex justify-between text-base font-medium leading-none text-slate-900 dark:text-white ">
               <span>Subtotal:</span>
-              <span>${totalPrice}</span>
+              <span>{totalPrice(cart)}€</span>
             </div>
-            {items.length > 0 && (
+            {cart.length > 0 && (
               <div className=" flex justify-between space-x-3 rtl:space-x-reverse">
                 <Button
                   text="Continue to Shipping"

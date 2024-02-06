@@ -111,7 +111,7 @@ const Header = ({ className = "custom-class" }) => {
           
           <div className="nav-tools flex items-center lg:space-x-6 space-x-3 rtl:space-x-reverse">
             <button className="btn btn-primary btn-sm bg-white text-[#000000]" onClick={(e) => navigate("/login")}>Iniciar sesión</button>
-            <button className="btn btn-outline btn-sm text-white">Registrarse</button>
+            <button className="btn btn-outline btn-sm text-white" onClick={(e) => navigate("/register")}>Registrarse</button>
           </div>
           
           }

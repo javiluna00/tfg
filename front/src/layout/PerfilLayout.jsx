@@ -12,6 +12,8 @@ import Reproductor from "@/components/partials/reproductor";
 import ReproductorMobile from "@/components/partials/reproductormobile"
 import MenuLateral from '@/pages/perfil/MenuLateral';
 import useAuth from '@/hooks/useAuth';
+import LicensesModal from '@/pages/feed/components/LicensesModal';
+
 
 
 function PerfilLayout() {
@@ -21,6 +23,10 @@ function PerfilLayout() {
     const [collapsed] = useSidebar();
     const [menuType] = useMenulayout();
     const [menuHidden] = useMenuHidden();
+
+    const [modalBeat, setModalBeat] = React.useState(false);
+    const [activeBeat, setActiveBeat] = React.useState({});
+
 
     const { isUserLogged } = useAuth();
 
@@ -46,11 +52,11 @@ function PerfilLayout() {
                 <HomeHeader className={width > breakpoints.xl ? switchHeaderClass() : ""} />
                 <div className={`${width > breakpoints.xl ? "flex justify-center items-start gap-4" : ""}`}>
                   <MenuLateral/>
-                  <div className='w-full'><Outlet /></div>
-                  
+                  <div className='w-full'><Outlet context={{setActiveBeat, setModalBeat}}/></div>
+                  <LicensesModal beat={activeBeat} activeModal={modalBeat} setActiveModal={setModalBeat}/> 
                 
                 </div>
-                {width > breakpoints.md ? <Reproductor/> : <ReproductorMobile/>}
+                {width > breakpoints.md ? <Reproductor setActiveBeat={setActiveBeat} setModalBeat={setModalBeat}/> : <ReproductorMobile/>}
               </Suspense>
           </>
       )
