@@ -6,8 +6,8 @@ const storedUser = JSON.parse(localStorage.getItem("user"));
 export const authState = atom({
   key: "auth",
   default: {
-    token: storedToken || null,
-    user: storedUser || null,
+    token: storedToken != null ? storedToken : null,
+    user: storedUser !== null ? storedUser : null,
   },
 });
 

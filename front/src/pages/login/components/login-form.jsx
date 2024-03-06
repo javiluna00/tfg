@@ -11,6 +11,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useLoginMutation } from "@/store/api/auth/authApiSlice";
 import { toast } from "react-toastify";
 import useAuth from "@/hooks/useAuth";
+import useSignIn from 'react-auth-kit/hooks/useSignIn'
+
 const schema = yup
   .object({
     email: yup.string().email("Email incorrecto").required("Email requerido"),
@@ -18,11 +20,13 @@ const schema = yup
   })
   .required();
 const LoginForm = () => {
-  const [{ isLoading, isError, error, isSuccess }] = useLoginMutation();
 
-  const {logIn} = useAuth()
+  const {logIn, isAuthenticated, isLoading} = useAuth()
 
-  const dispatch = useDispatch();
+  if(isAuthenticated())
+  {
+    return null
+  }
 
   const {
     register,
@@ -37,9 +41,9 @@ const LoginForm = () => {
   const onSubmit = async (data) => {
     try {
 
-      await logIn()
-      navigate("/feed");
-      toast.success("Sesión iniciada correctamente");
+      
+      const res = await logIn({email: data.email, password: data.password})
+      
     } catch (error) {
       toast.error(error.message);
     }
@@ -52,8 +56,8 @@ const LoginForm = () => {
       <Textinput
         name="email"
         label="Email"
-        defaultValue="dashcode@gmail.com"
         type="email"
+        placeholder="Email"
         register={register}
         error={errors.email}
         className="h-[48px]"
@@ -62,7 +66,7 @@ const LoginForm = () => {
         name="password"
         label="Contraseña"
         type="password"
-        defaultValue="dashcode"
+        placeholder="**********"
         register={register}
         error={errors.password}
         className="h-[48px]"

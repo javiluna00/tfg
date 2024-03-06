@@ -71,7 +71,7 @@ const login = () => {
                 </Link>
               </div>
             </div>
-            <div className="auth-footer text-center">
+            <div className="auth-footer text-center z-[1]">
               Copyright 2021, Dashcode All Rights Reserved.
             </div>
           </div>

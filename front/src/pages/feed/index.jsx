@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
 import Beats from './Beats';
-import Demos from './Demos';
-import Reproductor from '@/components/partials/reproductor';
 import { useOutletContext } from "react-router-dom";
 
 function Feed() {

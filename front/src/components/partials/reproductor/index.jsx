@@ -11,10 +11,10 @@ import useAuth from '@/hooks/useAuth';
 
 function Reproductor({setActiveBeat, setModalBeat}) {
 
-    const {reproductorData, setReproductorData, setLooping, toogleMute, tooglePlay, setVolume, shown, closeReproductor} = useReproductor()
+    const {reproductorData, setReproductorData, setLooping, toogleMute, tooglePlay, setVolume, shown, closeReproductor, toogleFav, favved} = useReproductor()
     
     const navigate = useNavigate();
-    const {isLogged, userFavved, toogleFav} = useAuth()
+    const {isAuthenticated, saveBeat} = useAuth()
 
     const hdlClickComprar = () => {
         setModalBeat(true)
@@ -29,8 +29,9 @@ function Reproductor({setActiveBeat, setModalBeat}) {
         setLooping(!reproductorData.looping)
     }
 
-    const handleFavButton = (e) => {
-        toogleFav(reproductorData.song.id)
+    const handleFavButton = async (e) => {
+        await toogleFav(reproductorData.song.id)
+        await saveBeat(reproductorData.song.id)
     }
     const handleMuteButton = (e) => {
         toogleMute()
@@ -42,9 +43,9 @@ function Reproductor({setActiveBeat, setModalBeat}) {
     if(reproductorData.song)
     {
         return (
-            <div className='h-24 bg-neutral-900 flex justify-start items-center gap-2 bottom-0 fixed shadow-xl ' style={{width:"70%", marginLeft:"15%"}}>
+            <div className='h-24 bg-neutral-900 flex justify-start items-center gap-2 bottom-0 fixed shadow-xl z-50' style={{width:"70%", marginLeft:"15%"}}>
                 <div className='h-24 w-3/12 flex flex-row justify-start items-center gap-5'>
-                    <img className={`hidden sm:block h-full object-cover aspect-square`} src={reproductorData.song.image}/>
+                    <img className={`hidden sm:block h-full object-cover aspect-square`} src={reproductorData.song.cover_path}/>
                     <div className='ml-2 sm:ml-0 h-full py-3 flex flex-col justify-start items-start w-2/5'>
                         <Marquee><span className='text-white font-semibold text-sm cursor-pointer hover:underline' onClick={(e) => navigate(`/beat/${reproductorData.song.id}`)}>{reproductorData.song.name}</span></Marquee>
                         <div className='mt-2 flex flex-row justify-start items-center gap-2'>
@@ -53,7 +54,7 @@ function Reproductor({setActiveBeat, setModalBeat}) {
                         </div>
                         <div className='mt-2 flex flex-row justify-start items-center gap-2'>
                             <Icon icon="ic:baseline-music-note" className='text-white'/>
-                            <span className='text-xs text-red-400 truncate'>{reproductorData.song.escala}</span>                            
+                            <span className='text-xs text-red-400 truncate'>{reproductorData.song.scale}</span>                            
                         </div>
 
                     </div>
@@ -61,7 +62,7 @@ function Reproductor({setActiveBeat, setModalBeat}) {
                         <Button className='h-10 bg-red-500 text-white hover:bg-red-600 hover:border-white' onClick={hdlClickComprar}>
                             <div className='flex flex-row justify-center items-center gap-2'>
                                 <Icon icon="ic:round-shopping-cart"/>
-                                <span className='hidden sm:block'>{reproductorData.song.precio}€</span>
+                                <span className='hidden sm:block'>{reproductorData.song.licenses[0].pivot.price}€</span>
                             </div>
                         </Button>
                     </div>
@@ -69,7 +70,7 @@ function Reproductor({setActiveBeat, setModalBeat}) {
                 </div>
 
                 <div className='h-24 w-9/12 flex flex-row justify-center items-center gap-5'>
-                    {userFavved(reproductorData.song.id) ? 
+                    {favved == true ? 
                         <Icon icon="ic:baseline-favorite" className='h-6 w-6 text-red-500 cursor-pointer hover:text-red-600 transition duration-300' onClick={(e) => handleFavButton(e)}/>
                     :
                         <Icon icon="ic:baseline-favorite-border" className='h-6 w-6 text-white cursor-pointer hover:text-red-500 transition duration-300' onClick={(e) => handleFavButton(e)}/>

@@ -6,10 +6,17 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 const Feed = lazy(() => import("./pages/feed"));
 const Mixmaster = lazy(() => import("./pages/mixmaster"));
-const Proyectos = lazy(() => import("./pages/proyectos"));
+const Projects = lazy(() => import("./pages/projects"));
 const Contacto = lazy(() => import("./pages/contacto"));
 const Login = lazy(() => import("./pages/login"));
 const Register = lazy(() => import("./pages/register"));
+const Admindashboard = lazy(() => import("./pages/admindashboard"));
+const Beatdashboard = lazy(() => import("./pages/admindashboard/BeatDashboard/BeatDashboard"));
+const Newbeat = lazy(() => import("./pages/admindashboard/BeatDashboard/NewBeat"));
+const ContactDashboard = lazy(() => import("./pages/admindashboard/ContactDashboard/ContactDashboard"));
+const CheckOut = lazy(() => import("./pages/checkout/Checkout"));
+const SuccessCheckout = lazy(() => import("./pages/checkout/SuccessCheckout"));
+const ErrorCheckout = lazy(() => import("./pages/checkout/ErrorCheckout"));
 
 const Dashboard = lazy(() => import("./pages/dashboard"));
 const Ecommerce = lazy(() => import("./pages/dashboard/ecommerce"));
@@ -117,6 +124,7 @@ const ProjectDetailsPage = lazy(() =>
   import("./pages/app/projects/project-details")
 );
 
+
 const KanbanPage = lazy(() => import("./pages/app/kanban"));
 const CalenderPage = lazy(() => import("./pages/app/calendar"));
 
@@ -130,7 +138,7 @@ import Cart from "./pages/ecommerce/cart";
 import Wishlist from "./pages/ecommerce/wish-list";
 import Orders from "./pages/ecommerce/orders";
 import OrderDetails from "./pages/ecommerce/orderDetails";
-import Checkout from "./pages/ecommerce/checkout";
+
 import EditProduct from "./pages/ecommerce/edit-product";
 import Customers from "./pages/ecommerce/customers";
 import Sellers from "./pages/ecommerce/sellers";
@@ -140,6 +148,7 @@ import HomeLayout from "./layout/HomeLayout";
 import Bienvenida from './pages/home';
 import BeatDetails from './pages/BeatDetails';
 import PerfilLayout from "./layout/PerfilLayout";
+import RestrictedAdminRoutes from "@/pages/restrictedroutes/RestrictedAdminRoutes";
 
 function App() {
   return (
@@ -155,15 +164,36 @@ function App() {
             <Route path="compras" element={<Compras />} />
           </Route>
 
+
           <Route path="/*" element={<HomeLayout />}>
             <Route path="feed" element={<Feed />} />
             <Route path="mixmaster" element={<Mixmaster />} />
-            <Route path="proyectos" element={<Proyectos />} />
+            <Route path="proyectos" element={<Projects />} />
             <Route path="contacto" element={<Contacto />} />
             <Route path="beat/:beatId" element={<BeatDetails />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
+            <Route path="checkout" element={<CheckOut />} />
+            <Route path="checkout/success" element={<SuccessCheckout />} />
+            <Route path="checkout/cancel" element={<ErrorCheckout />} />
+
+
+            <Route path="dashboard" element={<RestrictedAdminRoutes />}>
+
+              <Route index element={<Admindashboard />} />
+              <Route path="beats">
+                <Route index element={<Beatdashboard />} />
+                <Route path="new" element={<Newbeat />} />
+              </Route>  
+              <Route path="contactos">
+                <Route index element={<ContactDashboard />} />
+              </Route>
+
+            </Route>
+
+            <Route path="*" element={<Navigate to="/404" />} />
             
+          </Route>
             {/* <Route path="/login2" element={<Login2 />} />
             <Route path="/login3" element={<Login3 />} />
             <Route path="/register" element={<Register />} />
@@ -175,16 +205,16 @@ function App() {
             <Route path="/lock-screen" element={<LockScreen />} />
             <Route path="/lock-screen2" element={<LockScreen2 />} />
             <Route path="/lock-screen3" element={<LockScreen3 />} /> */}
-          </Route>
+
 
         
-        <Route path="/*" element={<Layout />}>
+        {/* <Route path="/*" element={<Layout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="ecommerce" element={<Ecommerce />} />
           <Route path="crm" element={<CrmPage />} />
           <Route path="project" element={<ProjectPage />} />
           <Route path="banking" element={<BankingPage />} />
-          {/* App pages */}
+          {/* App pages *
           <Route path="todo" element={<TodoPage />} />
           <Route path="email" element={<EmailPage />} />
           <Route path="chat" element={<ChatPage />} />
@@ -193,7 +223,7 @@ function App() {
           <Route path="project-details" element={<ProjectDetailsPage />} />
           <Route path="kanban" element={<KanbanPage />} />
           <Route path="calender" element={<CalenderPage />} />
-          {/* Components pages */}
+          {/* Components pages *
           <Route path="button" element={<Button />} />
           <Route path="dropdown" element={<Dropdown />} />
           <Route path="badges" element={<Badges />} />
@@ -261,7 +291,7 @@ function App() {
           <Route path="invoice-ecommerce" element={<InvoiceEPage />} />
 
           <Route path="*" element={<Navigate to="/404" />} />
-        </Route>
+        </Route> */}
         <Route
           path="/404"
           element={

@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { toast } from "react-toastify"
-
+import Axios from "@/components/AxiosSubmit"
 
 
 const useContacto = () => {
@@ -11,6 +11,7 @@ const useContacto = () => {
         email: "",
         asunto: "",
         mensaje: "",
+        artistic_name: ""
 
     })
 
@@ -20,44 +21,25 @@ const useContacto = () => {
         return re.test(String(email).toLowerCase());
     }
 
-    const sendForm = async () => {
+    const sendForm = async (data) => {
 
-        await console.log(contactoData)
-        if(contactoData.email !== "" && contactoData.asunto !== "" && contactoData.mensaje !== "" && contactoData.nombre !== ""){
-            if(checkEmail(contactoData.email))
-            {
-                toast.success("Formulario enviado")
-                console.log(contactoData)
-                clearForm()
-            }
-            else
-            {
-                toast.error("Email incorrecto")
-            }
-
-        }
-        else
-        {
-            toast.error("Todos los campos son obligatorios.")
-        }
-
-    }
-
-    const clearForm = () => {
-
-        setContactoData({
-            nombre: "",
-            email: "",
-            asunto: "",
-            mensaje: "",
+        Axios.post("contacto/", data)
+        .then((res) => {
+            toast.success(res.data.message)
+            clearForm()
         })
+        .catch((err) => {
+            toast.error(err.response.data.message)
+        })
+
     }
+
+
 
     return {
         contactoData,
         setContactoData,
         sendForm, 
-        clearForm
     }
 
 }

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import Icon from "@/components/ui/Icon";
 import SimpleBar from "simplebar-react";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,6 +9,8 @@ import CartItem from "./cart-item";
 import NoItem from "./no-item";
 import clsx from "clsx";
 import { useCartActions } from "@/hooks/useCartActions";
+import useAuth from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 const variants = {
   open: (height = 1000) => ({
     clipPath: `circle(${height * 2 + 200}px at 40px 40px)`,
@@ -48,13 +50,16 @@ const variants2 = {
 
 const CartPanel = ({ open, close }) => {
 
+  const navigate = useNavigate()
 
   const { clearCart, removeItem, totalPrice, cart } = useCartActions();
 
+  
+
   const dispatch = useDispatch();
 
-  const handleRemoveFromCart = (productId) => {
-    removeItem(productId);
+  const handleRemoveFromCart = (productId, authHeader, isAuthenticated) => {
+    removeItem(productId, authHeader, isAuthenticated);
   };
   const handleIncreaseQuantity = (productId) => {
     const item = items.find((item) => item.id === productId);
@@ -72,7 +77,7 @@ const CartPanel = ({ open, close }) => {
     }
   };
   return (
-    <div>
+    <div className="bg-white dark:bg-slate-800">
       <motion.div
         className={`
         setting-wrapper fixed ltr:right-0 rtl:left-0 top-0 md:w-[400px] w-[300px]
@@ -136,13 +141,9 @@ const CartPanel = ({ open, close }) => {
             {cart.length > 0 && (
               <div className=" flex justify-between space-x-3 rtl:space-x-reverse">
                 <Button
-                  text="Continue to Shipping"
+                  text="Checkout"
                   className="flex-1 btn-dark "
-                />
-                <Button
-                  text="View Cart"
-                  className="flex-1 btn-dark "
-                  link="cart"
+                  onClick={(e) => navigate("/checkout")}
                 />
               </div>
             )}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, NavLink } from "react-router-dom";
+import { useLocation, NavLink, useNavigate } from "react-router-dom";
 import { menuItems } from "@/constant/data";
 import Icon from "@/components/ui/Icon";
 
@@ -8,6 +8,7 @@ const Breadcrumbs = () => {
   const locationName = location.pathname.replace("/", "");
 
   const [isHide, setIsHide] = useState(null);
+  const navigate = useNavigate()
   const [groupTitle, setGroupTitle] = useState("");
 
   useEffect(() => {
@@ -30,7 +31,7 @@ const Breadcrumbs = () => {
   return (
     <>
       {!isHide ? (
-        <div className="md:mb-6 mb-4 flex space-x-3 rtl:space-x-reverse">
+        <div className="md:mb-6 mb-4 flex space-x-3 rtl:space-x-reverse w-full rounded-lg bg-white h-10 p-2">
           <ul className="breadcrumbs">
             <li className="text-primary-500">
               <NavLink to="/dashboard" className="text-lg">
@@ -52,6 +53,11 @@ const Breadcrumbs = () => {
             )}
             <li className="capitalize text-slate-500 dark:text-slate-400">
               {locationName}
+            </li>
+            <li>
+              <span className="breadcrumbs-icon rtl:transform rtl:rotate-180 cursor-pointer text-red-500" onClick={() => navigate(-1)}>
+                <Icon icon="heroicons:chevron-left" className={"text-red-500"} />
+              </span>
             </li>
           </ul>
         </div>

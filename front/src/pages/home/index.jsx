@@ -34,7 +34,6 @@ function Bienvenida() {
   const handleVideoEnd = () => {
     const player = playerRef.current;
 
-    console.log("Hola")
 
     if(player)
     {

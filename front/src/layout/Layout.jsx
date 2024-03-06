@@ -23,11 +23,6 @@ const Layout = () => {
   const navigate = useNavigate();
   const { isAuth, user } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (!isAuth || !user) {
-      navigate("/");
-    }
-  }, [isAuth, navigate]);
   const switchHeaderClass = () => {
     if (menuType === "horizontal" || menuHidden) {
       return "ltr:ml-0 rtl:mr-0";

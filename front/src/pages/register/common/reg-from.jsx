@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import Checkbox from "@/components/ui/Checkbox";
 import { useRegisterUserMutation } from "@/store/api/auth/authApiSlice";
+import useAuth from "@/hooks/useAuth";
 
 const schema = yup
   .object({
@@ -18,15 +19,23 @@ const schema = yup
       .min(6, "La contraseña debe tener al menos 6 caracteres")
       .max(20, "La contraseña debe tener menos de 20 caracteres")
       .required("Por favor, introduce una contraseña"),
+    artist_name: yup
+      .string(),
+    password_confirmation: yup
+      .string()
+      .oneOf([yup.ref("password"), null], "Las contraseñas no coinciden"),
+
     // confirm password
   })
   .required();
 
 const RegForm = () => {
-  const [registerUser, { isLoading, isError, error, isSuccess }] =
-    useRegisterUserMutation();
+
 
   const [checked, setChecked] = useState(false);
+
+  const {register : registerUser, isLoading} = useAuth()
+
   const {
     register,
     formState: { errors },
@@ -41,12 +50,26 @@ const RegForm = () => {
   const onSubmit = async (data) => {
     try {
       const response = await registerUser(data);
-      if (response.error) {
-        throw new Error(response.error.message);
+
+      console.log("Register response : ", response);
+      if(response.err)
+      {
+        for (const key in response.err) {
+          if (Array.isArray(response.err[key])) {
+            response.err[key].forEach(error => {
+              toast.error(error);
+            });
+          }
+        }
       }
-      reset();
-      navigate("/feed");
-      toast.success("Cuenta registrada correctamente");
+      else
+      {
+        reset();
+        navigate("/feed");
+      }
+
+
+      toast.success(response.message);
     } catch (error) {
       console.log(error.response); // Log the error response to the console for debugging
 
@@ -74,6 +97,15 @@ const RegForm = () => {
         className="h-[48px]"
       />{" "}
       <Textinput
+        name="artist_name"
+        label="Nombre artístico (opcional)"
+        type="text"
+        placeholder=" Introduce tu nombre artístico"
+        register={register}
+        error={errors.artist_name}
+        className="h-[48px]"
+      />
+      <Textinput
         name="email"
         label="email"
         type="email"
@@ -82,6 +114,7 @@ const RegForm = () => {
         error={errors.email}
         className="h-[48px]"
       />
+
       <Textinput
         name="password"
         label="contraseña"
@@ -89,6 +122,15 @@ const RegForm = () => {
         placeholder=" Introduce tu contraseña"
         register={register}
         error={errors.password}
+        className="h-[48px]"
+      />
+      <Textinput
+        name="password_confirmation"
+        label="Confirmar contraseña"
+        type="password"
+        placeholder=" Introduce tu contraseña"
+        register={register}
+        error={errors.password_confirmation}
         className="h-[48px]"
       />
       <Checkbox

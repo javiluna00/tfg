@@ -28,7 +28,7 @@ function PerfilLayout() {
     const [activeBeat, setActiveBeat] = React.useState({});
 
 
-    const { isUserLogged } = useAuth();
+    const { isAuthenticated } = useAuth();
 
     const switchHeaderClass = () => {
         if (menuType === "horizontal" || menuHidden) {
@@ -40,7 +40,7 @@ function PerfilLayout() {
         }
       };
 
-    if(isUserLogged() === false)
+    if(isAuthenticated() === false)
     {
         return <Navigate to="/feed" />
     }

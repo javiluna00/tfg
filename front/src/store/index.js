@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./rootReducer";
 import { apiSlice } from "./api/apiSlice";
 
-const store = configureStore({
+const providerStore = configureStore({
   reducer: {
     ...rootReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
@@ -14,4 +14,4 @@ const store = configureStore({
   },
 });
 
-export default store;
+export default providerStore;

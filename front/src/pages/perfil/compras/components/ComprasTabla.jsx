@@ -241,7 +241,7 @@ function ComprasTabla() {
         return (
           <>
           <div className="w-[100%] overflow-auto">
-            <Card noborder className="w-full bg-white ">
+            <Card noborder className="w-full bg-white p-6 shadow-md">
               <div className="md:flex justify-between items-center mb-6">
                 <h4 className="card-title">Advanced Table</h4>
                 <div>

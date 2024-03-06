@@ -18,7 +18,9 @@ import useMobileMenu from "@/hooks/useMobileMenu";
 import MonoChrome from "./Tools/MonoChrome";
 import HeaderCart from "./Tools/Cart";
 import useAuth from '@/hooks/useAuth'
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Button from "@/components/ui/Button";
+
 
 const Header = ({ className = "custom-class" }) => {
   const [collapsed, setMenuCollapsed] = useSidebar();
@@ -26,6 +28,7 @@ const Header = ({ className = "custom-class" }) => {
   const [navbarType] = useNavbarType();
 
   const navigate = useNavigate()
+
 
   const navbarTypeClass = () => {
     switch (navbarType) {
@@ -51,7 +54,8 @@ const Header = ({ className = "custom-class" }) => {
     setMobileMenu(!mobileMenu);
   };
 
-  const {userLogged, isLogged, logIn} = useAuth()
+
+  const {isAuthenticated, authUser, isAdmin} = useAuth()
 
   const borderSwicthClass = () => {
     if (skin === "bordered" && navbarType !== "floating") {
@@ -98,23 +102,30 @@ const Header = ({ className = "custom-class" }) => {
 
           {width < breakpoints.md && <MobileMenu open={mobileMenu} setOpen={setMobileMenu}/>}
 
-          {isLogged == true ?
+          {isAdmin() == true ?
           
+            <Link to="/dashboard"><Button className="h-8 w-full bg-red-500 text-white flex items-center" color="light" icon="heroicons:arrow-left-20-solid">Dashboard</Button></Link>
+
+            :
+
+            <></>
+          }
           <div className="nav-tools flex items-center lg:space-x-6 space-x-3 rtl:space-x-reverse">
-            {/* <HeaderCart /> */}
-            {/* {width >= breakpoints.md && <Notification />} */}
             <HeaderCart />
-            <Profile user={userLogged} />
-          </div>
+
+          {isAuthenticated() == true ?
+            
+            
+            <Profile user={authUser} />
+          
 
           :
-          
-          <div className="nav-tools flex items-center lg:space-x-6 space-x-3 rtl:space-x-reverse">
+            <>
             <button className="btn btn-primary btn-sm bg-white text-[#000000]" onClick={(e) => navigate("/login")}>Iniciar sesión</button>
             <button className="btn btn-outline btn-sm text-white" onClick={(e) => navigate("/register")}>Registrarse</button>
-          </div>
-          
+            </>
           }
+          </div>
           
         </div>
       </div>

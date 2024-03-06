@@ -4,13 +4,12 @@ import Icon from "@/components/ui/Icon";
 import { Menu, Transition } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logOut } from "@/store/api/auth/authSlice";
 import UserAvatar from "@/assets/images/all-img/user.png";
 import useAuth from "@/hooks/useAuth";
 
 const profileLabel = ({user}) => {
 
-  const {userLogged} = useAuth()
+  const {userLogged, logOut} = useAuth()
 
   return (
     <div className="flex items-center">
@@ -72,6 +71,7 @@ const Profile = ({user}) => {
       icon: "heroicons-outline:login",
       action: () => {
         logOut()
+        navigate("/feed")
       },
     },
 

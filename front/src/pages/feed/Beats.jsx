@@ -10,6 +10,7 @@ function Beats({setModalBeat, setActiveBeat}) {
 
     const {filteredBeats, allBeats, beatsPopulares, filter, setFilter} = useRecoilValue(beatState);
 
+    const {loadBeatsFromAPI, loadGenresFromAPI, loadMoodsFromAPI, foundBeats, genres, moods, setGenres, setMoods} = useBeatFinder();
 
     const beatsPopularesRender = beatsPopulares.map((beat) => {
         return (
@@ -20,11 +21,11 @@ function Beats({setModalBeat, setActiveBeat}) {
         )
     })
 
-
     useEffect(() => {
-        console.log("filteredBeats en el archivo de renderizado : ", filteredBeats)
-    }, [filteredBeats])
-
+        loadBeatsFromAPI()
+        loadGenresFromAPI()
+        loadMoodsFromAPI()
+    }, [])
 
 
     return (
@@ -43,12 +44,12 @@ function Beats({setModalBeat, setActiveBeat}) {
                     <span className='text-2xl font-inter font-semibold text-white'>Todos los beats</span>
                     <hr className='mt-2 mb-10'/>
                     <div className='m-auto w-8/12 flex justify-center items-center gap-5 border-b border-white px-2 py-5 mt-10 mb-20'>
-                        <BeatFilter filter={filter} setFilter={setFilter}/>
+                        <BeatFilter filter={filter} setFilter={setFilter} genres={genres} moods={moods} setGenres={setGenres} setMoods={setMoods}/>
                     </div>
                     
                     <div className='w-full grid gap-y-20 md:grid-cols-3 lg:grid-cols-5 sm:grid-cols-3 justify-center items-center'>
                         {filteredBeats.map((beat, index) => (
-                            <div className='flex justify-center items-center w-full'>
+                            <div className='flex justify-center items-center w-full' key={index}>
                                 <BeatCard beat={beat} key={index} setModalBeat={setModalBeat} setActiveBeat={setActiveBeat}/>
                             </div>
                         ))}

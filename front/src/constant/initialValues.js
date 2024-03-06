@@ -4,10 +4,8 @@ export const initialFilterValues = {
         bpm_to: 999,
     },
     name: "",
-    precio: {
-        precio_from: 0,
-        precio_to: 999,
-    },
+    genres : [],
+    moods : [],
 
 }
 

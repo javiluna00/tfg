@@ -9,6 +9,8 @@ const useReproductor = ( ) => {
 
     const [shown, setShown] = useState(false);
 
+    const [favved, setFavved] = useState(false);
+
     const [porcentajePlayed, setPorcentagePlayed] = useState(0);
 
     useEffect(() => {
@@ -25,7 +27,6 @@ const useReproductor = ( ) => {
     const setReproductorData = (song) => {
         if(song != null)
         {
-            console.log("Nueva song sonando : ", song)
             setData({song : song, isPlaying : true, currentDuration : 0, totalDuration : song.duration, looping : false, volume : 100, isMuted : false} )
             setShown(true)
         }
@@ -65,7 +66,14 @@ const useReproductor = ( ) => {
         setShown(true)
     }
 
-    return {reproductorData : data, setReproductorData, porcentajePlayed, setLooping, toogleMute, tooglePlay, setVolume, shown, closeReproductor, reproducirCancion}
+    const toogleFav = () => {
+        if(data.song != null)
+        {
+            setFavved(!favved)
+        }
+    }
+
+    return {reproductorData : data, setReproductorData, porcentajePlayed, setLooping, toogleMute, tooglePlay, setVolume, shown, closeReproductor, reproducirCancion, toogleFav, favved}
 
 }
 

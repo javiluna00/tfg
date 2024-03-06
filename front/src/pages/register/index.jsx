@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import useDarkMode from "@/hooks/useDarkMode";
 import RegForm from "./common/reg-from";
-import Social from "./common/social";
+import Social from "@/pages/login/components/social";
 import { ToastContainer } from "react-toastify";
 // image import
 import LogoWhite from "@/assets/images/logo/logo-white.svg";

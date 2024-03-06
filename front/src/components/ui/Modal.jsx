@@ -80,12 +80,12 @@ const Modal = ({
                   >
                     <Dialog.Panel
                       className={`w-full transform overflow-hidden rounded-md
-                 bg-white dark:bg-slate-800 text-left align-middle shadow-xl transition-alll ${className}`}
+                 bg-zinc-800 dark:bg-slate-800 text-left align-middle shadow-xl transition-alll ${className}`}
                     >
                       <div
                         className={`relative overflow-hidden py-4 px-5 text-white flex justify-between  ${themeClass}`}
                       >
-                        <h2 className="capitalize leading-6 tracking-wider font-medium text-base text-white">
+                        <h2 className="leading-6 tracking-wider font-medium text-base text-white">
                           {title}
                         </h2>
                         <button onClick={closeModal} className="text-[22px]">
@@ -145,7 +145,7 @@ const Modal = ({
                 >
                   <Dialog.Panel
                     className={`w-full transform overflow-hidden rounded-md
-                 bg-white dark:bg-slate-800 text-left align-middle shadow-xl transition-alll ${className}`}
+                  bg-zinc-900 dark:bg-slate-800 text-left align-middle shadow-xl transition-alll ${className}`}
                   >
                     <div
                       className={`relative overflow-hidden py-4 px-5 text-white flex justify-between  ${themeClass}`}
