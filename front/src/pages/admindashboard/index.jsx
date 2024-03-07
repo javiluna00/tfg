@@ -49,8 +49,8 @@ const Admindashboard = () => {
         <div className="grid md:grid-cols-5 grid-cols-1 gap-5 mb-5">
           <Link to="/dashboard/beats"><Button className="h-16 w-full bg-red-500 text-white flex items-center" color="light" icon="heroicons:arrow-left-20-solid">Beats</Button></Link>
           <Link to="/dashboard/mixmaster"><Button className="h-16 w-full bg-red-500 text-white flex items-center" color="light" icon="heroicons:arrow-left-20-solid">Mix & Master</Button></Link>
-          <Link to="/dashboard/proyectos"><Button className="h-16 w-full bg-red-500 text-white flex items-center" color="light" icon="heroicons:arrow-left-20-solid">Proyectos</Button></Link>
-          <Link to="/dashboard/contactos"><Button className="h-16 w-full bg-red-500 text-white flex items-center" color="light" icon="heroicons:arrow-left-20-solid">Contacto</Button></Link>
+          <Link to="/dashboard/projects"><Button className="h-16 w-full bg-red-500 text-white flex items-center" color="light" icon="heroicons:arrow-left-20-solid">Proyectos</Button></Link>
+          <Link to="/dashboard/contacts"><Button className="h-16 w-full bg-red-500 text-white flex items-center" color="light" icon="heroicons:arrow-left-20-solid">Contacto</Button></Link>
           <Link to="/dashboard/users"><Button className="h-16 w-full bg-red-500 text-white flex items-center" color="light" icon="heroicons:arrow-left-20-solid">Usuarios</Button></Link>
         </div>
       </Card>

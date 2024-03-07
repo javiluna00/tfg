@@ -15,12 +15,14 @@ import {
 
 import Button from "@/components/ui/Button";
 import { useNavigate } from "react-router-dom";
+import SkeletionTable from "@/components/skeleton/Table";
 
 
 
 
 
-function ReactTable({name, columns, data, isPaginated, isGlobalFiltered, isSortered}) {
+function ReactTable({name, columns, data, isPaginated, isGlobalFiltered, isSortered, hasNewButton = false, newEntityUrl}) {
+  
 
     const IndeterminateCheckbox = React.forwardRef(
         ({ indeterminate, ...rest }, ref) => {
@@ -57,17 +59,20 @@ function ReactTable({name, columns, data, isPaginated, isGlobalFiltered, isSorte
 
         const navigate = useNavigate();
 
-
         return (
           <>
           <div className="w-[100%] overflow-auto">
             <Card noborder className="w-full bg-white ">
               <div className="md:flex justify-between items-center mb-6">
                 <h4 className="card-title">{name}</h4>
-                {/* <div className="flex items-center space-x-3 justify-center h-[40px]">
-                  <Button className="btn btn-primary flex items-center justify-center h-10" onClick={() => navigate("/dashboard/beats/new")}><Icon icon="heroicons-outline:plus" className="mr-2"/>Nuevo</Button>
-                  {}
-                </div> */}
+                {hasNewButton && newEntityUrl &&                 
+                
+                <div className="flex items-center space-x-3 justify-center h-[40px]">
+                  <Button className="btn btn-primary flex items-center justify-center h-10" onClick={() => navigate(newEntityUrl)}><Icon icon="heroicons-outline:plus" className="mr-2"/>Nuevo</Button>
+                </div>
+                
+                }
+
               </div>
               <div className="overflow-x-auto -mx-6">
                 <div className="inline-block min-w-full align-middle">

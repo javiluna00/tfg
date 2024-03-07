@@ -29,7 +29,7 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:proyectos|string',
+            'name' => 'required|string',
             'description' => 'required|string',
             'yt_link' => 'required|url',
             'spotify_link' => 'required|url',
@@ -62,9 +62,9 @@ class ProjectController extends Controller
         $data = array_merge($request->all(), ['id' => $id]);
         // Valida el arreglo combinado
         $validator = Validator::make($data, [
-            'id' => 'required|exists:proyectos',
+            'id' => 'required|exists:projects',
             // Añade aquí las reglas de validación para los otros campos del $request
-            'name' => 'unique:proyectos', // Ejemplo para 'name', excluyendo el proyecto actual por su ID
+            'name' => 'string', // Ejemplo para 'name', excluyendo el proyecto actual por su ID
             'description' => 'string',
             'yt_link' => 'url',
             'spotify_link' => 'url',
@@ -87,7 +87,7 @@ class ProjectController extends Controller
     public function destroy(string $id)
     {
         $validator = Validator::make(['id' => $id], [
-            'id' => 'required|exists:proyectos,id',
+            'id' => 'required|exists:projects,id',
         ]);
 
         if ($validator->fails()) {

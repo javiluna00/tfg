@@ -21,6 +21,13 @@ class UserController extends Controller
      */
     public function index()
     {
+
+        $loggedUser = auth()->user();
+
+        if(!$loggedUser->isAdmin()){
+            return response()->json(['message' => 'No autorizado'], 401);
+        }
+
         $users = User::all();
 
         return response()->json($users);

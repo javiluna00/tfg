@@ -12,9 +12,29 @@ function useProjects() {
         setProjects(res.data)
       })    
     }, [])
+
+    const deleteProject = async (id) => {
+        await Axios.delete(`/project/${id}`).then((res) => {
+            setProjects(projects.filter((project) => project.id !== id))
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    const updateProject = async (id, data) => {
+        await Axios.patch(`/project/${id}`, data).then((res) => {
+            Axios.get(`/project/`).then((res) => {
+                setProjects(res.data)
+            }).catch((err) => {
+                console.log(err)
+            })
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
   
   
-    return [projects]
+    return [projects, deleteProject, updateProject]
 }
 
 export default useProjects

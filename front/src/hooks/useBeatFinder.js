@@ -10,17 +10,19 @@ const useBeatFinder = ( ) => {
     const [beatData, setBeatData] = useRecoilState(beatState);
     const [genres, setGenres] = useState([]);
     const [moods, setMoods] = useState([]);
-
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-
         foundBeats();
-
-        console.log("Filter : ", beatData.filter)
-
     }, [beatData.filter])
 
-
+    useEffect(() => {
+        setLoading(true)
+        loadBeatsFromAPI()
+        loadGenresFromAPI()
+        loadMoodsFromAPI()
+        setLoading(false)
+    }, [])
 
 
     const loadGenresFromAPI = async () => {
@@ -52,7 +54,7 @@ const useBeatFinder = ( ) => {
     const loadBeatsFromAPI = async () => {
         
         await Axios.get(`/beat/`).then((res) => {
-            setBeatData({...beatData, allBeats: res.data.data, filteredBeats: res.data.data, beatsPopulares: res.data.data, filter: initialFilterValues});
+            setBeatData({...beatData, allBeats: res.data, filteredBeats: res.data, beatsPopulares: res.data, filter: initialFilterValues});
         }).catch((err) => {
             console.log(err)
         })
@@ -89,7 +91,7 @@ const useBeatFinder = ( ) => {
 
     }
 
-    return {filter : beatData.filter, filteredBeats: beatData.filteredBeats, allBeats: beatData.allBeats, beatsPopulares: beatData.beatsPopulares, beatData, setBeatData, loadBeatsFromAPI, loadGenresFromAPI, loadMoodsFromAPI, genres, moods, setGenres, setMoods}
+    return {filter : beatData.filter, filteredBeats: beatData.filteredBeats, allBeats: beatData.allBeats, beatsPopulares: beatData.beatsPopulares, beatData, setBeatData, loadBeatsFromAPI, loadGenresFromAPI, loadMoodsFromAPI, genres, moods, setGenres, setMoods, loading}
 
 }
 

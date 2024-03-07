@@ -93,6 +93,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->roles()->pluck('id')->toArray();
     }
 
+    public function isAdmin()
+    {
+        return in_array(1, $this->getRoleIDs());
+    }
+
     public function cart()
     {
         return $this->hasOne(Cart::class);

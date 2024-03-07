@@ -7,11 +7,13 @@ import { Routes, Route, Navigate } from "react-router-dom";
 const Feed = lazy(() => import("./pages/feed"));
 const Mixmaster = lazy(() => import("./pages/mixmaster"));
 const Projects = lazy(() => import("./pages/projects"));
-const Contacto = lazy(() => import("./pages/contacto"));
+const Contact = lazy(() => import("./pages/contact"));
 const Login = lazy(() => import("./pages/login"));
 const Register = lazy(() => import("./pages/register"));
-const Admindashboard = lazy(() => import("./pages/admindashboard"));
-const Beatdashboard = lazy(() => import("./pages/admindashboard/BeatDashboard/BeatDashboard"));
+const AdminDashboard = lazy(() => import("./pages/admindashboard"));
+const BeatDashboard = lazy(() => import("./pages/admindashboard/BeatDashboard/BeatDashboard"));
+const ProjectDashboard = lazy(() => import("./pages/admindashboard/ProjectDashboard/ProjectDashboard"));
+const UserDashboard = lazy(() => import("./pages/admindashboard/UserDashboard/UserDashboard"));
 const Newbeat = lazy(() => import("./pages/admindashboard/BeatDashboard/NewBeat"));
 const ContactDashboard = lazy(() => import("./pages/admindashboard/ContactDashboard/ContactDashboard"));
 const CheckOut = lazy(() => import("./pages/checkout/Checkout"));
@@ -157,19 +159,19 @@ function App() {
           
           <Route path="/" element={<Bienvenida />}/>
 
-          <Route path="/perfil/*" element={<PerfilLayout />}>
+          <Route path="/profile/*" element={<PerfilLayout />}>
             <Route index element={<Perfil />} />
             <Route path="settings" element={<Settings />} />
-            <Route path="guardados" element={<Guardados />} />
-            <Route path="compras" element={<Compras />} />
+            <Route path="saves" element={<Guardados />} />
+            <Route path="purchases" element={<Compras />} />
           </Route>
 
 
           <Route path="/*" element={<HomeLayout />}>
             <Route path="feed" element={<Feed />} />
             <Route path="mixmaster" element={<Mixmaster />} />
-            <Route path="proyectos" element={<Projects />} />
-            <Route path="contacto" element={<Contacto />} />
+            <Route path="projects" element={<Projects />} />
+            <Route path="contact" element={<Contact />} />
             <Route path="beat/:beatId" element={<BeatDetails />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
@@ -180,13 +182,23 @@ function App() {
 
             <Route path="dashboard" element={<RestrictedAdminRoutes />}>
 
-              <Route index element={<Admindashboard />} />
+              <Route index element={<AdminDashboard />} />
               <Route path="beats">
-                <Route index element={<Beatdashboard />} />
+                <Route index element={<BeatDashboard />} />
                 <Route path="new" element={<Newbeat />} />
               </Route>  
-              <Route path="contactos">
+              <Route path="contacts">
                 <Route index element={<ContactDashboard />} />
+              </Route>
+
+              <Route path="projects">
+                <Route index element={<ProjectDashboard />} />
+                {/* <Route path="new" element={<Newproject />} /> */}
+              </Route>
+
+              <Route path="users">
+                <Route index element={<UserDashboard />} />
+                {/* <Route path="new" element={<Newuser />} /> */}
               </Route>
 
             </Route>

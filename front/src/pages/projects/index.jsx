@@ -8,7 +8,7 @@ import Button from '@/components/ui/Button';
 import useProjects from '@/hooks/useProjects';
 
 
-function Proyectos() {
+function Projects() {
 
   gsap.registerPlugin(ScrollTrigger);
 
@@ -70,7 +70,7 @@ function Proyectos() {
     })      
 
   
-  }, [])
+  }, [projects])
     
 
 
@@ -120,26 +120,26 @@ function Proyectos() {
 
           <div className='izq relative w-[50%] z-2'>
             <div className='textos m-auto w-[80%]'>
-              {projects.map((proyecto) => (
-              <div className='card w-full flex flex-col items-center justify-center h-[100vh]' key={proyecto.id}>
+              {projects.map((project) => (
+              <div className='card w-full flex flex-col items-center justify-center h-[100vh]' key={project.id}>
 
                 <div className='izquierda-bl flex-col justify-start items-start'>
 
-                  <h5 className='font-bold text-7xl text-white tracking-widest uppercase'>{proyecto.name}</h5>
-                  <p className='text-white mt-4 text-lg'>{proyecto.description}</p>
+                  <h5 className='font-bold text-7xl text-white tracking-widest uppercase'>{project.name}</h5>
+                  <p className='text-white mt-4 text-lg'>{project.description}</p>
                 <div className='flex justify-start items-center max-h-12 mt-10 gap-4'>
-                  <div className=''><Button className='text-white rounded-full border-2 border-white hover:bg-red-500 hover:border-red-500 duration-300' href={proyecto.website}>Saber más...</Button></div>
+                  <div className=''><Button className='text-white rounded-full border-2 border-white hover:bg-red-500 hover:border-red-500 duration-300' href={project.website}>Saber más...</Button></div>
                   <div className='w-12 h-full'><Icon icon="ant-design:youtube-filled" className="text-white aspect-square text-5xl cursor-pointer hover:text-red-500 duration-300" /></div>
                   {/* <div className='w-24 h-full flex justify-start items-center'><Icon icon="mdi:spotify" className="text-white aspect-square text-4xl cursor-pointer hover:text-green-500 duration-300" /></div> */}
                   
                 </div> 
-                {proyecto.spotify_link &&
+                {project.spotify_link &&
                   <div className='w-96 flex justify-start items-center mt-10'>
 
                     {/* <Spotify link={proyecto.url_spotify} className='w-full h-24' /> */}
                     {/* <Spotify link={"https://open.spotify.com/track/5ihDGnhQgMA0F0tk9fNLlA?si=4472348a63dd4f83"} className='w-full h-24' /> */}
 
-                    <iframe  src={`https://open.spotify.com/embed${proyecto.spotify_link}?utm_source=generator`} width="100%" height="100%" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                    <iframe  src={`https://open.spotify.com/embed${project.spotify_link}?utm_source=generator`} width="100%" height="100%" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                     
                   </div>             
                 } 
@@ -154,13 +154,13 @@ function Proyectos() {
           
           </div>
 
-          <div className='derecha w-[50%] h-auto'>
+          <div className='derecha w-[50%] h-auto  border-l border-red-500'>
             <div className='derecha-bl flex flex-col justify-center items-center sticky top-0 w-full h-[100vh]'>
               <div className='derecha-fotos aspect-square w-3/5 relative ' ref={fotosRef}>
-               {projects.map((proyecto, index) => ( 
-                <div className={`derecha-item shadow-2xl w-full h-full absolute rounded-2xl overflow-hidden`} style={{zIndex:projects.length - index}} ref={fotoRef}>
+               {projects.map((project, index) => ( 
+                <div key={project.id} className={`derecha-item shadow-2xl w-full h-full absolute rounded-2xl overflow-hidden`} style={{zIndex:projects.length - index}} ref={fotoRef}>
 
-                  <img className="w-full h-full object-cover" src={proyecto.image} alt="" />
+                  <img className="w-full h-full object-cover" src={project.image} alt="" />
 
                 </div>
                ))}
@@ -183,4 +183,4 @@ function Proyectos() {
   )
 }
 
-export default Proyectos
+export default Projects

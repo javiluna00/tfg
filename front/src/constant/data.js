@@ -510,12 +510,12 @@ export const topMenu = [
   },
   {
     title: "Lambda Beats",
-    link: "proyectos",
+    link: "projects",
     icon: "heroicons:briefcase",
   },
   {
     title: "Contacto",
-    link: "contacto",
+    link: "contact",
     icon: "ri:customer-service-2-fill",
   },
 

@@ -146,4 +146,7 @@ Route::group([
 
 ], function ($router) {
     Route::get("/", [ProjectController::class, 'index']);
+    Route::post("/", [ProjectController::class, 'store']);
+    Route::patch("/{id}", [ProjectController::class, 'update']);
+    Route::delete("/{id}", [ProjectController::class, 'destroy']);
 });

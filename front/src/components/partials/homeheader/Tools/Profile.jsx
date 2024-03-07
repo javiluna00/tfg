@@ -48,7 +48,7 @@ const Profile = ({user}) => {
       icon: "heroicons-outline:user",
 
       action: () => {
-        navigate("/perfil");
+        navigate("/profile");
       },
     },
 
@@ -56,14 +56,14 @@ const Profile = ({user}) => {
       label: "Compras",
       icon: "heroicons-outline:credit-card",
       action: () => {
-        navigate("/perfil/compras");
+        navigate("/profile/purchases");
       },
     },
     {
       label: "Guardados",
       icon: "heroicons-outline:heart",
       action: () => {
-        navigate("/perfil/guardados");
+        navigate("/perfil/saves");
       }
     },
     {

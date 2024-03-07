@@ -24,7 +24,7 @@ class BeatController extends Controller
     {
 
         $beats = Beat::all();
-        return BeatResource::collection($beats);
+        return response()->json(BeatResource::collection($beats), 200);
 
     }
 

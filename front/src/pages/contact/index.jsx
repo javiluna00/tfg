@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-function Contacto() {
+function Contact() {
 
   const {sendForm, clearForm} = useContacto()
   const [isImageLoaded, setIsImageLoaded] = useState(false);
@@ -158,4 +158,4 @@ function Contacto() {
   
 }
 
-export default Contacto
+export default Contact
