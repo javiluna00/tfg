@@ -9,13 +9,14 @@ const Modal = ({
   disableBackdrop,
   className = "max-w-xl",
   children,
+  icon,
   footerContent,
   centered,
   scrollContent,
-  themeClass = "bg-slate-900 dark:bg-slate-800 dark:border-b dark:border-slate-700",
+  themeClass = "bg-zinc-900 dark:bg-slate-800 dark:border-b dark:border-slate-700",
   title = "Basic Modal",
   uncontrol,
-  label = "Basic Modal",
+  label,
   labelClass,
   ref,
 }) => {
@@ -41,7 +42,11 @@ const Modal = ({
             onClick={openModal}
             className={`btn ${labelClass}`}
           >
-            {label}
+            <div className="flex items-center justify-center gap-4">
+              {icon && <Icon icon={icon} />}
+              {label}
+            </div>
+
           </button>
           <Transition appear show={showModal} as={Fragment}>
             <Dialog
@@ -80,7 +85,7 @@ const Modal = ({
                   >
                     <Dialog.Panel
                       className={`w-full transform overflow-hidden rounded-md
-                 bg-zinc-800 dark:bg-slate-800 text-left align-middle shadow-xl transition-alll ${className}`}
+                 bg-white dark:bg-slate-800 text-left align-middle shadow-xl transition-alll ${className}`}
                     >
                       <div
                         className={`relative overflow-hidden py-4 px-5 text-white flex justify-between  ${themeClass}`}
@@ -145,7 +150,7 @@ const Modal = ({
                 >
                   <Dialog.Panel
                     className={`w-full transform overflow-hidden rounded-md
-                  bg-zinc-900 dark:bg-slate-800 text-left align-middle shadow-xl transition-alll ${className}`}
+                  bg-white dark:bg-slate-800 text-left align-middle shadow-xl transition-alll ${className}`}
                   >
                     <div
                       className={`relative overflow-hidden py-4 px-5 text-white flex justify-between  ${themeClass}`}

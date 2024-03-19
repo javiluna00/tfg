@@ -1,23 +1,31 @@
 import ReactTable from '@/components/partials/reacttable/ReactTable';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import Dropdown from '@/components/ui/Dropdown';
-import useUsers from '@/hooks/useUsers';
-import React from 'react'
+import useUsers from '@/pages/admindashboard/UserDashboard/hooks/useUsers';
+import React, { useEffect } from 'react'
 import SkeletionTable from '@/components/skeleton/Table';
 import { Menu } from '@headlessui/react';
 import { Icon } from '@iconify/react';
 import dayjs from 'dayjs';
+import Button from '@/components/ui/Button';
+import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
+import { useNavigate } from 'react-router-dom';
 
 
 function UserDashboard() {
+
+    const navigate = useNavigate()
+
     const actions = [
         {
             name: "Ver",
             icon: "heroicons-outline:eye",
+            link: "/dashboard/users/:id",
         },
         {
             name: "Editar",
             icon: "heroicons:pencil-square",
+            link: "/dashboard/users/edit/:id",
         },
         {
             name: "Eliminar",
@@ -51,6 +59,15 @@ function UserDashboard() {
         {
             header: 'Roles', 
             accessorKey: 'roles',
+            cell: (row) => {
+            return (
+                <div>
+                    {row.getValue().map((role, index) => (
+                        <span key={index}>{role.name}{index < row.getValue().length - 1 ? ', ' : ''}</span>
+                    ))}
+                </div>
+            );
+            }
         },
         {
             header: "Tipo de cuenta",
@@ -66,37 +83,9 @@ function UserDashboard() {
             cell: (row) => {
                 return (
                 <div className='flex justify-start items-center gap-5'>
-                    <Dropdown
-                    classMenuItems="right-0 w-[140px] top-[110%] "
-                    label={
-                        <span className="block border border-red-500 rounded-full h-10 w-10 text-red-500 flex justify-center items-center">
-                        <Icon icon="heroicons-outline:dots-vertical" />
-                        </span>
-                    }
-                    >
-                    <div className="divide-y divide-slate-100 dark:divide-slate-800">
-                        {actions.map((item, i) => (
-                        <Menu.Item key={i}>
-                            <div
-                            className={`
-                        
-                            ${
-                            item.name === "delete"
-                                ? "bg-danger-500 text-danger-500 bg-opacity-30   hover:bg-opacity-100 hover:text-white"
-                                : "hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50"
-                            }
-                            w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm  last:mb-0 cursor-pointer 
-                            first:rounded-t last:rounded-b flex  space-x-2 items-center rtl:space-x-reverse `}
-                            >
-                            <span className="text-base">
-                                <Icon icon={item.icon} />
-                            </span>
-                            <span>{item.name}</span>
-                            </div>
-                        </Menu.Item>
-                        ))}
-                    </div>
-                    </Dropdown>
+                    {actions.map((action, index) => (
+                        <Icon key={index} icon={action.icon} className='text-slate-600 cursor-pointer hover:text-red-500 duration-150' fontSize={20} onClick={() => navigate(action.link.replace(":id", row.row.original.id))}/>
+                    ))}
                 </div>
                 );
             },
@@ -104,7 +93,13 @@ function UserDashboard() {
       ]
     
     
-      const [users] = useUsers();
+      const {users, getAllUsers, loading} = useUsers();
+
+      const authHeader = useAuthHeader()
+
+      useEffect(() => {
+          getAllUsers(authHeader)
+      }, [])
     
 
       return (
@@ -116,7 +111,7 @@ function UserDashboard() {
                   <Breadcrumbs/>
                 </div>
     
-                {!users ? <SkeletionTable/> : 
+                {loading ? <SkeletionTable/> : 
                 <div className='mt-10'>
                     <ReactTable name={"Usuarios"} columns={COLUMNS} data={users}/>
                 </div>               

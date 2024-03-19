@@ -30,7 +30,7 @@ class UserController extends Controller
 
         $users = User::all();
 
-        return response()->json($users);
+        return response()->json(UserResource::collection(($users)), 201);
     }
 
 
@@ -69,8 +69,10 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $user = User::findOrFail($request->id);
-        $user->update($request->only(['name', 'email', 'artist_name', 'password']));
-        return response()->json($user);
+        $roles = $request->roles;
+        $user->syncRoles($roles);
+
+        return response()->json(UserResource::make($user), 201);
     }
 
 

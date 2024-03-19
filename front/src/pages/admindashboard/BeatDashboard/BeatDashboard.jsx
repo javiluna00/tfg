@@ -7,7 +7,8 @@ import { Menu } from '@headlessui/react';
 import { Icon } from '@iconify/react';
 import ReactTable from '@/components/partials/reacttable/ReactTable';
 import dayjs from 'dayjs';
-
+import { Link } from 'react-router-dom';
+import Button from '@/components/ui/Button';
 
 
 function BeatDashboard() {
@@ -110,12 +111,17 @@ function BeatDashboard() {
   const [beats] = useBeats()
 
   return (
-    <div className='w-full h-full py-10 bg-slate-50 min-h-screen'>
+    <div className='w-full h-full py-10 bg-zinc-50 min-h-screen'>
         
         <div className='container'>
             
             <div>
               <Breadcrumbs/>
+            </div>
+
+            <div className='w-full p-5 flex justify-start items-center gap-5'>
+                <Link to="/dashboard/beats/moods"><Button text="Gestionar moods" className='btn btn-dark bg-zinc-900'/></Link>
+                <Link to="/dashboard/beats/genres"><Button text="Gestionar géneros" className='btn btn-dark bg-zinc-900'/></Link>
             </div>
 
             {!beats ? <SkeletionTable/> : 

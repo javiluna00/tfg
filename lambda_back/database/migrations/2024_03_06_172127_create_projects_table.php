@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->boolean('active')->default(true);
             $table->string('description');
             $table->string('yt_link')->nullable();
             $table->string('spotify_link')->nullable();

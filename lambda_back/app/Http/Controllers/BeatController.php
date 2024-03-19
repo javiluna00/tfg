@@ -37,17 +37,19 @@ class BeatController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'scale' => 'string|max:255',
-            'cover_path' => 'required|string|max:255',
+            'cover_file' => 'required|string|max:255',
             'stock' => 'required|integer',
             'bpm' => 'required|integer',
-            'mp3_path' => 'required|string|max:255',
+            'mp3_file' => 'required|string|max:255',
             'mp3_price' => 'required|integer',
-            'wav_path' => 'required|string|max:255',
+            'wav_file' => 'required|string|max:255',
             'wav_price' => 'required|integer',
-            'stems_path' => 'required|string|max:255',
+            'stems_file' => 'required|string|max:255',
             'stems_price' => 'required|integer',
             'exclusive_price' => 'required|integer',
             'still_exclusive' => 'required|boolean',
+            'moods' => 'required',
+            'genres' => 'required',
         ]);
 
         if ($validator->fails()) {

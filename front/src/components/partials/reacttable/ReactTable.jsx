@@ -126,7 +126,7 @@ function ReactTable({name, columns, data, isPaginated, isGlobalFiltered, isSorte
                             <tr key={row.id}>
                               {row.getVisibleCells().map(cell => {
                                 return (
-                                  <td key={cell.id} className="table-td">
+                                  <td key={cell.id} className="table-td z-[9999]">
                                     {flexRender(
                                       cell.column.columnDef.cell,
                                       cell.getContext()

@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['index']]);
+        $this->middleware('auth:api', ['except' => ['getVisible']]);
     }
 
     /**
@@ -21,6 +22,21 @@ class ProjectController extends Controller
     {
         $proyectos = Project::all();
         return response()->json($proyectos, 200);
+    }
+
+    public function getVisible()
+    {
+        $proyectos = Project::where('active', 1)->get();
+        return response()->json($proyectos, 200);
+    }
+
+    public function getOne ($id)
+    {
+        $proyecto = Project::find($id);
+        if($proyecto == null){
+            return response()->json(['message' => "Proyecto no encontrado"], 404);
+        }
+        return response()->json($proyecto, 200);
     }
 
     /**
@@ -33,11 +49,22 @@ class ProjectController extends Controller
             'description' => 'required|string',
             'yt_link' => 'required|url',
             'spotify_link' => 'required|url',
-            'image' => 'required|string',
+            'image' => 'required',
+            'active' => 'required',
         ]);
+
+        $portada = $request->image;
+
+
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
+        }
+
+        if ($portada != null) {
+            $portada = $request->image->store('images', 'public');
+
+            $image_url = asset('storage/' . $portada);
         }
 
         $proyecto = Project::create([
@@ -45,7 +72,8 @@ class ProjectController extends Controller
             'description' => $request->description,
             'yt_link' => $request->yt_link,
             'spotify_link' => $request->spotify_link,
-            'image' => $request->image,
+            'image' => $image_url,
+            'active' => $request->active
         ]);
 
         return response()->json(['message' => "Proyecto creado",'data' => $proyecto], 201);
@@ -68,15 +96,26 @@ class ProjectController extends Controller
             'description' => 'string',
             'yt_link' => 'url',
             'spotify_link' => 'url',
-            'image' => 'string',
         ]);
+
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
 
         $proyecto = Project::find($id);
-        $proyecto->fill($request->all())->save();
+
+        if($request->image != null){
+            $previousImage = str_replace(asset('storage/'), '', $proyecto->image);
+            Storage::disk('public')->delete($previousImage);
+            $newImage = $request->image->store('images', 'public');
+            $image_url = asset('storage/' . $newImage);
+            $data['image'] = $image_url;
+        }
+
+
+        $proyecto = Project::find($id);
+        $proyecto->update($data);
 
         return response()->json(['message' => "Proyecto actualizado",'data' => $proyecto], 200);
     }

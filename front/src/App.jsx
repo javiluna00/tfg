@@ -11,14 +11,29 @@ const Contact = lazy(() => import("./pages/contact"));
 const Login = lazy(() => import("./pages/login"));
 const Register = lazy(() => import("./pages/register"));
 const AdminDashboard = lazy(() => import("./pages/admindashboard"));
+
+
 const BeatDashboard = lazy(() => import("./pages/admindashboard/BeatDashboard/BeatDashboard"));
-const ProjectDashboard = lazy(() => import("./pages/admindashboard/ProjectDashboard/ProjectDashboard"));
-const UserDashboard = lazy(() => import("./pages/admindashboard/UserDashboard/UserDashboard"));
 const Newbeat = lazy(() => import("./pages/admindashboard/BeatDashboard/NewBeat"));
+
+const UserDashboard = lazy(() => import("./pages/admindashboard/UserDashboard/UserDashboard"));
+const ShowUser = lazy(() => import("./pages/admindashboard/UserDashboard/ShowUser"));
+const EditUser = lazy(() => import("./pages/admindashboard/UserDashboard/EditUser"));
+
+
+
+const ProjectDashboard = lazy(() => import("./pages/admindashboard/ProjectDashboard/ProjectDashboard"));
+const NewProject = lazy(() => import("./pages/admindashboard/ProjectDashboard/NewProject"));
+const ShowProject = lazy(() => import("./pages/admindashboard/ProjectDashboard/ShowProject"));
+const EditProject = lazy(() => import("./pages/admindashboard/ProjectDashboard/EditProject"));
+
 const ContactDashboard = lazy(() => import("./pages/admindashboard/ContactDashboard/ContactDashboard"));
 const CheckOut = lazy(() => import("./pages/checkout/Checkout"));
 const SuccessCheckout = lazy(() => import("./pages/checkout/SuccessCheckout"));
 const ErrorCheckout = lazy(() => import("./pages/checkout/ErrorCheckout"));
+
+const ManageMoods = lazy(() => import("./pages/admindashboard/BeatDashboard/ManageMoods"));
+const ManageGenres = lazy(() => import("./pages/admindashboard/BeatDashboard/ManageGenres"));
 
 const Dashboard = lazy(() => import("./pages/dashboard"));
 const Ecommerce = lazy(() => import("./pages/dashboard/ecommerce"));
@@ -186,6 +201,8 @@ function App() {
               <Route path="beats">
                 <Route index element={<BeatDashboard />} />
                 <Route path="new" element={<Newbeat />} />
+                <Route path="moods" element={<ManageMoods />} />
+                <Route path="genres" element={<ManageGenres />} />
               </Route>  
               <Route path="contacts">
                 <Route index element={<ContactDashboard />} />
@@ -193,12 +210,15 @@ function App() {
 
               <Route path="projects">
                 <Route index element={<ProjectDashboard />} />
-                {/* <Route path="new" element={<Newproject />} /> */}
+                <Route path="new" element={<NewProject />} />
+                <Route path="show/:id" element={<ShowProject />} />
+                <Route path="edit/:id" element={<EditProject />} />
               </Route>
 
               <Route path="users">
                 <Route index element={<UserDashboard />} />
-                {/* <Route path="new" element={<Newuser />} /> */}
+                <Route path=":id" element={<ShowUser />} />
+                <Route path="edit/:id" element={<EditUser />} />
               </Route>
 
             </Route>
@@ -217,7 +237,6 @@ function App() {
             <Route path="/lock-screen" element={<LockScreen />} />
             <Route path="/lock-screen2" element={<LockScreen2 />} />
             <Route path="/lock-screen3" element={<LockScreen3 />} /> */}
-
 
         
         {/* <Route path="/*" element={<Layout />}>
@@ -256,7 +275,7 @@ function App() {
           <Route path="textarea" element={<TextareaPage />} />
           <Route path="checkbox" element={<CheckboxPage />} />
           <Route path="radio-button" element={<RadioPage />} />
-          <Route path="switch" element={<SwitchPage />} />
+          
           <Route path="input-group" element={<InputGroupPage />} />
           <Route path="input-layout" element={<InputlayoutPage />} />
           <Route path="input-mask" element={<InputMask />} />

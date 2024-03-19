@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 
 import Beats from './Beats';
 import { useOutletContext } from "react-router-dom";
+import SectionPresentation from './components/SectionPresentation';
+import SectionSocial from './components/SectionSocial';
 
 function Feed() {
 
@@ -14,6 +16,9 @@ function Feed() {
   }, [setActiveBeat, setModalBeat])
   return (
     <div className='bg-[#000000] h-full pb-20'>
+
+            <SectionPresentation/>
+            <SectionSocial/>
             <Beats setActiveBeat={setActiveBeat} setModalBeat={setModalBeat}/>
 
     </div>

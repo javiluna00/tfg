@@ -19,10 +19,11 @@ function Beats({setModalBeat, setActiveBeat}) {
         <div className='relative'>
 
             <div style={{width: "100%"}}>
-                <div className='bg-zinc-900 py-20 border-b border-zinc-700'>
+                <div className='bg-zinc-900 py-20 border-b border-red-500'>
                     <div className='container'>
 
                         <span className='text-2xl font-inter font-semibold text-white'>Beats populares</span>
+                        <hr className='mt-2 mb-2'/>
 
                         {loading ? <SkeletionTable/> :
                         <div className='w-full grid gap-y-20 md:grid-cols-3 lg:grid-cols-5 sm:grid-cols-3 justify-center items-center rounded-lg p-5'>
@@ -33,8 +34,6 @@ function Beats({setModalBeat, setActiveBeat}) {
                             ))}        
                         </div>                     
                         }
-
-                        <hr className='mt-2 mb-10'/>
 
                     </div>
                 </div>

@@ -39,7 +39,7 @@ const Textinput = ({
     <div
       className={`fromGroup  ${error ? "has-error" : ""}  ${
         horizontal ? "flex" : ""
-      }  ${validate ? "is-valid" : ""} `}
+      }  ${validate ? "is-valid" : ""} ${classGroup} `}
     >
       {label && (
         <label

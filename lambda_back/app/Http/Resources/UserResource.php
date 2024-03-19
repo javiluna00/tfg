@@ -19,6 +19,8 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'google_id' => $this->google_id,
+            'roles' => $this->roles,
             'artist_name' => $this->artist_name,
             'bought_beats' => Purchase::where('user_id', $this->id)->get(),
             //'saved_beats' => $this->savedBeats
