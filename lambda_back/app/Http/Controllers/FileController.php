@@ -36,13 +36,13 @@ class FileController extends Controller
             'file_stems' => 'required|file|mimes:rar,zip',
         ]);
 
-        if($validator->fails()){
-            return response()->json($validator->errors(), 422);
-        }
+        // if($validator->fails()){
+        //     return response()->json($validator->errors(), 422);
+        // }
 
-        $file_mp3 = $request->file('file_mp3');
-        $file_wav = $request->file('file_wav');
-        $file_stems = $request->file('file_stems');
+        // $file_mp3 = $request->file('file_mp3');
+        // $file_wav = $request->file('file_wav');
+        // $file_stems = $request->file('file_stems');
 
 
         $proceso = Process::run('"E:\\Program Files (x86)\\ffmpeg-master-latest-win64-gpl\\bin\\ffmpeg" -i ../storage/app/beats/nombredelbeat/nombredelbeat.mp3 -filter_complex "amovie=../storage/app/voicetag/tagvoz2patrones10secs.mp3:loop=0,asetpts=N/SR/TB[beep];

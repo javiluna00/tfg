@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('beat_id');
             $table->unsignedBigInteger('license_id');
 
-            $table->integer('price');
+            $table->float('price');
             $table->string('file_url');
 
             $table->foreign('beat_id')->references('id')->on('beats')->onDelete('cascade');

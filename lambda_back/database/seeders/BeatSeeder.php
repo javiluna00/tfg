@@ -20,6 +20,7 @@ class BeatSeeder extends Seeder
                'scale' => 'C',
                'bpm' => 120,
                'cover_path' => 'https://i.pinimg.com/564x/cc/b9/18/ccb918bec9cec5c1baec3d4f827529e3.jpg',
+               'tagged_path' => "http://localhost:8000/storage/mp3/BAYyXcGvKa8dhYRMx65i7Ic3oONY5O5BsNQEMl43.mp3",
                'stock' => 5,
                'still_exclusive' => true,
                'created_at' => now(),
@@ -31,6 +32,7 @@ class BeatSeeder extends Seeder
             'bpm' => 80,
             'cover_path' => 'https://i.pinimg.com/564x/88/de/38/88de383fb46f344b4f5b84836733a2ea.jpg',
             'stock' => 5,
+            'tagged_path' => "http://localhost:8000/storage/mp3/BAYyXcGvKa8dhYRMx65i7Ic3oONY5O5BsNQEMl43.mp3",
             'still_exclusive' => true,
             'created_at' => now(),
             'updated_at' => now()
@@ -42,6 +44,7 @@ class BeatSeeder extends Seeder
             'cover_path' => 'https://i.pinimg.com/564x/78/ab/80/78ab809c799d2b0eb24e266be47a0a11.jpg',
             'stock' => 5,
             'still_exclusive' => false,
+            'tagged_path' => "http://localhost:8000/storage/mp3/BAYyXcGvKa8dhYRMx65i7Ic3oONY5O5BsNQEMl43.mp3",
             'created_at' => now(),
             'updated_at' => now()
            ],
@@ -51,6 +54,7 @@ class BeatSeeder extends Seeder
             'bpm' => 120,
             'cover_path' => 'https://i.pinimg.com/564x/41/f9/01/41f901f5ead0160204dde9fb422e6bf6.jpg',
             'stock' => 5,
+            'tagged_path' => "http://localhost:8000/storage/mp3/BAYyXcGvKa8dhYRMx65i7Ic3oONY5O5BsNQEMl43.mp3",
             'still_exclusive' => true,
             'created_at' => now(),
             'updated_at' => now()
@@ -61,6 +65,7 @@ class BeatSeeder extends Seeder
             'bpm' => 120,
             'cover_path' => 'https://i.pinimg.com/564x/8b/a1/e4/8ba1e42a1844cecbe1b674a4c312f8b9.jpg',
             'stock' => 5,
+            'tagged_path' => "http://localhost:8000/storage/mp3/BAYyXcGvKa8dhYRMx65i7Ic3oONY5O5BsNQEMl43.mp3",
             'still_exclusive' => true,
             'created_at' => now(),
             'updated_at' => now()
@@ -84,7 +89,7 @@ class BeatSeeder extends Seeder
                     'beat_id' => $beat->id,
                     'license_id' => $i + 1,
                     'price' => rand(1, 100),
-                    'file_url' => 'https://m.media-amazon.com/images/I/41XbBb0OgjL._SX354_SY354_BL0_QL100__UXNaN_FMjpg_QL85_.jpg',
+                    'file_url' => 'http://localhost:8000/storage/mp3/BAYyXcGvKa8dhYRMx65i7Ic3oONY5O5BsNQEMl43.mp3',
                     'created_at' => now(),
                     'updated_at' => now()
                 ]);

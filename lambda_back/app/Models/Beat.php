@@ -19,6 +19,8 @@ class Beat extends Model
         'cover_path',
         'stock',
         'still_exclusive',
+        'active',
+        'tagged_path'
     ];
 
     public function clicks()

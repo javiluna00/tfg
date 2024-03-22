@@ -18,9 +18,11 @@ class BeatResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'active' => $this->active,
             'scale' => $this->scale,
             'bpm' => $this->bpm,
             'cover_path' => $this->cover_path,
+            'tagged_path' => $this->tagged_path,
             'stock' => $this->stock,
             'still_exclusive' => $this->still_exclusive,
             'moods' => $this->moods->pluck('name'),

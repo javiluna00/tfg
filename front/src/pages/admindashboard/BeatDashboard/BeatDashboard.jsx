@@ -1,7 +1,7 @@
 import Breadcrumbs from '@/components/ui/Breadcrumbs'
 import Dropdown from '@/components/ui/Dropdown';
 import useBeats from '@/hooks/useBeats';
-import React from 'react'
+import React, { useEffect } from 'react'
 import SkeletionTable from '@/components/skeleton/Table';
 import { Menu } from '@headlessui/react';
 import { Icon } from '@iconify/react';
@@ -9,6 +9,9 @@ import ReactTable from '@/components/partials/reacttable/ReactTable';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 import Button from '@/components/ui/Button';
+import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
+import Switch from '@/components/ui/Switch';
+
 
 
 function BeatDashboard() {
@@ -65,7 +68,24 @@ function BeatDashboard() {
         header: 'Fecha de subida',
         accessorFn: ({created_at}) => dayjs(created_at).format('DD-MM-YYYY HH:mm:ss'),
     },
-
+    {
+        header: 'Active',
+        cell: (row) => {
+  
+          const [activeSwitch, setActiveSwitch] = React.useState(row.row.original.active);
+  
+          return (
+            <Switch
+            activeClass="bg-primary-500"
+            value={activeSwitch}
+            onChange={() => {
+              setActiveSwitch(!activeSwitch);
+              updateBeat(row.row.original.id, {active: activeSwitch ? 0 : 1}, authHeader)
+            }}
+          />
+          )
+        }
+      },
     {
         header: "Acciones",
         cell: (row) => {
@@ -108,7 +128,12 @@ function BeatDashboard() {
         },
   ]
 
-  const [beats] = useBeats()
+  const authHeader = useAuthHeader()
+  const {beats, activeBeats, loadActiveBeatsFromAPI, loadAllBeatsFromAPI, updateBeat} = useBeats()
+
+  useEffect(() => {
+    loadAllBeatsFromAPI(authHeader)
+  }, [])
 
   return (
     <div className='w-full h-full py-10 bg-zinc-50 min-h-screen'>

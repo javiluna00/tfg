@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('scale')->nullable();
+            $table->string("tagged_path");
+            $table->boolean('active')->default(true);
             $table->integer('bpm');
             $table->string('cover_path');
             $table->tinyInteger('stock');

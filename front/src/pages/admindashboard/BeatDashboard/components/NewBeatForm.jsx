@@ -9,6 +9,9 @@ import useMoods from '@/hooks/useMoods'
 import useGenres from '@/hooks/useGenres'
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import useBeats from '@/hooks/useBeats'
+import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader'
+import ProgressBar from '@/components/ui/ProgressBar'
 
 
 function NewBeatForm() {
@@ -25,25 +28,30 @@ function NewBeatForm() {
         wav_price: yup.number("El precio debe ser un numero").required("Precio requerido"),
         // stems_file: yup.mixed(),
         stems_price: yup.number("El precio debe ser un numero").required("Precio requerido"),
-        exclusive_price: yup.number("El precio debe ser un numero").required("Precio requerido"),
+        exclusive_price: yup.number("El precio debe ser un numero"),
         stock: yup.number("El stock debe ser un numero").required("Stock requerido"),
     })
     .required();
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm({ resolver : yupResolver(schema)});
     
-    const onSubmit = (data) => {
-        console.log("hola?")
-        console.log({data, moods: selectedMoods, genres: selectedGenres, still_exclusive: exclusiveSwitch})
-    }
+
 
     const {moods, loadMoodsFromAPI} = useMoods()
     const {genres, loadGenresFromAPI} = useGenres()
 
+    const authHeader = useAuthHeader()
+    const {createBeat, uploadedProgress, loading} = useBeats()
+
     const [exclusiveSwitch, setExclusiveSwitch] = useState(false)
     const [selectedMoods, setSelectedMoods] = useState([])
     const [selectedGenres, setSelectedGenres] = useState([])
+
+    const [mp3File, setMp3File] = useState(null)
+    const [wavFile, setWavFile] = useState(null)
+    const [stemsFile, setStemsFile] = useState(null)
     const [coverFile, setCoverFile] = useState(null)
+
     const [previewCover, setPreviewCover] = useState(null)
 
     useEffect(() => {
@@ -64,6 +72,12 @@ function NewBeatForm() {
         return () => URL.revokeObjectURL(objectUrl)
     }, [coverFile])
 
+
+    const onSubmit = (data) => {
+        const beat = {...data, moods: selectedMoods, genres: selectedGenres, exclusive: exclusiveSwitch, cover_file: coverFile, mp3_file: mp3File, wav_file: wavFile, stems_file: stemsFile}
+        createBeat(beat, authHeader)
+    }
+
     return (
         <div className='w-full'>
             
@@ -81,7 +95,7 @@ function NewBeatForm() {
                     <div className='w-full flex justify-start items-start gap-5 mt-5'> 
                         <div className='w-1/2'>
                             <label htmlFor="cover_file" className='class-label block text-sm font-medium mb-2.5 pt-1'>Portada</label>
-                            <input type="file" label="Portada" placeholder="Portada" name="cover_file" onChange={(e) => setCoverFile(e.target.files[0])}/>
+                            <input type="file" className='w-full px-5 py-2.5 border border-slate-300 rounded-md' label="Portada" placeholder="Portada" name="cover_file" onChange={(e) => setCoverFile(e.target.files[0])}/>
                         </div>
                         <div className='w-1/2'>
                             <span className='class-label block text-sm font-medium mb-2.5 pt-1'>Previsualización de la portada</span>
@@ -93,19 +107,28 @@ function NewBeatForm() {
                     
                     <h5 className='text-lg text-slate-900 font-medium mt-5 mb-2'>Licencia mp3</h5>
                     <div className='flex justify-center items-center gap-5'>
-                        <Textinput classGroup='w-1/2' label="Archivo" type="file" placeholder="Licencia mp3" name="mp3_file" register={register} error={errors.mp3_file} />
+                        <div className='w-1/2'>
+                            <label htmlFor="mp3_file" className='class-label block text-sm font-medium mb-2.5 pt-1'>Archivo MP3</label>
+                            <input type="file" className='w-full px-5 py-2.5 border border-slate-300 rounded-md' label="Archivo MP3" placeholder="Archivo MP3" name="mp3_file" onChange={(e) => setMp3File(e.target.files[0])}/>
+                        </div>
                         <Textinput classGroup='w-1/2' label="Precio" type="number" placeholder="Precio mp3" name="mp3_price" register={register} error={errors.mp3_price} />
                     </div>
 
                     <h5 className='text-lg text-slate-900 font-medium mt-5 mb-2'>Licencia wav</h5>
                     <div className='flex justify-center items-center gap-5'>
-                        <Textinput classGroup='w-1/2' label="Archivo" type="file" placeholder="Licencia wav" name="wav_file" register={register} error={errors.wav_file} />
+                        <div className='w-1/2'>
+                            <label htmlFor="wav_file" className='class-label block text-sm font-medium mb-2.5 pt-1'>Archivo WAV</label>
+                            <input type="file" label="Archivo WAV" className='w-full px-5 py-2.5 border border-slate-300 rounded-md' placeholder="Archivo WAV" name="wav_file" onChange={(e) => setWavFile(e.target.files[0])}/>
+                        </div>
                         <Textinput classGroup='w-1/2' label="Precio" type="number" placeholder="Precio wav" name="wav_price" register={register} error={errors.wav_price} />
                     </div>
 
                     <h5 className='text-lg text-slate-900 font-medium my-2'>Licencia stems</h5>
                     <div className='flex justify-center items-center gap-5'>
-                        <Textinput classGroup='w-1/2' label="Archivo" type="file" placeholder="Licencia stems" name="stems_file" register={register} error={errors.stems_file} />
+                        <div className='w-1/2'>
+                            <label htmlFor="stems_file" className='class-label block text-sm font-medium mb-2.5 pt-1'>Archivo STEMS</label>
+                            <input type="file" label="Archivo STEMS" className='w-full px-5 py-2.5 border border-slate-300 rounded-md' placeholder="Archivo STEMS" name="stems_file" onChange={(e) => setStemsFile(e.target.files[0])}/>
+                        </div>
                         <Textinput classGroup='w-1/2' label="Precio" type="number" placeholder="Precio stems" name="stems_price" register={register} error={errors.stems_price} />
                     </div>
 
@@ -130,7 +153,13 @@ function NewBeatForm() {
                         <CustomSelector name="Géneros" values={genres} setSelected={setSelectedGenres} selected={selectedGenres}/>
                     </div>
 
-                    <Button type='submit' text="Crear" className='mt-5 bg-red-500 text-white'/>
+                    <Button disabled={loading} type='submit' text={loading ? "Guardando..." : "Guardar"} className='mt-5 bg-red-500 text-white'/>
+
+                    {uploadedProgress > 0 && (
+                        <div className="mt-5">
+                            <ProgressBar value={uploadedProgress} />
+                        </div>
+                    )}
 
                 </form>
             </div>
