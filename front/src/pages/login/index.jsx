@@ -97,7 +97,7 @@ const onSubmitArtistName = (data) => {
                 <img src={isDark ? LogoWhite : Logo} alt="" className="mb-10" />
               </Link>
               <h4>
-                Unlock your Project
+                Unlockkk your Project
                 <span className="text-slate-800 dark:text-slate-400 font-bold">
                   performance
                 </span>

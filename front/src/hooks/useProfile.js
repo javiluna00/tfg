@@ -1,25 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import useAuth from './useAuth'
-import {authState} from "@/store/authStore";
+import { profileState } from '@/store/profileStore';
 import { useRecoilState } from 'recoil';
 
 function useProfile() {
 
-    const { userLogged } = useAuth()
+    const [profileData, setProfileData] = useRecoilState(profileState)
 
-    const [auth, setAuth] = useRecoilState(authState)
+    const loadProfileData = (newProfileData) => {
 
-    const [profileData, setProfileData] = useState()
-    const [isEditing, setIsEditing] = useState(false)
-
-
-    useEffect(() => {
-        setProfileData({
-            nombre: userLogged?.nombre,
-            email: userLogged?.email,
-            nombre_artistico: userLogged?.nombre_artistico,
-        })
-    }, [userLogged])
+        setProfileData(newProfileData)
+    }
 
 
     const startEditing = () => {
@@ -48,7 +39,7 @@ function useProfile() {
         setProfileData(newData)
     }
 
-    return { startEditing, saveEditing, profileData, isEditing, modificarDatos, cancelEditing}
+    return {loadProfileData, startEditing, saveEditing, profileData, modificarDatos, cancelEditing}
 
 }
 

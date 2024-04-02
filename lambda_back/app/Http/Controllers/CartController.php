@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;
+use Ramsey\Uuid\Uuid;
 
 
 class CartController extends Controller
@@ -61,7 +62,7 @@ class CartController extends Controller
             ]);
 
 
-            $cart->beatLicenses()->attach($beat_license_id);
+            $cart->beatLicenses()->attach($beat_license_id, ['id' => Uuid::uuid4()]);
         }
         else{
 
@@ -70,7 +71,7 @@ class CartController extends Controller
             }
             else
             {
-                $cart->beatLicenses()->attach($beat_license_id);
+                $cart->beatLicenses()->attach($beat_license_id, ['id' => Uuid::uuid4()]);
             }
 
         }

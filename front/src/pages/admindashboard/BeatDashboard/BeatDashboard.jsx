@@ -7,10 +7,11 @@ import { Menu } from '@headlessui/react';
 import { Icon } from '@iconify/react';
 import ReactTable from '@/components/partials/reacttable/ReactTable';
 import dayjs from 'dayjs';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '@/components/ui/Button';
 import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
 import Switch from '@/components/ui/Switch';
+import Modal from '@/components/ui/Modal';
 
 
 
@@ -20,13 +21,15 @@ function BeatDashboard() {
     {
         name: "Ver",
         icon: "heroicons-outline:eye",
+        link: "/dashboard/beats/show/"
     },
     {
         name: "Editar",
         icon: "heroicons:pencil-square",
+        link: "/dashboard/beats/edit/"
     },
     {
-        name: "Eliminar",
+        name: "eliminar",
         icon: "heroicons-outline:trash",
     }
   ];
@@ -74,14 +77,16 @@ function BeatDashboard() {
   
           const [activeSwitch, setActiveSwitch] = React.useState(row.row.original.active);
   
+          const handleSwitchActive = (row) => {
+            setActiveSwitch(!activeSwitch);
+            updateBeat(row.row.original.id, {active: activeSwitch ? 0 : 1}, authHeader)
+          }
+
           return (
             <Switch
             activeClass="bg-primary-500"
             value={activeSwitch}
-            onChange={() => {
-              setActiveSwitch(!activeSwitch);
-              updateBeat(row.row.original.id, {active: activeSwitch ? 0 : 1}, authHeader)
-            }}
+            onChange={() => handleSwitchActive(row)}
           />
           )
         }
@@ -90,46 +95,68 @@ function BeatDashboard() {
         header: "Acciones",
         cell: (row) => {
             return (
-            <div className='flex justify-start items-center gap-5'>
-                <Dropdown
-                classMenuItems="right-0 w-[140px] top-[110%] "
-                label={
-                    <span className="block border border-red-500 rounded-full h-10 w-10 text-red-500 flex justify-center items-center">
-                    <Icon icon="heroicons-outline:dots-vertical" />
-                    </span>
-                }
-                >
-                <div className="divide-y divide-slate-100 dark:divide-slate-800">
+              <div className='flex justify-start items-center gap-5'>
+                  <div className="divide-y divide-slate-100 dark:divide-slate-800 flex justify-start items-center gap-1">
                     {actions.map((item, i) => (
-                    <Menu.Item key={i}>
+                      <div key={i}>
+                        {item.name === "eliminar" ? 
+                        
+                        <Modal
+                          title='¿Estas seguro de eliminar este beat?'
+                          label='Eliminar'
+                          centered
+                          labelClass={"bg-danger-500 text-danger-500 bg-opacity-30 w-full h-9 hover:bg-opacity-100 hover:text-white flex justify-center items-center"}
+                          uncontrol
+                        >
+                          <div className='flex justify-center items-center gap-10'>
+                            <Button text="Eliminar" className="btn-danger" onClick={(e) => handleDeleteBeat(e, row)}/>
+                          </div>
+                        </Modal>
+                        
+                        : 
+    
                         <div
+                        style={{zIndex:10}}
                         className={`
                     
-                        ${
-                        item.name === "delete"
-                            ? "bg-danger-500 text-danger-500 bg-opacity-30   hover:bg-opacity-100 hover:text-white"
-                            : "hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50"
-                        }
-                        w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm  last:mb-0 cursor-pointer 
-                        first:rounded-t last:rounded-b flex  space-x-2 items-center rtl:space-x-reverse `}
-                        >
+                      ${
+                        item.name === "eliminar"
+                          ? "bg-danger-500 text-danger-500 bg-opacity-30   hover:bg-opacity-100 hover:text-white"
+                          : "hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50"
+                      }
+                       w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm  last:mb-0 cursor-pointer 
+                       first:rounded-t last:rounded-b flex  space-x-2 items-center rtl:space-x-reverse `}
+    
+                       onClick={() => navigate(item.link + row.row.original.id)}
+                      >
                         <span className="text-base">
-                            <Icon icon={item.icon} />
+                          <Icon icon={item.icon} />
                         </span>
                         <span>{item.name}</span>
-                        </div>
-                    </Menu.Item>
+                      </div>                   
+                        
+                      }
+                        
+    
+                      </div>
                     ))}
-                </div>
-                </Dropdown>
-            </div>
+                  </div>
+              </div>
             );
-        },
+          },
         },
   ]
 
   const authHeader = useAuthHeader()
-  const {beats, activeBeats, loadActiveBeatsFromAPI, loadAllBeatsFromAPI, updateBeat} = useBeats()
+  const {beats, activeBeats, loadActiveBeatsFromAPI, loadAllBeatsFromAPI, updateBeat, deleteBeat} = useBeats()
+  const navigate = useNavigate()
+
+
+
+  const handleDeleteBeat = (e, row) => {
+    e.preventDefault()
+    deleteBeat(row.row.original.id, authHeader)
+  }
 
   useEffect(() => {
     loadAllBeatsFromAPI(authHeader)

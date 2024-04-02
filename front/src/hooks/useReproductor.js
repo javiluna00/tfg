@@ -2,6 +2,7 @@ import { useRecoilState } from "recoil"
 
 import { reproductorState } from "@/store/reproductorStore"
 import { useEffect, useState } from "react";
+import Axios from "@/components/AxiosSubmit";
 
 const useReproductor = ( ) => {
 
@@ -14,28 +15,19 @@ const useReproductor = ( ) => {
     const [porcentajePlayed, setPorcentagePlayed] = useState(0);
 
     useEffect(() => {
-        if(data.currentDuration != null && data.totalDuration != null)
+        
+        if(data.song != null && data.currentDuration != null && data.totalDuration != null)
         {
             setPorcentagePlayed(data.currentDuration/data.totalDuration*100)
         }
     }, [data.currentDuration, data.totalDuration])
 
-    useEffect(() => {
-        console.log("porcentaje played : ", porcentajePlayed)
-    }, [porcentajePlayed])
     
     const setReproductorData = (song) => {
-        if(song != null)
-        {
-            setData({song : song, isPlaying : true, currentDuration : 0, totalDuration : song.duration, looping : false, volume : 100, isMuted : false} )
-            setShown(true)
-        }
-        else
-        {
-            setData({song : null, isPlaying : false, currentDuration : 0, totalDuration : 0, looping : false, volume : 100, isMuted : false})
-            setPorcentagePlayed(0)
-            setShown(false)
-        }
+
+        console.log("Song es : ", song)
+
+        
             
     }
     const setLooping = (value) => {
@@ -61,9 +53,25 @@ const useReproductor = ( ) => {
     }
 
     const reproducirCancion = (song) => {
-        setReproductorData(song)
-        tooglePlay()
-        setShown(true)
+        if(song != null)
+        {
+            
+            Axios.get(`/beat/${song.id}/tagged`, { responseType: 'blob'}).then((res) => {
+                const audioBlob = new Blob([res.data], {type: 'audio/mpeg'});
+                setData({song : song, song_file: URL.createObjectURL(audioBlob), isPlaying : true, currentDuration : 0, totalDuration : res.data.length, isPlaying:false, looping : false, volume : 100, isMuted : false} )
+                setShown(true)
+            }).catch((err) => {
+                console.log(err)
+            })
+            
+        }
+        else
+        {
+            console.log("Por qué entra aquí si song no es null?")
+            setData({song : null, isPlaying : false, currentDuration : 0, totalDuration : 0, looping : false, volume : 100, isMuted : false})
+            setPorcentagePlayed(0)
+            setShown(false)
+        }
     }
 
     const toogleFav = () => {
@@ -73,7 +81,7 @@ const useReproductor = ( ) => {
         }
     }
 
-    return {reproductorData : data, setReproductorData, porcentajePlayed, setLooping, toogleMute, tooglePlay, setVolume, shown, closeReproductor, reproducirCancion, toogleFav, favved}
+    return {reproductorData : data, setData, setReproductorData, porcentajePlayed, setLooping, toogleMute, tooglePlay, setVolume, shown, closeReproductor, reproducirCancion, toogleFav, favved}
 
 }
 

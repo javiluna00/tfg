@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PurchaseResource;
 use App\Http\Resources\UserResource;
+use App\Models\BeatLicense;
 use App\Models\User;
 use Illuminate\Http\Request;
 

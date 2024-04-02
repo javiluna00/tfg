@@ -2,6 +2,7 @@
 
 namespace App\Jobs\StripeWebhooks;
 
+use App\Http\Controllers\EmailController;
 use App\Models\Purchase;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -10,6 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Spatie\WebhookClient\Models\WebhookCall;
 use Illuminate\Support\Facades\Log;
+use Ramsey\Uuid\Uuid;
 
 class SessionCompletedJob implements ShouldQueue
 {
@@ -47,6 +49,7 @@ class SessionCompletedJob implements ShouldQueue
 
             for ($i = 0; $i < count($licenses_bought); $i++) {
                 $purchase = Purchase::create([
+                    'id' => Uuid::uuid4(),
                     'user_id' => $user_id,
                     'beat_license_id' => $licenses_bought[$i]->id,
                     'email' => $email,
@@ -61,6 +64,9 @@ class SessionCompletedJob implements ShouldQueue
         {
             // Enviar un correo.
         }
+
+        $emailController = new EmailController();
+        $emailController->sendSuccessfulPurchaseEmail($email, $isLogged, $licenses_bought, $user_id);
 
 
 

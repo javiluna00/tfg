@@ -26,6 +26,7 @@ class PurchaseResource extends JsonResource
             'beat_license_id' => $this->beat_license_id,
             'license' => License::where('id', $beatLicense->license_id)->first(),
             'beat' => Beat::where('id', $beatLicense->beat_id)->first(),
+            'download_key' => BeatLicense::where('id', $this->beat_license_id)->first()->download_key,
             'user' => $this->user,
             'price' => $this->price,
             'created_at' => $this->created_at,

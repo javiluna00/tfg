@@ -6,6 +6,7 @@ import gsap from 'gsap'
 import Button from '@/components/ui/Button'
 import CompararMix from './components/CompararMix'
 import { Link } from 'react-router-dom'
+import ServicioCard from './components/ServicioCard'
 
 function Mixmaster() {
 
@@ -40,39 +41,15 @@ function Mixmaster() {
 
 
   return (
-    <div className='container'>
+    <div className='bg-zinc-700 py-10'>
+      <div className='container'>
 
-      <div id='tarifas' className='flex flex-col justify-center items-start my-10 bg-white p-10 rounded-xl'>
-        <h3 className='text-3xl font-semibold'>¡Profesionaliza tu canción y saca un buen sonido!</h3>
-        <div className='xl:flex xl:justify-start xl:items-start grid grid-cols-1 justify-center items-center sm:grid-cols-2 w-full gap-4 mt-10'>
+      <div id='tarifas' className='flex flex-col justify-center items-start bg-white rounded-xl p-10'>
+        <h3 className='text-3xl font-semibold text-center w-full'>¡Profesionaliza tu canción y saca un buen sonido!</h3>
+        <div className='xl:flex xl:flex-row xl:justify-center xl:items-center flex flex-col justify-center items-center w-full gap-4 mt-10'>
           {tarifas.map((tarifa) => (
-            <Card bodyClass="p-0" className={`relative overflow-hidden shadow-md`} key={tarifa.id}>
-              <div className="image-box ">
-                <img
-                  src={tarifa.image}
-                  alt=""
-                  className="rounded-t-md w-full h-full object-cover"
-                />
-              </div>
 
-              {tarifa.ribon ?                 
-                <div className="text-sm font-medium bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-300 py-2 text-center absolute ltr:-right-[43px] rtl:-left-[43px] top-6 px-10 transform ltr:rotate-[45deg] rtl:-rotate-45">
-                  {tarifa.ribon}
-                </div>
-                :
-                <></>
-              }
-
-              <div className={`p-6 ${tarifa.destacado ? 'bg-red-500 text-white' : ''} rounded-b-lg`}>
-                <div className={`card-title mb-5 ${tarifa.destacado ? 'text-white' : ''}`}>{tarifa.nombre}</div>
-                <div className="text-sm">
-                  {tarifa.description}
-                </div>
-                <div className={`text-xl mt-5 font-bold ${tarifa.destacado ? 'text-white' : 'text-red-500'}`}>
-                  {tarifa.precio}
-                </div>
-              </div>
-            </Card>
+            <ServicioCard tarifa={tarifa} key={tarifa.id}/>
             
           ))}
         </div>
@@ -82,14 +59,16 @@ function Mixmaster() {
             <Link to="/contacto"><Button className='text-white hover:text-white duration-300 text-xl bg-red-500 rounded-full'>¡Contacto!</Button></Link>
         </div>
       </div>
-      
+
 
       <div className='flex flex-col justify-center items-start my-10 bg-white p-10 rounded-xl'>
           <h3 className='text-3xl font-semibold '>¡Escucha el cambio!</h3>
           <CompararMix/>
           <CompararMix/>
       </div>
+      </div>
     </div>
+    
   )
 }
 

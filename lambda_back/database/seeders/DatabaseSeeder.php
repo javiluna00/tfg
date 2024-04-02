@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call(MoodSeeder::class);
         $this->call(GenreSeeder::class);
         $this->call(LicenseSeeder::class);
-        $this->call(BeatSeeder::class);
+        // $this->call(BeatSeeder::class);
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(ProjectSeeder::class);

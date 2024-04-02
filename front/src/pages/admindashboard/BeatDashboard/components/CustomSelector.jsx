@@ -17,15 +17,13 @@ function CustomSelector({name, values, setSelected, selected, disabled = false})
         }
     }, [values])
 
-    useEffect(() => {
-        console.log("Selected : ", selected)
-    }, [selected])
 
     return (
         <div className='w-full flex flex-col justify-start items-start'>
             <Modal
             title={`Selecciona los ${name}`}
             label={name}
+            disabled={disabled}
             centered
             labelClass="bg-white text-slate-900 btn-outline-dark"
             uncontrol

@@ -16,7 +16,7 @@ function ReproductorMobile() {
         return (
             <div className='h-24 w-full bg-neutral-900 flex justify-start items-center gap-2 bottom-0 fixed'>
                 <div className='h-24 basis-9/12 flex flex-row justify-start items-center gap-5'>
-                    <img className={`h-full object-cover aspect-square`} src={reproductorData.song.image}/>
+                    <img className={`h-full object-cover aspect-square`} src={reproductorData.song.cover_path}/>
                     <div className='ml-0 h-full py-3 flex flex-col justify-start items-start gap-2'>
                         <Marquee><span className='text-white font-semibold text-sm cursor-pointer' onClick={(e) => navigate(`/beat/${reproductorData.song.id}`)}>{reproductorData.song.name}</span></Marquee>
                         <div className='mt-2 flex flex-row justify-center items-center gap-10'>

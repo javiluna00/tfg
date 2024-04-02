@@ -8,6 +8,7 @@ function useBeats() {
     const [activeBeats, setActiveBeats] = useState()
     const [beats, setBeats] = useState()
     const [uploadedProgress, setUploadedProgress] = useState(0)
+    const [updatedProgress, setUpdatedProgress] = useState(0)
     const [loading, setLoading] = useState(false)
 
     const loadActiveBeatsFromAPI = async () => {
@@ -24,6 +25,14 @@ function useBeats() {
                 }
             })
             setActiveBeats(formattedData)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    const getOneBeat = async (id, mode, authHeader) => {
+        return await Axios.get(`/beat/${id}?_mode=${mode}`, mode == "full" && {headers: {Authorization: authHeader}}).then((res) => {
+            return res.data
         }).catch((err) => {
             console.log(err)
         })
@@ -64,7 +73,7 @@ function useBeats() {
                 Authorization: authHeader
             },
             onUploadProgress: ({loaded, total}) => {
-                setUploadedProgress(Math.round((loaded / total) * 100))
+                setUpdatedProgress(Math.round((loaded / total) * 100))
             }
         }).then((res) => {
             loadAllBeatsFromAPI(authHeader)
@@ -76,7 +85,20 @@ function useBeats() {
         })
     }
 
-    return {beats, activeBeats, loadActiveBeatsFromAPI, loadAllBeatsFromAPI, createBeat, updateBeat, uploadedProgress, loading}
+    const deleteBeat = (id, authHeader) => {
+        Axios.delete(`/beat/${id}`, {
+            headers: {
+                Authorization: authHeader
+            }
+        }).then((res) => {
+            loadAllBeatsFromAPI(authHeader)
+            toast.success(res.data.message)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    return {beats, activeBeats, loadActiveBeatsFromAPI, getOneBeat, loadAllBeatsFromAPI, createBeat, updateBeat, deleteBeat, uploadedProgress, updatedProgress, loading}
 
 }
 

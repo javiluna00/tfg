@@ -1,31 +1,23 @@
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import useSignIn from "react-auth-kit/hooks/useSignIn";
-import useSignOut from "react-auth-kit/hooks/useSignOut";
-import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
-import useAuthUser from "react-auth-kit/hooks/useAuthUser";
-import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import axios from "axios";
-import { useGoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { split } from "postcss/lib/list";
 import { useCartActions } from "./useCartActions";
 import useProfile from "./useProfile";
+import { authAtom } from "@/store/authStoreBien";
+import { useRecoilState } from "recoil";
 
 const useAuth = () => {
 
     const back_url = import.meta.env.VITE_BACK_URL
-
-    const signIn = useSignIn()
-    const signOut = useSignOut()
-    const authUser = useAuthUser()
-    const authHeader = useAuthHeader()
-    const isAuthenticated = useIsAuthenticated()
     const {loadCartFromLoggedUser} = useCartActions()
     const navigate = useNavigate()
     const {loadProfileData} = useProfile()
+
+    const [auth, setAuth] = useRecoilState(authAtom)
 
 
     const isAdmin = () => {
@@ -62,7 +54,9 @@ const useAuth = () => {
 
     const logOut = () => {
         
-        signOut()
+        localStorage.removeItem('user')
+        setAuth(null)
+        navigate("/feed")
 
     }
 
@@ -75,30 +69,8 @@ const useAuth = () => {
             password
         }).then((res) => {
             setLoading(false)
-            signIn({
-                auth:{
-                  token: res.data.token,
-                  expiresIn: 3600,
-                  tokenType: "Bearer",
-                },
-                userState: {
-                    id: res.data.user.id,
-                    email: res.data.user.email,
-                    name: res.data.user.name,
-                    artist_name : res.data.user.artist_name,
-                    saves : res.data.saves,
-                    bought_beats : res.data.user.bought_beats
-                }
-            })
-
-
-            loadProfileData({
-                user: res.data.user,
-                saves : res.data.saves,
-                purchases: res.data.purchases
-            })
-            loadCartFromLoggedUser(res.data.cart)
-            //loadProfileData(res.data.token)
+            setAuth(res.data)
+            localStorage.setItem('user', JSON.stringify(res.data))
             navigate("/feed")
 
         }).catch((err) => {
@@ -161,23 +133,10 @@ const useAuth = () => {
                         user: user,
                         token: access_token
                     }).then((res) => {
-                        signIn({
-                            auth:{
-                              token: res.data.token,
-                              expiresIn: 3600,
-                              tokenType: "Bearer",
-                            },
-                            userState: {
-                                id: res.data.user.id,
-                                email: res.data.user.email,
-                                name: res.data.user.name,
-                                artist_name : res.data.user.artist_name,
-                                saves : res.data.saves,
-                                bought_beats : res.data.user.bought_beats,
-                                favorites : []
-                            }
-                        })
-                        loadCartFromLoggedUser(res.data.cart)
+
+                        setAuth(res.data)
+                        localStorage.setItem('user', JSON.stringify(res.data))
+
                         navigate("/feed")
                         toast.success("Sesión iniciada")
 
@@ -225,19 +184,23 @@ const useAuth = () => {
         })
     }
 
+    const authHeader = () => {
+        const token = auth?.token;
+        const isLoggedIn = !!token;
+        const isApiUrl = url.startsWith(process.env.REACT_APP_API_URL);
+        if (isLoggedIn && isApiUrl) {
+            return `Bearer ${token}`
+        } else {
+            return {};
+        }
+    }
+
+    const isAuthenticated = () => {
+        return !!auth?.token
+    }
+
     return{
-        register,
-        isAuthenticated,
-        logIn, 
-        logOut, 
-        authUser,
-        isLoading : loading,
-        numFavs,
-        googleLogin, 
-        endGoogleLogin,
-        saveBeat,
-        authHeader,
-        isAdmin
+        logIn, logOut, register, authHeader, isAuthenticated 
     }
 
 }

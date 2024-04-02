@@ -14,10 +14,15 @@ class BeatLicense extends Model
     protected $fillable = [
         'beat_id',
         'license_id',
+        'download_key',
         'price',
         'file_url',
         'created_at',
         'updated_at'
+    ];
+
+    protected $hidden = [
+        'download_key'
     ];
 
     public function beat()

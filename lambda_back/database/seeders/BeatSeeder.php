@@ -9,6 +9,7 @@ use App\Models\License;
 use App\Models\Mood;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Ramsey\Uuid\Uuid;
 
 class BeatSeeder extends Seeder
 {
@@ -76,20 +77,26 @@ class BeatSeeder extends Seeder
             $beat = Beat::create($beatData);
 
             // Asignar géneros aleatorios
-            $genres = Genre::inRandomOrder()->limit(rand(1, 3))->get();
-            $beat->genres()->attach($genres);
+            $generosAleatorios = Genre::inRandomOrder()->limit(3)->get(); // Obtener 3 géneros aleatorios
+            foreach ($generosAleatorios as $genero) {
+                $beat->genres()->attach($genero->id); // Suponiendo que existe una relación muchos a muchos entre beats y géneros
+            }
 
-            // Asignar moods aleatorios
-            $moods = Mood::inRandomOrder()->limit(rand(1, 2))->get();
-            $beat->moods()->attach($moods);
+            $moodsAleatorios = Mood::inRandomOrder()->limit(3)->get(); // Obtener 3 moods aleatorios
+            foreach ($moodsAleatorios as $mood) {
+                $beat->moods()->attach($mood->id); // Suponiendo que existe una opción muchos a muchos entre beats y moods
+            }
 
             // Asignar todas las licencias disponibles
-            for ($i = 0; $i < 4; $i++) {
+            $licencias = License::all(); // Obtener todas las licencias disponibles
+
+            foreach ($licencias as $licencia) {
                 BeatLicense::create([
                     'beat_id' => $beat->id,
-                    'license_id' => $i + 1,
+                    'license_id' => $licencia->id, // Usar el ID de la licencia actual en la iteración
                     'price' => rand(1, 100),
-                    'file_url' => 'http://localhost:8000/storage/mp3/BAYyXcGvKa8dhYRMx65i7Ic3oONY5O5BsNQEMl43.mp3',
+                    'download_key' => Uuid::uuid4(),
+                    'file_url' => 'mp3/BAYyXcGvKa8dhYRMx65i7Ic3oONY5O5BsNQEMl43.mp3',
                     'created_at' => now(),
                     'updated_at' => now()
                 ]);

@@ -38,6 +38,7 @@ function SuccessCheckout() {
 
       }).catch((err) => {
         console.log(err)
+        navigate("/feed")
       })
     }
   }, [stripeSession])

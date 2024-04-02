@@ -38,8 +38,8 @@ function Beats({setModalBeat, setActiveBeat}) {
                     </div>
                 </div>
 
-                <div>
-                    <div className='mt-10 w-full container'>
+                <div className='bg-zinc-700'>
+                    <div className='py-10 w-full container'>
                         <span className='text-2xl font-inter font-semibold text-white'>Todos los beats</span>
                         <hr className='mt-2 mb-2'/>
                         <div className='m-auto w-8/12 flex flex-col justify-center items-center gap-5 p-5 my-2 '>

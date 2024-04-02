@@ -73,7 +73,6 @@ export function useCartActions() {
 
     const loadCartFromLoggedUser = (userCart) => {
 
-
             clearCart()
             if(userCart)
             {
@@ -170,5 +169,9 @@ export function useCartActions() {
         }
     }
 
-    return { addToCart, totalPrice, removeItem, cart, clearCart, loadCartFromLoggedUser, pay };
+    const isEmpty = () => {
+        return cart.length === 0;
+    }
+
+    return { addToCart, totalPrice, removeItem, cart, clearCart, loadCartFromLoggedUser, pay, isEmpty };
 }

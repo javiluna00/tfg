@@ -11,6 +11,7 @@ import Loading from "@/components/Loading";
 import Reproductor from "@/components/partials/reproductor";
 import ReproductorMobile from "@/components/partials/reproductormobile"
 import LicensesModal from '@/pages/feed/components/LicensesModal';
+import Footer from '@/components/partials/footer';
 function HomeLayout() {
 
 
@@ -41,8 +42,9 @@ function HomeLayout() {
               <ToastContainer className={"mt-[64px]"}/>
               <HomeHeader className={width > breakpoints.xl ? switchHeaderClass() : ""} />
               {<Outlet context={{setActiveBeat, setModalBeat}}/>}
-              {width > breakpoints.md ? <Reproductor setActiveBeat={setActiveBeat} setModalBeat={setModalBeat}/> : <ReproductorMobile/>}
+              <Reproductor setActiveBeat={setActiveBeat} setModalBeat={setModalBeat}/>
               <LicensesModal beat={activeBeat} activeModal={modalBeat} setActiveModal={setModalBeat}/> 
+              <Footer />
             </Suspense>
         </>
     )

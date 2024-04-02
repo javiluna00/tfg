@@ -15,7 +15,7 @@ function Feed() {
     console.log("setModalBeat", setModalBeat)
   }, [setActiveBeat, setModalBeat])
   return (
-    <div className='bg-[#000000] h-full pb-20'>
+    <div className='bg-[#000000] h-full'>
 
             <SectionPresentation/>
             <SectionSocial/>

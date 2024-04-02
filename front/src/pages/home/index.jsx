@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import {useNavigate} from 'react-router-dom'
 
@@ -21,6 +21,10 @@ function Bienvenida() {
   const elementRef4 = useRef(null);
 
   const [hoveredElement, setHoveredElement] = useState(null);
+
+  useEffect(() => {
+    navigate("/feed")
+  }, [])
 
 
   const playerRef = useRef(null);

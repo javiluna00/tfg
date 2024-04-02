@@ -24,7 +24,7 @@ return new class extends Migration
 
 
             $table->foreign('beat_license_id')->references('id')->on('beat_licenses');
-
+            $table->foreign('user_id')->references('id')->on('users');
 
             $table->timestamps();
         });

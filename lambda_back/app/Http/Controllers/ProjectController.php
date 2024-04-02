@@ -20,16 +20,17 @@ class ProjectController extends Controller
      */
     public function index()
     {
+        if(!auth()->user()->isAdmin())
+        {
+            return response()->json(['message' => "No autorizado"], 401);
+        }
         $proyectos = Project::all();
         return response()->json($proyectos, 200);
     }
 
     public function getVisible()
     {
-        if(!auth()->user()->isAdmin())
-        {
-            return response()->json(['message' => "No autorizado"], 401);
-        }
+
         $proyectos = Project::where('active', 1)->get();
         return response()->json($proyectos, 200);
     }

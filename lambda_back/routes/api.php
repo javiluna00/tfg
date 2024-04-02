@@ -4,6 +4,7 @@ use App\Http\Controllers\BeatActionController;
 use App\Http\Controllers\BeatController;
 use App\Http\Controllers\BeatLicenseController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MensajeContactoController;
@@ -49,7 +50,7 @@ Route::group([
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('check-user-google', [AuthController::class, 'checkUserGoogle']);
     Route::post('refresh', [AuthController::class, 'refresh']);
-    Route::post('me', [AuthController::class, 'me']);
+    Route::post('profile', [AuthController::class, 'profile']);
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login-oauth', [AuthController::class, 'loginOauth']);
 
@@ -85,6 +86,7 @@ Route::group([
     Route::get("/all", [BeatController::class, 'getAll']);
     Route::get("/{id}", [BeatController::class, 'getOne']);
     Route::delete("/{id}", [BeatController::class, 'destroy']);
+    Route::get("/{id}/tagged", [FileController::class, 'getTagged']);
 
     Route::post("/file/create", [FileController::class, 'createFolder']);
     Route::post("/file/beat", [FileController::class, 'storeBeat']);
@@ -95,6 +97,15 @@ Route::group([
     'prefix' => 'beatlicense'
 ], function ($router) {
     Route::get('/getOne', [BeatLicenseController::class, 'getOne']);
+    Route::get("/{id}/download", [BeatLicenseController::class, 'download']);
+});
+
+Route::group([
+
+    'prefix' => 'mails'
+], function ($router) {
+
+    Route::post('/', [EmailController::class, "sendSuccessfulPurchaseEmail"]);
 });
 
 //CONTACTO

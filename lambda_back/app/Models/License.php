@@ -12,6 +12,7 @@ class License extends Model
     protected $fillable = [
         'name',
         'description',
+        'extension',
         'conditions',
         'legal_file_url'
     ];

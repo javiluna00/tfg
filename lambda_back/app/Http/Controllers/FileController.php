@@ -1,13 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Beat;
 use App\Jobs\CreateWatermarkOnBeat;
 use FFMpeg\FFMpeg;
 use FFMpeg\Filters\Audio\AudioFilters;
 use Illuminate\Http\Request;
-
-
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Process;
@@ -18,7 +17,7 @@ class FileController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => []]);
+        $this->middleware('auth:api', ['except' => ['getTagged']]);
     }
 
     public function storeCover(Request $request)
@@ -61,5 +60,40 @@ class FileController extends Controller
         }
 
         Storage::makeDirectory($request->folder_name);
+    }
+
+    public function getTagged($id)
+    {
+        $beat = Beat::find($id);
+
+        if (!$beat) {
+            return response()->json([
+                'error' => 'Beat not found'
+            ], 404);
+        }
+
+        $path = $beat->tagged_path;
+        // Asumiendo que $path es una URL completa, necesitas convertirla a una ruta de archivo local.
+        // Esto dependerá de cómo estés almacenando los archivos físicamente.
+        // Por ejemplo, si están almacenados en "public/storage", podrías hacer algo como esto:
+        $localPath = str_replace('http://localhost:8000/storage', public_path('storage'), $path);
+
+        if (!file_exists($localPath)) {
+            return response()->json([
+                'error' => 'File not found'
+            ], 404);
+        }
+
+        $file = file_get_contents($localPath);
+        $type = mime_content_type($localPath);
+        $length = filesize($localPath);
+
+        return Response::make($file, 200)
+            ->header('Content-Type', $type)
+            ->header('Content-Disposition', 'attachment; filename="' . basename($localPath) . '"')
+            ->header('Content-Length', $length)
+            ->header('Accept-Ranges', 'bytes')
+            ->header('Content-Range', 'bytes 0-' . ($length-1) . '/' . $length);
+
     }
 }

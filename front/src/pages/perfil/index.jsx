@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import useProfile from "@/hooks/useProfile";
 import Icon from "@/components/ui/Icon";
 import Card from "@/components/ui/Card";
 import BasicArea from "../chart/appex-chart/BasicArea";
@@ -12,15 +13,20 @@ import Button from "@/components/ui/Button";
 import Menulateral from "./MenuLateral";
 import useAuth from "@/hooks/useAuth";
 import DatosPerfilCard from "./components/DatosPerfilCard";
+import { useRecoilState } from "recoil";
+import { profileState } from "@/store/profileStore";
+
+
 
 const Perfil = () => {
 
   const { width, breakpoints } = useWidth();
+  
+  const [profileData, setProfileData] = useRecoilState(profileState)
 
-
-
-  const { logOut, numFavs, authUser } = useAuth();
-
+  useEffect(() =>{
+    console.log("ProfileData : ", profileData)
+  }, [profileData])
 
   return (
     <div className="my-[30px] w-full">
@@ -37,7 +43,7 @@ const Perfil = () => {
                   </div>
                   <div className="flex-1">
                     <div className="text-2xl font-medium text-slate-900 dark:text-slate-200 mb-[3px]">
-                      {authUser?.name}
+                      {profileData?.user?.name}
                     </div>
                   </div>
                 </div>
@@ -46,19 +52,19 @@ const Perfil = () => {
               <div className="mt-4 profile-info-500 md:flex md:text-start text-center flex-1 max-w-[516px] md:space-y-0 space-y-4 bg-white">
                 <div className="flex-1">
                   <div className="text-base text-slate-900 dark:text-slate-300 font-medium mb-1">
-                    {authUser?.bought_beats.length}
+                    {profileData?.purchases?.length}
                   </div>
                   <div className="text-sm text-slate-600 font-light dark:text-slate-300">
-                    Beats <Link to={"/perfil/compras"}><span className="text-primary-500 font-bold cursor-pointer">comprados</span></Link>
+                    Beats <Link to={"/profile/purchases"}><span className="text-primary-500 font-bold cursor-pointer">comprados</span></Link>
                   </div>
                 </div>
 
                 <div className="flex-1">
                   <div className="text-base text-slate-900 dark:text-slate-300 font-medium mb-1">
-                    {}
+                    {profileData?.saves?.length}
                   </div>
                   <div className="text-sm text-slate-600 font-light dark:text-slate-300">
-                    Beats <Link to={"/perfil/guardados"}><span className="text-primary-500 font-bold cursor-pointer">guardados</span></Link>
+                    Beats <Link to={"/profile/saves"}><span className="text-primary-500 font-bold cursor-pointer">guardados</span></Link>
                   </div>
                 </div>
 

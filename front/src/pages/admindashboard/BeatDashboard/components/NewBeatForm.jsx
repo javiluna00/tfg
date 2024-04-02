@@ -12,6 +12,7 @@ import * as yup from "yup";
 import useBeats from '@/hooks/useBeats'
 import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader'
 import ProgressBar from '@/components/ui/ProgressBar'
+import Switch from '@/components/ui/Switch'
 
 
 function NewBeatForm() {
@@ -46,11 +47,12 @@ function NewBeatForm() {
     const [exclusiveSwitch, setExclusiveSwitch] = useState(false)
     const [selectedMoods, setSelectedMoods] = useState([])
     const [selectedGenres, setSelectedGenres] = useState([])
-
+    const [activeSwitch, setActiveSwitch] = useState(false)
     const [mp3File, setMp3File] = useState(null)
     const [wavFile, setWavFile] = useState(null)
     const [stemsFile, setStemsFile] = useState(null)
     const [coverFile, setCoverFile] = useState(null)
+    const [taggedFile, setTaggedFile] = useState(null)
 
     const [previewCover, setPreviewCover] = useState(null)
 
@@ -74,7 +76,7 @@ function NewBeatForm() {
 
 
     const onSubmit = (data) => {
-        const beat = {...data, moods: selectedMoods, genres: selectedGenres, exclusive: exclusiveSwitch, cover_file: coverFile, mp3_file: mp3File, wav_file: wavFile, stems_file: stemsFile}
+        const beat = {...data, moods: selectedMoods, genres: selectedGenres, exclusive: exclusiveSwitch, cover_file: coverFile, mp3_file: mp3File, wav_file: wavFile, stems_file: stemsFile, tagged_file: taggedFile, active: activeSwitch == true ? 1 : 0}
         createBeat(beat, authHeader)
     }
 
@@ -104,6 +106,14 @@ function NewBeatForm() {
                     </div>
                     
                     <hr className='my-5' />
+
+                    <h5 className='text-lg text-slate-900 font-medium mt-5 mb-2'>Instrumental con tag de voz</h5>
+                    <div className='flex justify-start items-center gap-5'>
+                        <div className='w-1/2'>
+                            <label htmlFor="tagged_file" className='class-label block text-sm font-medium mb-2.5 pt-1'>Archivo MP3</label>
+                            <input type="file" className='w-full px-5 py-2.5 border border-slate-300 rounded-md' label="Archivo MP3" placeholder="Archivo MP3" name="tagged_file" onChange={(e) => setTaggedFile(e.target.files[0])}/>
+                        </div>
+                    </div>             
                     
                     <h5 className='text-lg text-slate-900 font-medium mt-5 mb-2'>Licencia mp3</h5>
                     <div className='flex justify-center items-center gap-5'>
@@ -151,6 +161,15 @@ function NewBeatForm() {
 
                     <div className='mt-5'>    
                         <CustomSelector name="Géneros" values={genres} setSelected={setSelectedGenres} selected={selectedGenres}/>
+                    </div>
+
+                    <div className='mt-5'>    
+                        <Switch
+                        activeClass="bg-primary-500"
+                        value={activeSwitch}
+                        onChange={() => {setActiveSwitch(!activeSwitch);}}
+                        label="Activo"
+                        />
                     </div>
 
                     <Button disabled={loading} type='submit' text={loading ? "Guardando..." : "Guardar"} className='mt-5 bg-red-500 text-white'/>

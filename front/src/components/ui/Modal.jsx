@@ -3,6 +3,7 @@ import React, { Fragment, useState } from "react";
 import Icon from "@/components/ui/Icon";
 
 const Modal = ({
+  disabled = false,
   activeModal,
   onClose,
   noFade,
@@ -38,9 +39,10 @@ const Modal = ({
       {uncontrol ? (
         <>
           <button
+            disabled={disabled}
             type="button"
             onClick={openModal}
-            className={`btn ${labelClass}`}
+            className={`btn ${labelClass} ${disabled ? "cursor-not-allowed" : ""}`}
           >
             <div className="flex items-center justify-center gap-4">
               {icon && <Icon icon={icon} />}

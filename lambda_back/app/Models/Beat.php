@@ -38,6 +38,55 @@ class Beat extends Model
         return $this->belongsToMany(User::class, 'beat_saves')->withTimestamps();
     }
 
+    public function mp3_path()
+    {
+        return BeatLicense::where('beat_id', $this->id)->where('license_id', 1)->first()->file_url;
+    }
+
+    public function wav_path()
+    {
+        return BeatLicense::where('beat_id', $this->id)->where('license_id', 2)->first()->file_url;
+    }
+
+    public function stems_path()
+    {
+        return BeatLicense::where('beat_id', $this->id)->where('license_id', 3)->first()->file_url;
+    }
+
+    public function mp3_price()
+    {
+        return BeatLicense::where('beat_id', $this->id)->where('license_id', 1)->first()->price;
+    }
+
+    public function wav_price()
+    {
+        return BeatLicense::where('beat_id', $this->id)->where('license_id', 2)->first()->price;
+    }
+
+    public function stems_price()
+    {
+        return BeatLicense::where('beat_id', $this->id)->where('license_id', 3)->first()->price;
+    }
+
+    public function exclusive_price()
+    {
+        return BeatLicense::where('beat_id', $this->id)->where('license_id', 4)->first()->price;
+    }
+
+    public function mp3_download_key()
+    {
+        return BeatLicense::where('beat_id', $this->id)->where('license_id', 1)->first()->download_key;
+    }
+
+    public function wav_download_key()
+    {
+        return BeatLicense::where('beat_id', $this->id)->where('license_id', 2)->first()->download_key;
+    }
+
+    public function stems_download_key()
+    {
+        return BeatLicense::where('beat_id', $this->id)->where('license_id', 3)->first()->download_key;
+    }
 
     public function licenses()
     {

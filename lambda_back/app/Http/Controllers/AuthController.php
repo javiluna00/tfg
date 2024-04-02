@@ -48,7 +48,7 @@ class AuthController extends Controller
 
         $saves = $user->savedBeats();
 
-        return response()->json(['token' => $token, 'user' => UserResource::make($user), 'cart' => $cart ? CartResource::make($cart) : null, 'saves' => $saves], 200);
+        return response()->json(['token' => $token, 'user' => UserResource::make($user), 'cart' => $cart ? CartResource::make($cart) : null, 'saves' => $saves, 'purchases' => $user->purchases()], 200);
     }
 
     public function checkUserGoogle(Request $request)
@@ -68,9 +68,16 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function me()
+    public function profile()
     {
-        return response()->json(auth()->user());
+        $user = auth('api')->user();
+        if(!$user)
+        {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+        $user_saved_beats = $user->savedBeats();
+        $user_bought_beats = $user->boughtBeats();
+        return response()->json(['user' => UserResource::make($user), 'savedBeats' => $user_saved_beats, 'boughtBeats' => $user_bought_beats], 200);
     }
 
     /**
@@ -160,7 +167,7 @@ class AuthController extends Controller
 
         $saves = $user->savedBeats();
 
-        return response()->json(['token' => $token, 'user' => UserResource::make($user), 'cart' => $cart ? CartResource::make($cart) : null, 'saves' => $saves], 200);
+        return response()->json(['token' => $token, 'user' => UserResource::make($user), 'cart' => $cart ? CartResource::make($cart) : null, 'saves' => $saves, 'purchases' => $user->purchases()], 200);
     }
 
     /**

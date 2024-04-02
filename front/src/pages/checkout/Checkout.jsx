@@ -31,7 +31,7 @@ const Checkout = () => {
 
   const [email, setEmail] = useState("");
 
-  const { clearCart, removeItem, totalPrice, cart, pay } = useCartActions();
+  const { clearCart, removeItem, totalPrice, cart, pay, isEmpty } = useCartActions();
 
   const {isAuthenticated, authHeader, authUser} = useAuth();
 
@@ -40,7 +40,6 @@ const Checkout = () => {
   const navigate = useNavigate()
 
   const handleRemoveFromCart = (beat_license_id) => {
-
     removeItem(beat_license_id, authHeader, isAuthenticated())
   }
 
@@ -149,7 +148,8 @@ const Checkout = () => {
                   </div>
                   {isAuthenticated() ? 
 
-                    <Button onClick={handleCheckout} className='w-full bg-red-500 text-white flex items-center justify-center gap-3'><Icon icon="akar-icons:envelope" className='w-5 h-5' />Pagar</Button>
+                    !isEmpty() &&
+                      <Button onClick={handleCheckout} className='w-full bg-red-500 text-white flex items-center justify-center gap-3'><Icon icon="akar-icons:envelope" className='w-5 h-5' />Pagar</Button>
 
                     :
                     <div className='items-center my-5 gap-5 w-full'>

@@ -17,16 +17,16 @@ function DatosPerfilCard() {
     const [previousData, setPreviousData] = useState(null)
 
     useEffect(() => {
-        setInputNombre(profileData?.nombre)
-        setInputEmail(profileData?.email)
-        setInputNombreArtistico(profileData?.nombre_artistico)
+        setInputNombre(profileData?.user?.name)
+        setInputEmail(profileData?.user?.email)
+        setInputNombreArtistico(profileData?.user?.artist_name)
     }, [profileData])
 
     const hdlStartEditing = () => {
         setPreviousData({
-            nombre: profileData?.nombre,
+            name: profileData?.name,
             email: profileData?.email,
-            nombre_artistico: profileData?.nombre_artistico,
+            artist_name: profileData?.artist_name,
         })
         startEditing()
     }

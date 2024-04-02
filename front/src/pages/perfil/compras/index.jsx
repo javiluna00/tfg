@@ -14,29 +14,7 @@ import Button from '@/components/ui/Button'
 
 function Compras() {
 
-  const actions = [
-    {
-      name: "Ver",
-      icon: "heroicons-outline:eye",
-    },
-    {
-      name: "Responder",
-      icon: "heroicons:pencil-square",
-    },
-    {
-      name: "Marcar como no leído",
-      icon: "heroicons-outline:eye-slash",
-    }
-  ];
-  
   const COLUMNS = [
-      {
-        header: 'ID',
-        accessorKey: 'id',
-        cell: (row) => {
-          return <span>{row.getValue()}</span>;
-        },
-      },
       {
         header: 'Beat',
         accessorFn: (row) => row.beat_cover_path ? row.beat_cover_path : row.beat_name, // Esto asegura que el valor accesible sea el correcto.
@@ -47,7 +25,7 @@ function Compras() {
             <div className='flex flex-col justify-center'>
               {/* Ejemplo de cómo podrías usar beat_cover_path y beat_name */}
               {beat_cover_path && (
-                <img src={beat_cover_path} alt={beat_name} className="h-24 w-24 rounded-lg" />
+                <img src={beat_cover_path} alt={beat_name} className="h-24 w-24" />
               )
               }
               
@@ -70,41 +48,11 @@ function Compras() {
       },
       {
         header: "Acciones",
+        accessorKey: "download_key",
         cell: (row) => {
           return (
-            <div className='flex justify-center items-center gap-5'>
-              <Button icon="heroicons-outline:download" text="Descargar" onClick={() => handleDownload(row)}/>
-              <Dropdown
-                classMenuItems="right-0 w-[140px] top-[110%] "
-                label={
-                  <span className="block bg-red-500 rounded-full h-10 w-10 text-white flex justify-center items-center">
-                    <Icon icon="heroicons-outline:dots-vertical" />
-                  </span>
-                }
-              >
-                <div className="divide-y divide-slate-100 dark:divide-slate-800">
-                  {actions.map((item, i) => (
-                    <Menu.Item key={i}>
-                      <div
-                        className={`
-                    
-                      ${
-                        item.name === "delete"
-                          ? "bg-danger-500 text-danger-500 bg-opacity-30   hover:bg-opacity-100 hover:text-white"
-                          : "hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50"
-                      }
-                       w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm  last:mb-0 cursor-pointer 
-                       first:rounded-t last:rounded-b flex  space-x-2 items-center rtl:space-x-reverse `}
-                      >
-                        <span className="text-base">
-                          <Icon icon={item.icon} />
-                        </span>
-                        <span>{item.name}</span>
-                      </div>
-                    </Menu.Item>
-                  ))}
-                </div>
-              </Dropdown>
+            <div className='flex justify-start items-center gap-5'>
+              <Button icon="heroicons-outline:download" text="Descargar" onClick={(e) => window.open("http://localhost:8000/api/beatlicense/"+row.getValue()+"/download")}/>
             </div>
           );
         },
@@ -130,7 +78,8 @@ function Compras() {
           price: purchase.price,
           bought_at: purchase.created_at,
           license_name: purchase.license.name,
-          beat_license_id: purchase.beat_license_id
+          beat_license_id: purchase.beat_license_id,
+          download_key: purchase.download_key
         }
       })
       setData(validData); // Actualiza el estado con los datos obtenidos
@@ -148,7 +97,7 @@ function Compras() {
 
 
   return (
-    <div className='flex'>
+    <div className='flex min-h-screen bg-zinc-700'>
         
         <div className='flex grow px-6 my-[30px] w-full'>
         {loading ? <SkeletionTable /> :  <ReactTable name={"Historial de compras"} columns={COLUMNS} data={data} />}
