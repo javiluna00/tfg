@@ -1,16 +1,15 @@
 
 import { initialFilterValues } from "@/constant/initialValues"
-import { reproductorState } from "@/store/reproductorStore"
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { beatState } from "@/store/beatStore";
-import Axios from "@/components/AxiosSubmit";
-const useBeatFinder = ( ) => {
+const useBeatFinder = ({AxiosPrivate}) => {
 
     const [beatData, setBeatData] = useRecoilState(beatState);
     const [genres, setGenres] = useState([]);
     const [moods, setMoods] = useState([]);
     const [loading, setLoading] = useState(false);
+
 
     useEffect(() => {
         foundBeats();
@@ -26,7 +25,7 @@ const useBeatFinder = ( ) => {
 
 
     const loadGenresFromAPI = async () => {
-        Axios.get(`/genres/`).then((res) => {
+        AxiosPrivate.get(`/genres/`).then((res) => {
             setGenres(res.data.map((genre) => {
                 return {
                     name: genre.name,
@@ -38,7 +37,7 @@ const useBeatFinder = ( ) => {
     }
 
     const loadMoodsFromAPI = async () => {
-        Axios.get(`/moods/`).then((res) => {
+        AxiosPrivate.get(`/moods/`).then((res) => {
             setMoods(res.data.map((mood) => {
                 return {
                     name: mood.name,
@@ -53,7 +52,7 @@ const useBeatFinder = ( ) => {
 
     const loadBeatsFromAPI = async () => {
         
-        await Axios.get(`/beat/`).then((res) => {
+        await AxiosPrivate.get(`/beat/`).then((res) => {
             setBeatData({...beatData, allBeats: res.data, filteredBeats: res.data, beatsPopulares: res.data, filter: initialFilterValues});
         }).catch((err) => {
             console.log(err)

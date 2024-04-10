@@ -1,41 +1,83 @@
-import React, { lazy, Suspense } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import React, { lazy, Suspense } from 'react'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import Contact from './pages/contact'
+// const IconPage = lazy(() => import("./pages/icons"));
+// const NotificationPage = lazy(() => import("./pages/utility/notifications"));
+// const ChangelogPage = lazy(() => import("./pages/changelog"));
+
+// // widget pages
+// const BasicWidget = lazy(() => import("./pages/widget/basic-widget"));
+// const StatisticWidget = lazy(() => import("./pages/widget/statistic-widget"));
+
+// // app page
+// const TodoPage = lazy(() => import("./pages/app/todo"));
+// const EmailPage = lazy(() => import("./pages/app/email"));
+// const ChatPage = lazy(() => import("./pages/app/chat"));
+// const ProjectPostPage = lazy(() => import("./pages/app/projects"));
+// const ProjectDetailsPage = lazy(() =>
+//   import("./pages/app/projects/project-details")
+// );
+
+// const KanbanPage = lazy(() => import("./pages/app/kanban"));
+// const CalenderPage = lazy(() => import("./pages/app/calendar"));
+
+// //Ecommerce-Pages
+
+// const EcommercePage = lazy(() => import("./pages/ecommerce"));
+
+import Loading from '@/components/Loading'
+// import { ProductDetails } from "./pages/ecommerce/productDetails";
+// import Cart from "./pages/ecommerce/cart";
+// import Wishlist from "./pages/ecommerce/wish-list";
+// import Orders from "./pages/ecommerce/orders";
+// import OrderDetails from "./pages/ecommerce/orderDetails";
+
+// import EditProduct from "./pages/ecommerce/edit-product";
+// import Customers from "./pages/ecommerce/customers";
+// import Sellers from "./pages/ecommerce/sellers";
+// import AddProduct from "./pages/ecommerce/add-product";
+// import InvoiceEPage from "./pages/ecommerce/invoice-ecompage";
+import HomeLayout from './layout/HomeLayout'
+import BeatDetails from './pages/BeatDetails'
+import PerfilLayout from './layout/PerfilLayout'
+import RestrictedAdminRoutes from '@/pages/restrictedroutes/RestrictedAdminRoutes'
+import VerifyAccount from '@/pages/verifyaccount/'
 
 // home pages  & dashboard
-//import Dashboard from "./pages/dashboard";
+// import Dashboard from "./pages/dashboard";
 
-const Feed = lazy(() => import("./pages/feed"));
-const Mixmaster = lazy(() => import("./pages/mixmaster"));
-const Projects = lazy(() => import("./pages/projects"));
-const Contact = lazy(() => import("./pages/contact"));
-const Login = lazy(() => import("./pages/login"));
-const Register = lazy(() => import("./pages/register"));
-const AdminDashboard = lazy(() => import("./pages/admindashboard"));
-const EditBeat = lazy(() => import("./pages/admindashboard/BeatDashboard/EditBeat"));
-const ShowBeat = lazy(() => import("./pages/admindashboard/BeatDashboard/ShowBeat"));
+const Feed = lazy(() => import('./pages/feed'))
+const Mixmaster = lazy(() => import('./pages/mixmaster'))
+const Projects = lazy(() => import('./pages/projects'))
 
+const Login = lazy(() => import('./pages/login'))
+const Register = lazy(() => import('./pages/register'))
+const ForgotPassword = lazy(() => import('./pages/forgotpassword'))
+const ResetPassword = lazy(() => import('./pages/forgotpassword/ResetPassword'))
 
-const BeatDashboard = lazy(() => import("./pages/admindashboard/BeatDashboard/BeatDashboard"));
-const Newbeat = lazy(() => import("./pages/admindashboard/BeatDashboard/NewBeat"));
+const AdminDashboard = lazy(() => import('./pages/admindashboard'))
+const EditBeat = lazy(() => import('./pages/admindashboard/BeatDashboard/EditBeat'))
+const ShowBeat = lazy(() => import('./pages/admindashboard/BeatDashboard/ShowBeat'))
 
-const UserDashboard = lazy(() => import("./pages/admindashboard/UserDashboard/UserDashboard"));
-const ShowUser = lazy(() => import("./pages/admindashboard/UserDashboard/ShowUser"));
-const EditUser = lazy(() => import("./pages/admindashboard/UserDashboard/EditUser"));
+const BeatDashboard = lazy(() => import('./pages/admindashboard/BeatDashboard/BeatDashboard'))
+const Newbeat = lazy(() => import('./pages/admindashboard/BeatDashboard/NewBeat'))
 
+const UserDashboard = lazy(() => import('./pages/admindashboard/UserDashboard/UserDashboard'))
+const ShowUser = lazy(() => import('./pages/admindashboard/UserDashboard/ShowUser'))
+const EditUser = lazy(() => import('./pages/admindashboard/UserDashboard/EditUser'))
 
+const ProjectDashboard = lazy(() => import('./pages/admindashboard/ProjectDashboard/ProjectDashboard'))
+const NewProject = lazy(() => import('./pages/admindashboard/ProjectDashboard/NewProject'))
+const ShowProject = lazy(() => import('./pages/admindashboard/ProjectDashboard/ShowProject'))
+const EditProject = lazy(() => import('./pages/admindashboard/ProjectDashboard/EditProject'))
 
-const ProjectDashboard = lazy(() => import("./pages/admindashboard/ProjectDashboard/ProjectDashboard"));
-const NewProject = lazy(() => import("./pages/admindashboard/ProjectDashboard/NewProject"));
-const ShowProject = lazy(() => import("./pages/admindashboard/ProjectDashboard/ShowProject"));
-const EditProject = lazy(() => import("./pages/admindashboard/ProjectDashboard/EditProject"));
+const ContactDashboard = lazy(() => import('./pages/admindashboard/ContactDashboard/ContactDashboard'))
+const CheckOut = lazy(() => import('./pages/checkout/Checkout'))
+const SuccessCheckout = lazy(() => import('./pages/checkout/SuccessCheckout'))
+const ErrorCheckout = lazy(() => import('./pages/checkout/ErrorCheckout'))
 
-const ContactDashboard = lazy(() => import("./pages/admindashboard/ContactDashboard/ContactDashboard"));
-const CheckOut = lazy(() => import("./pages/checkout/Checkout"));
-const SuccessCheckout = lazy(() => import("./pages/checkout/SuccessCheckout"));
-const ErrorCheckout = lazy(() => import("./pages/checkout/ErrorCheckout"));
-
-const ManageMoods = lazy(() => import("./pages/admindashboard/BeatDashboard/ManageMoods"));
-const ManageGenres = lazy(() => import("./pages/admindashboard/BeatDashboard/ManageGenres"));
+const ManageMoods = lazy(() => import('./pages/admindashboard/BeatDashboard/ManageMoods'))
+const ManageGenres = lazy(() => import('./pages/admindashboard/BeatDashboard/ManageGenres'))
 
 // const Dashboard = lazy(() => import("./pages/dashboard"));
 // const Ecommerce = lazy(() => import("./pages/dashboard/ecommerce"));
@@ -54,11 +96,7 @@ const ManageGenres = lazy(() => import("./pages/admindashboard/BeatDashboard/Man
 // const LockScreen = lazy(() => import("./pages/auth/lock-screen"));
 // const LockScreen2 = lazy(() => import("./pages/auth/lock-screen2"));
 // const LockScreen3 = lazy(() => import("./pages/auth/lock-screen3"));
-const Error = lazy(() => import("./pages/404"));
-
-// import Layout from "./layout/Layout";
-// import Home from "./pages/home";
-// import AuthLayout from "./layout/AuthLayout";
+const Error = lazy(() => import('./pages/404'))
 
 // // components pages
 // const Button = lazy(() => import("./pages/components/button"));
@@ -115,122 +153,75 @@ const Error = lazy(() => import("./pages/404"));
 // const InvoiceEditPage = lazy(() => import("./pages/utility/invoice-edit"));
 // const PricingPage = lazy(() => import("./pages/utility/pricing"));
 // const BlankPage = lazy(() => import("./pages/utility/blank-page"));
-const ComingSoonPage = lazy(() => import("./pages/utility/coming-soon"));
+const ComingSoonPage = lazy(() => import('./pages/utility/coming-soon'))
 const UnderConstructionPage = lazy(() =>
-  import("./pages/utility/under-construction")
-);
+  import('./pages/utility/under-construction')
+)
 // const BlogPage = lazy(() => import("./pages/utility/blog"));
 // const BlogDetailsPage = lazy(() => import("./pages/utility/blog/blog-details"));
 // const FaqPage = lazy(() => import("./pages/utility/faq"));
-const Settings = lazy(() => import("./pages/utility/settings"));
-const Perfil = lazy(() => import("./pages/perfil"));
-const Guardados = lazy(() => import("./pages/perfil/guardados"));
-const Compras = lazy(() => import("./pages/perfil/compras"));
-// const IconPage = lazy(() => import("./pages/icons"));
-// const NotificationPage = lazy(() => import("./pages/utility/notifications"));
-// const ChangelogPage = lazy(() => import("./pages/changelog"));
-
-// // widget pages
-// const BasicWidget = lazy(() => import("./pages/widget/basic-widget"));
-// const StatisticWidget = lazy(() => import("./pages/widget/statistic-widget"));
-
-// // app page
-// const TodoPage = lazy(() => import("./pages/app/todo"));
-// const EmailPage = lazy(() => import("./pages/app/email"));
-// const ChatPage = lazy(() => import("./pages/app/chat"));
-// const ProjectPostPage = lazy(() => import("./pages/app/projects"));
-// const ProjectDetailsPage = lazy(() =>
-//   import("./pages/app/projects/project-details")
-// );
-
-
-// const KanbanPage = lazy(() => import("./pages/app/kanban"));
-// const CalenderPage = lazy(() => import("./pages/app/calendar"));
-
-// //Ecommerce-Pages
-
-// const EcommercePage = lazy(() => import("./pages/ecommerce"));
-
-import Loading from "@/components/Loading";
-// import { ProductDetails } from "./pages/ecommerce/productDetails";
-// import Cart from "./pages/ecommerce/cart";
-// import Wishlist from "./pages/ecommerce/wish-list";
-// import Orders from "./pages/ecommerce/orders";
-// import OrderDetails from "./pages/ecommerce/orderDetails";
-
-// import EditProduct from "./pages/ecommerce/edit-product";
-// import Customers from "./pages/ecommerce/customers";
-// import Sellers from "./pages/ecommerce/sellers";
-// import AddProduct from "./pages/ecommerce/add-product";
-// import InvoiceEPage from "./pages/ecommerce/invoice-ecompage";
-import HomeLayout from "./layout/HomeLayout";
-import Bienvenida from './pages/home';
-import BeatDetails from './pages/BeatDetails';
-import PerfilLayout from "./layout/PerfilLayout";
-import RestrictedAdminRoutes from "@/pages/restrictedroutes/RestrictedAdminRoutes";
-
-function App() {
+const Settings = lazy(() => import('./pages/utility/settings'))
+const Perfil = lazy(() => import('./pages/perfil'))
+const Guardados = lazy(() => import('./pages/perfil/guardados'))
+const Compras = lazy(() => import('./pages/perfil/compras'))
+function App () {
   return (
-    <main className="App relative">
+    <main className='App relative'>
       <Routes>
-          
-          <Route path="/" element={<Bienvenida />}/>
 
-          <Route path="/profile/*" element={<PerfilLayout />}>
-            <Route index element={<Perfil />} />
-            <Route path="settings" element={<Settings />} />
-            <Route path="saves" element={<Guardados />} />
-            <Route path="purchases" element={<Compras />} />
-          </Route>
+        <Route path='/profile/*' element={<PerfilLayout />}>
+          <Route index element={<Perfil />} />
+          <Route path='settings' element={<Settings />} />
+          <Route path='saves' element={<Guardados />} />
+          <Route path='purchases' element={<Compras />} />
+        </Route>
 
+        <Route path='/*' element={<HomeLayout />}>
+          <Route index element={<Feed />} />
+          <Route path='verify' element={<VerifyAccount />} />
+          <Route path='mixmaster' element={<Mixmaster />} />
+          <Route path='projects' element={<Projects />} />
+          <Route path='contact' element={<Contact />} />
+          <Route path='beat/:beatId' element={<BeatDetails />} />
+          <Route path='login' element={<Login />} />
+          <Route path='register' element={<Register />} />
+          <Route path='forgot-password' element={<ForgotPassword />} />
+          <Route path='reset-password' element={<ResetPassword />} />
+          <Route path='checkout' element={<CheckOut />} />
+          <Route path='checkout/success' element={<SuccessCheckout />} />
+          <Route path='checkout/cancel' element={<ErrorCheckout />} />
 
-          <Route path="/*" element={<HomeLayout />}>
-            <Route path="feed" element={<Feed />} />
-            <Route path="mixmaster" element={<Mixmaster />} />
-            <Route path="projects" element={<Projects />} />
-            <Route path="contact" element={<Contact />} />
-            <Route path="beat/:beatId" element={<BeatDetails />} />
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
-            <Route path="checkout" element={<CheckOut />} />
-            <Route path="checkout/success" element={<SuccessCheckout />} />
-            <Route path="checkout/cancel" element={<ErrorCheckout />} />
-
-
-            <Route path="dashboard" element={<RestrictedAdminRoutes />}>
-
-              <Route index element={<AdminDashboard />} />
-              <Route path="beats">
-                <Route index element={<BeatDashboard />} />
-                <Route path="new" element={<Newbeat />} />
-                <Route path="edit/:id" element={<EditBeat />} />
-                <Route path="show/:id" element={<ShowBeat />} />
-                <Route path="moods" element={<ManageMoods />} />
-                <Route path="genres" element={<ManageGenres />} />
-              </Route>  
-              <Route path="contacts">
-                <Route index element={<ContactDashboard />} />
-              </Route>
-
-              <Route path="projects">
-                <Route index element={<ProjectDashboard />} />
-                <Route path="new" element={<NewProject />} />
-                <Route path="show/:id" element={<ShowProject />} />
-                <Route path="edit/:id" element={<EditProject />} />
-              </Route>
-
-              <Route path="users">
-                <Route index element={<UserDashboard />} />
-                <Route path=":id" element={<ShowUser />} />
-                <Route path="edit/:id" element={<EditUser />} />
-              </Route>
-
+          <Route path='dashboard' element={<RestrictedAdminRoutes />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path='beats'>
+              <Route index element={<BeatDashboard />} />
+              <Route path='new' element={<Newbeat />} />
+              <Route path='edit/:id' element={<EditBeat />} />
+              <Route path='show/:id' element={<ShowBeat />} />
+              <Route path='moods' element={<ManageMoods />} />
+              <Route path='genres' element={<ManageGenres />} />
+            </Route>
+            <Route path='contacts'>
+              <Route index element={<ContactDashboard />} />
             </Route>
 
-            <Route path="*" element={<Navigate to="/404" />} />
-            
+            <Route path='projects'>
+              <Route index element={<ProjectDashboard />} />
+              <Route path='new' element={<NewProject />} />
+              <Route path='show/:id' element={<ShowProject />} />
+              <Route path='edit/:id' element={<EditProject />} />
+            </Route>
+
+            <Route path='users'>
+              <Route index element={<UserDashboard />} />
+              <Route path=':id' element={<ShowUser />} />
+              <Route path='edit/:id' element={<EditUser />} />
+            </Route>
+
           </Route>
-            {/* <Route path="/login2" element={<Login2 />} />
+          <Route path='*' element={<Navigate to='/404' />} />
+        </Route>
+        {/* <Route path="/login2" element={<Login2 />} />
             <Route path="/login3" element={<Login3 />} />
             <Route path="/register" element={<Register />} />
             <Route path="/register2" element={<Register2 />} />
@@ -242,7 +233,6 @@ function App() {
             <Route path="/lock-screen2" element={<LockScreen2 />} />
             <Route path="/lock-screen3" element={<LockScreen3 />} /> */}
 
-        
         {/* <Route path="/*" element={<Layout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="ecommerce" element={<Ecommerce />} />
@@ -279,7 +269,7 @@ function App() {
           <Route path="textarea" element={<TextareaPage />} />
           <Route path="checkbox" element={<CheckboxPage />} />
           <Route path="radio-button" element={<RadioPage />} />
-          
+
           <Route path="input-group" element={<InputGroupPage />} />
           <Route path="input-layout" element={<InputlayoutPage />} />
           <Route path="input-mask" element={<InputMask />} />
@@ -328,7 +318,7 @@ function App() {
           <Route path="*" element={<Navigate to="/404" />} />
         </Route> */}
         <Route
-          path="/404"
+          path='/404'
           element={
             <Suspense fallback={<Loading />}>
               <Error />
@@ -336,7 +326,7 @@ function App() {
           }
         />
         <Route
-          path="/coming-soon"
+          path='/coming-soon'
           element={
             <Suspense fallback={<Loading />}>
               <ComingSoonPage />
@@ -344,7 +334,7 @@ function App() {
           }
         />
         <Route
-          path="/under-construction"
+          path='/under-construction'
           element={
             <Suspense fallback={<Loading />}>
               <UnderConstructionPage />
@@ -353,7 +343,7 @@ function App() {
         />
       </Routes>
     </main>
-  );
+  )
 }
 
-export default App;
+export default App

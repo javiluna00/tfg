@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BeatResource;
+use App\Http\Resources\BeatSaveResource;
 use App\Models\BeatAction;
 use App\Models\Beat;
 use App\Models\BeatClick;
@@ -9,6 +11,7 @@ use App\Models\BeatPlay;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 
 
@@ -17,7 +20,7 @@ class BeatActionController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ["storeClick", "storePlay"]]);
+        $this->middleware('jwt.verify', ['except' => ["storeClick", "storePlay"]]);
     }
 
     /**
@@ -32,16 +35,37 @@ class BeatActionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function storeSave(Request $request)
+    public function toogleSave(Request $request)
     {
         // Obtén el ID del usuario autenticado
-        $userId = auth()->id();
-
+        $user = auth()->user();
+        $userId = $user->id;
         // Guarda el save en la tabla pivot
-        $beat = Beat::findOrFail($request->input('beat_id'));
-        $beat->saves()->syncWithoutDetaching([$userId]);
+        $beat = Beat::find($request->input('beat_id'));
 
-        return response()->json(['message' => 'Save added successfully'], 200);
+        if($beat == null){
+            return response()->json(['message' => 'Beat not found!'], 404);
+        }
+
+
+        $saveExistente = $user->savedBeats()->where('beat_id', $beat->id)->first();
+        if(!$saveExistente){
+            $user->savedBeats()->attach($beat->id);
+            $beatsIdsGuardados = DB::table('beat_saves')->where('user_id', auth()->user()->id)->get()->pluck('beat_id');
+            $beatsGuardados = Beat::whereIn('id', $beatsIdsGuardados)->get();
+            return response()->json(['message' => 'Save added successfully', 'saves' => BeatResource::collection($beatsGuardados)], 200);
+        }
+        else{
+            $user->savedBeats()->detach($beat->id);
+            $beatsIdsGuardados = DB::table('beat_saves')->where('user_id', auth()->user()->id)->get()->pluck('beat_id');
+            $beatsGuardados = Beat::whereIn('id', $beatsIdsGuardados)->get();
+            return response()->json(['message' => 'Save removed successfully', 'saves' => BeatResource::collection($beatsGuardados)], 200);
+        }
+
+
+
+
+
     }
 
     public function storeClick(Request $request)

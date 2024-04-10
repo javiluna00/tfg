@@ -17,7 +17,7 @@ class CartController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['pay']]);
+        $this->middleware('jwt.verify', ['except' => ['pay']]);
     }
 
     /**
@@ -62,7 +62,7 @@ class CartController extends Controller
             ]);
 
 
-            $cart->beatLicenses()->attach($beat_license_id, ['id' => Uuid::uuid4()]);
+            $cart->beatLicenses()->attach($beat_license_id);
         }
         else{
 
@@ -71,7 +71,7 @@ class CartController extends Controller
             }
             else
             {
-                $cart->beatLicenses()->attach($beat_license_id, ['id' => Uuid::uuid4()]);
+                $cart->beatLicenses()->attach($beat_license_id);
             }
 
         }
@@ -208,7 +208,7 @@ class CartController extends Controller
 
         foreach ($cart as $index => $item) {
             $beat_license = BeatLicense::find($item['id']);
-            $licenses_bought[] = ['id' => $beat_license->id, 'file_url' => $beat_license->file_url, 'price' => $beat_license->price];
+            $licenses_bought[] = ['id' => $beat_license->id, 'download_key' => $beat_license->download_key, 'cover_url' => $beat_license->beat->cover_path, 'name' => $beat_license->beat->name, 'price' => $beat_license->price];
         }
 
 

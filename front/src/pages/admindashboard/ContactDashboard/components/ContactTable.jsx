@@ -1,11 +1,7 @@
-import React, { useState, useMemo } from "react";
+import React from "react";
 import Card from "@/components/ui/Card";
 import Icon from "@/components/ui/Icon";
-import Dropdown from "@/components/ui/Dropdown";
-import { Menu } from "@headlessui/react";
 
-
-import GlobalFilter from "./GlobalFilter";
 
 import { 
   useReactTable,
@@ -16,8 +12,6 @@ import {
   flexRender
 } from '@tanstack/react-table'
 
-
-import {advancedTable} from "../constant/BeatsTable";
 import Button from "@/components/ui/Button";
 import { useNavigate } from "react-router-dom";
 

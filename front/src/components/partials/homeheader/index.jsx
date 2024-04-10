@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Icon from "@/components/ui/Icon";
-import SwitchDark from "./Tools/SwitchDark";
 import HorizentalMenu from "./Tools/HorizentalMenu";
 import useWidth from "@/hooks/useWidth";
 import useSidebar from "@/hooks/useSidebar";
@@ -10,19 +9,16 @@ import useSkin from "@/hooks/useSkin";
 import Logo from "./Tools/Logo";
 import MobileMenu from "./Tools/MobileMenu";
 import Profile from "./Tools/Profile";
-import Notification from "./Tools/Notification";
-import Message from "./Tools/Message";
-import Language from "./Tools/Language";
 import useRtl from "@/hooks/useRtl";
 import useMobileMenu from "@/hooks/useMobileMenu";
-import MonoChrome from "./Tools/MonoChrome";
 import HeaderCart from "./Tools/Cart";
-import useAuth from '@/hooks/useAuth'
 import { Link, useNavigate } from "react-router-dom";
 import Button from "@/components/ui/Button";
+import { useRecoilState } from "recoil";
+import { authAtom } from "@/store/authStoreBien";
 
 
-const Header = ({ className = "custom-class" }) => {
+const Header = ({ className = "custom-class", isAuthenticated, isAdmin, AxiosPrivate, auth }) => {
   const [collapsed, setMenuCollapsed] = useSidebar();
   const { width, breakpoints } = useWidth();
   const [navbarType] = useNavbarType();
@@ -54,8 +50,6 @@ const Header = ({ className = "custom-class" }) => {
     setMobileMenu(!mobileMenu);
   };
 
-
-  const {isAuthenticated, authUser, isAdmin} = useAuth()
 
   const borderSwicthClass = () => {
     if (skin === "bordered" && navbarType !== "floating") {
@@ -111,12 +105,12 @@ const Header = ({ className = "custom-class" }) => {
             <></>
           }
           <div className="nav-tools flex items-center lg:space-x-6 space-x-3 rtl:space-x-reverse">
-            <HeaderCart />
+            <HeaderCart AxiosPrivate={AxiosPrivate} auth={auth} />
 
           {isAuthenticated() == true ?
             
             
-            <Profile user={authUser} />
+            <Profile user={auth.user} />
           
 
           :

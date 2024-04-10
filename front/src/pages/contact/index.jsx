@@ -2,15 +2,18 @@ import React, { useEffect, useState } from 'react'
 import fondo from "@/assets/images/fondo.jpg"
 import Button from '@/components/ui/Button'
 import { Icon } from '@iconify/react'
-import useContacto from '@/hooks/useContacto'
+import useContact from '@/hooks/useContact'
 import { toast } from "react-toastify";
 import { useForm } from 'react-hook-form'
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useOutletContext } from 'react-router-dom'
 
 function Contact() {
 
-  const {sendForm, clearForm} = useContacto()
+  const {AxiosPrivate} = useOutletContext()
+
+  const {sendForm, clearForm} = useContact({AxiosPrivate})
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   const [enviado, setEnviado] = useState(false)
@@ -64,7 +67,7 @@ function Contact() {
 
   
   if(!isImageLoaded) {
-    return <>...</>;
+    return( <div className='min-h-screen'></div>)
   }
   else
   {

@@ -1,18 +1,17 @@
 import { useRecoilState } from "recoil"
-
 import { reproductorState } from "@/store/reproductorStore"
 import { useEffect, useState } from "react";
-import Axios from "@/components/AxiosSubmit";
+import useProfile from "./useProfile";
+import { authAtom } from "@/store/authStoreBien";
 
-const useReproductor = ( ) => {
+const useReproductor = ({AxiosPrivate}) => {
 
     const [data, setData] = useRecoilState(reproductorState);
-
     const [shown, setShown] = useState(false);
-
-    const [favved, setFavved] = useState(false);
-
+    const [favved, setFavved] = useState();
     const [porcentajePlayed, setPorcentagePlayed] = useState(0);
+    const {setSaves} = useProfile({AxiosPrivate})
+    const [auth, setAuth] = useRecoilState(authAtom)
 
     useEffect(() => {
         
@@ -22,6 +21,19 @@ const useReproductor = ( ) => {
         }
     }, [data.currentDuration, data.totalDuration])
 
+    useEffect(() => {
+        if(data.song != null && auth.user != null)
+        {
+            if(auth.user.saves.filter((beat) => beat.id == data.song.id).length > 0)
+            {
+                setFavved(true)
+            }
+            else
+            {
+                setFavved(false)
+            }
+        }
+    }, [data.song])
     
     const setReproductorData = (song) => {
 
@@ -56,7 +68,10 @@ const useReproductor = ( ) => {
         if(song != null)
         {
             
-            Axios.get(`/beat/${song.id}/tagged`, { responseType: 'blob'}).then((res) => {
+            AxiosPrivate.get(`/beat/${song.id}/tagged`, { responseType: 'blob'}).then((res) => {
+                AxiosPrivate.post("/beatAction/play", {beat_id : song.id}).catch((err) => {
+                    console.log(err)
+                })
                 const audioBlob = new Blob([res.data], {type: 'audio/mpeg'});
                 setData({song : song, song_file: URL.createObjectURL(audioBlob), isPlaying : true, currentDuration : 0, totalDuration : res.data.length, isPlaying:false, looping : false, volume : 100, isMuted : false} )
                 setShown(true)
@@ -78,6 +93,9 @@ const useReproductor = ( ) => {
         if(data.song != null)
         {
             setFavved(!favved)
+            AxiosPrivate.post(`/beatAction/save`, {beat_id : data.song.id}).then((res) => {
+                setSaves(res.data.saves)
+            })
         }
     }
 

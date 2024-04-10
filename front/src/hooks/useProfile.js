@@ -1,45 +1,57 @@
 import React, { useEffect, useState } from 'react'
-import useAuth from './useAuth'
-import { profileState } from '@/store/profileStore';
 import { useRecoilState } from 'recoil';
+import { authAtom } from '@/store/authStoreBien';
+import CustomAxios from '@/components/api/axios';
 
 function useProfile() {
 
-    const [profileData, setProfileData] = useRecoilState(profileState)
+    const [auth, setAuth] = useRecoilState(authAtom)
+    const [profileData, setProfileData] = useState(null)
+    const [loading, setLoading] = useState(false)
+    const {AxiosPrivate} = CustomAxios()
 
-    const loadProfileData = (newProfileData) => {
+    useEffect(() => {
+        setProfileData(auth?.user)
+    }, [auth])
 
-        setProfileData(newProfileData)
+    const loadProfileData = async () => {
+        setLoading(true)
+        AxiosPrivate.get(`/auth/profile`).then((response) => {
+            const parsedData = {
+                cart: response.data.cart,
+                purchases: response.data.purchases,
+                saves: response.data.saves,
+                ...response.data.user
+            }
+
+            setProfileData(parsedData)
+        }).catch((error) => {
+            console.log(error)
+        }).finally(() => {
+            setLoading(false)
+        })
     }
 
-
-    const startEditing = () => {
-        setIsEditing(true)
-    }
-
-    const saveEditing = ({nombre, email, nombre_artistico}) => {
-        
+    const setSaves = (saves) => {
         setAuth({
-            ...auth, user : {
-                ...auth.user, nombre, email, nombre_artistico
+            ...auth,
+            user: {
+                ...auth.user,
+                saves
             }
         })
 
-        setIsEditing(false)
-
-        console.log(profileData)
+        localStorage.setItem('user', JSON.stringify({
+            ...auth.user,
+            saves
+        }))
     }
 
-    const cancelEditing = () => {
-        setIsEditing(false)
-        
+    const saveBeat = (id) => {
+        console.log("id")
     }
 
-    const modificarDatos = (newData) => {
-        setProfileData(newData)
-    }
-
-    return {loadProfileData, startEditing, saveEditing, profileData, modificarDatos, cancelEditing}
+    return {profileData, loadProfileData, saveBeat, loading, setSaves}
 
 }
 

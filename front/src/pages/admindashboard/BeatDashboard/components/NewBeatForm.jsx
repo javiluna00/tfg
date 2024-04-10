@@ -1,8 +1,6 @@
 import Textinput from '@/components/ui/Textinput'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import MoodsSelector from './CustomSelector'
-import GenresSelector from './GenresSelector'
 import Button from '@/components/ui/Button'
 import CustomSelector from './CustomSelector'
 import useMoods from '@/hooks/useMoods'
@@ -10,12 +8,10 @@ import useGenres from '@/hooks/useGenres'
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import useBeats from '@/hooks/useBeats'
-import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader'
 import ProgressBar from '@/components/ui/ProgressBar'
 import Switch from '@/components/ui/Switch'
 
-
-function NewBeatForm() {
+function NewBeatForm({AxiosPrivate}) {
 
     const schema = yup
     .object({
@@ -38,11 +34,11 @@ function NewBeatForm() {
     
 
 
-    const {moods, loadMoodsFromAPI} = useMoods()
-    const {genres, loadGenresFromAPI} = useGenres()
+    const {moods, loadMoodsFromAPI} = useMoods({AxiosPrivate})
+    const {genres, loadGenresFromAPI} = useGenres({AxiosPrivate})
 
-    const authHeader = useAuthHeader()
-    const {createBeat, uploadedProgress, loading} = useBeats()
+
+    const {createBeat, uploadedProgress, loading} = useBeats({AxiosPrivate})
 
     const [exclusiveSwitch, setExclusiveSwitch] = useState(false)
     const [selectedMoods, setSelectedMoods] = useState([])
@@ -77,7 +73,7 @@ function NewBeatForm() {
 
     const onSubmit = (data) => {
         const beat = {...data, moods: selectedMoods, genres: selectedGenres, exclusive: exclusiveSwitch, cover_file: coverFile, mp3_file: mp3File, wav_file: wavFile, stems_file: stemsFile, tagged_file: taggedFile, active: activeSwitch == true ? 1 : 0}
-        createBeat(beat, authHeader)
+        createBeat(beat)
     }
 
     return (

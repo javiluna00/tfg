@@ -1,208 +1,216 @@
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { jwtDecode } from 'jwt-decode'
+import { authAtom } from '@/store/authStoreBien'
+import { useRecoilState } from 'recoil'
+import { cartAtom } from '@/store/cartStore'
+import CustomAxios from '@/components/api/axios'
 
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import axios from "axios";
-import { jwtDecode } from "jwt-decode";
-import { split } from "postcss/lib/list";
-import { useCartActions } from "./useCartActions";
-import useProfile from "./useProfile";
-import { authAtom } from "@/store/authStoreBien";
-import { useRecoilState } from "recoil";
+const useAuthBien = () => {
+  const navigate = useNavigate()
+  const [auth, setAuth] = useRecoilState(authAtom)
+  const [cart, setCart] = useRecoilState(cartAtom)
+  const { Axios, AxiosGoogle, AxiosPrivate } = CustomAxios()
+  const [loading, setLoading] = useState(false)
 
-const useAuth = () => {
+  useEffect(() => {
+    console.log('Auth es : ', auth)
+  }, [auth])
+  useEffect(() => {
+    console.log('Cart es : ', cart)
+  }, [cart])
 
-    const back_url = import.meta.env.VITE_BACK_URL
-    const {loadCartFromLoggedUser} = useCartActions()
-    const navigate = useNavigate()
-    const {loadProfileData} = useProfile()
+  const isAdmin = () => {
+    if (isAuthenticated() && jwtDecode(auth?.token).roles.includes(1)) { return true }
 
-    const [auth, setAuth] = useRecoilState(authAtom)
+    return false
+  }
 
+  const logOut = () => {
+    window.localStorage.removeItem('user')
+    window.localStorage.removeItem('token')
+    setAuth(null)
+    navigate('/')
+  }
 
-    const isAdmin = () => {
-        if(isAuthenticated() && jwtDecode(split(authHeader, " ")[1]).roles.includes(1))
-        return true
+  const logIn = ({ email, password }) => {
+    setLoading(true)
 
-        return false
-    }
+    return Axios.post('/auth/login', {
+      email,
+      password
+    })
+      .then((res) => {
+        setLoading(false)
 
-    const [loading, setLoading] = useState(false)
-
-
-    const userFavved = (beatId) => {
-        if(isAuthenticated())
-        {
-            return userLogged.favorites.includes(beatId)
+        const parsedData = {
+          token: res.data.token,
+          user: {
+            saves: res.data.saves,
+            purchases: res.data.purchases,
+            ...res.data.user
+          }
         }
-        else
-        {
-            return false
+        setCart(res.data.cart.items || [])
+        window.localStorage.setItem('cart', JSON.stringify(res.data.cart.items || []))
+        window.localStorage.setItem('token', parsedData.token)
+        window.localStorage.setItem('user', JSON.stringify(parsedData.user))
+        setAuth(parsedData)
+        navigate('/')
+        toast.success('Sesión iniciada')
+      })
+      .catch((err) => {
+        setLoading(false)
+        toast.error(err.response.data.error)
+        return err
+      })
+  }
+
+  const googleLogin = async (accessToken) => {
+    return AxiosGoogle.get(
+      `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accessToken}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Accept: 'application/json'
         }
-    }
-
-    const numFavs = () => {
-        if(isAuthenticated())
-        {
-            return authUser.favorites.length
-        }
-    }
-
-    const toogleFav = (beatId) => {
-        return 0
-    }
-
-    const logOut = () => {
-        
-        localStorage.removeItem('user')
-        setAuth(null)
-        navigate("/feed")
-
-    }
-
-    const logIn = ({email, password}) => {
-
-        setLoading(true)
-
-        return axios.post (`${back_url}/auth/login`, {
-            email,
-            password
-        }).then((res) => {
-            setLoading(false)
-            setAuth(res.data)
-            localStorage.setItem('user', JSON.stringify(res.data))
-            navigate("/feed")
-
-        }).catch((err) => {
-            setLoading(false)
-            return err
-
+      }
+    )
+      .then((resGoogle) => {
+        return Axios.post('/auth/check-user-google', {
+          google_id: resGoogle.data.id,
+          email: resGoogle.data.email
         })
-
-    }
-
-    const googleLogin = async (access_token) => {
-
-
-                return axios
-                .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${access_token}`, {
-                    headers: {
-                        Authorization: `Bearer ${access_token}`,
-                        Accept: 'application/json'
-                    }
-                })
-                .then((resGoogle) => {
-
-                    return axios.post("http://localhost:8000/api/auth/check-user-google", {
-                        google_id : resGoogle.data.id,
-                        email : resGoogle.data.email
-                    }).then((res) => {
-                        
-
-                        if(Object.keys(res.data).length == 0)
-                        {
-                            return {message: "not registered", resGoogle : resGoogle, access_token : access_token}
-                        }
-                        else
-                        {
-                            endGoogleLogin(access_token, res.data)
-                            return "registered"
-                        }
-                    }).catch((err) => {
-                        toast.error(err.response.data.message)
-                    })
-
-                    
-                })
-                .catch((err) => toast.error(err));
-             // Llamada a la función del hook
-    }
-
-    const endGoogleLogin = (access_token, res, artist_name) => {
-
-        const {id, google_id, ...userWithoutId} = res 
-
-        const user = {
-            ...userWithoutId,
-            artist_name : artist_name,
-            google_id: google_id
-        }
-        
-
-        axios.post("http://localhost:8000/api/auth/login-oauth", {
-                        user: user,
-                        token: access_token
-                    }).then((res) => {
-
-                        setAuth(res.data)
-                        localStorage.setItem('user', JSON.stringify(res.data))
-
-                        navigate("/feed")
-                        toast.success("Sesión iniciada")
-
-                    })
-    } 
-
-    const register = async ({email, name, password, artist_name, password_confirmation}) => {
-        setLoading(true)
-        return await axios.post(`${back_url}/auth/register`, {
-                email,
-                name,
-                password,
-                artist_name,
-                password_confirmation
+          .then((res) => {
+            if (Object.keys(res.data).length === 0) {
+              return {
+                message: 'not registered',
+                resGoogle,
+                accessToken
+              }
+            } else {
+              endGoogleLogin(accessToken, res.data)
+              return 'registered'
             }
-        ).then((res) => {
-            setLoading(false)
-            return {err : null, message : res.data.message}
-        }).catch((err) => {
-            setLoading(false)
-            return {err: err.response.data, message : null}
-            
-        })
-        
+          })
+          .catch((err) => {
+            toast.error(err.response.data.message)
+          })
+      })
+      .catch((err) => toast.error(err))
+    // Llamada a la función del hook
+  }
+
+  const endGoogleLogin = (accessToken, res, artistName) => {
+    const { id, googleId, ...userWithoutId } = res
+
+    const user = {
+      ...userWithoutId,
+      artist_name: artistName || null,
+      googleId
     }
 
-    const saveBeat = async (beatId) => {
-        if(!isAuthenticated())
-        {
-            navigate("/login")
+    Axios.post('/auth/login-oauth', {
+      user,
+      token: accessToken
+    }).then((res) => {
+      const parsedData = {
+        token: res.data.token,
+        user: {
+          saves: res.data.saves,
+          purchases: res.data.purchases,
+          ...res.data.user
         }
-        return await axios.post(`${back_url}/action/save`,
-        {
-            beat_id : beatId,
-            user_id : authUser.id
-        } ,
-        {
-            headers : 
-                {Authorization : authHeader}
-        }).then((res) => {
-            console.log("Respuesta guardar beat : ", res)
-            return res.data
-        }).catch((err) => {
-            return err
-        })
-    }
+      }
+      setAuth(parsedData)
+      setCart(res.data.cart.items || [])
+      window.localStorage.setItem('cart', JSON.stringify(res.data.cart.items || []))
+      window.localStorage.setItem('token', parsedData.token)
+      window.localStorage.setItem('user', JSON.stringify(parsedData.user))
+      navigate('/')
+      toast.success('Sesión iniciada')
+    })
+  }
 
-    const authHeader = () => {
-        const token = auth?.token;
-        const isLoggedIn = !!token;
-        const isApiUrl = url.startsWith(process.env.REACT_APP_API_URL);
-        if (isLoggedIn && isApiUrl) {
-            return `Bearer ${token}`
-        } else {
-            return {};
-        }
-    }
+  const register = async ({
+    email,
+    name,
+    password,
+    artistName,
+    passwordConfirmation
+  }) => {
+    setLoading(true)
+    return await Axios.post('/auth/register', {
+      email,
+      name,
+      password,
+      artistName,
+      passwordConfirmation
+    })
+      .then((res) => {
+        setLoading(false)
+        return { err: null, message: res.data.message }
+      })
+      .catch((err) => {
+        setLoading(false)
+        return { err: err.response.data, message: null }
+      })
+  }
 
-    const isAuthenticated = () => {
-        return !!auth?.token
-    }
+  const isAuthenticated = () => {
+    return !!auth?.token
+  }
 
-    return{
-        logIn, logOut, register, authHeader, isAuthenticated 
-    }
+  const verifyAccount = (token) => {
+    setLoading(true)
+    return Axios.post('/auth/verify/', {
+      token
+    })
+      .then((res) => {
+        console.log('Res : ', res.data)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }
 
+  const sendForgotPassword = ({ email }) => {
+    return AxiosPrivate.post('/auth/forgot-password', {
+      email
+    }).then((res) => {
+      return { err: null, message: res.data.message }
+    }).catch((err) => {
+      return { err: err.response.data, message: null }
+    })
+  }
+
+  const sendNewPassword = ({ token, password, passwordConfirmation }) => {
+    return AxiosPrivate.post('/auth/reset-password', {
+      reset_password_token: token,
+      password,
+      password_confirmation: passwordConfirmation
+    }).then((res) => {
+      return { err: null, message: res.data.message }
+    }).catch((err) => {
+      return { err: err.response.data, message: null }
+    })
+  }
+
+  return {
+    auth,
+    logIn,
+    logOut,
+    register,
+    isAuthenticated,
+    loading,
+    isAdmin,
+    endGoogleLogin,
+    googleLogin,
+    verifyAccount,
+    sendForgotPassword,
+    sendNewPassword
+  }
 }
 
-export default useAuth
+export default useAuthBien

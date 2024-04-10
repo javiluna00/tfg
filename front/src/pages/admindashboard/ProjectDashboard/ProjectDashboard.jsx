@@ -1,28 +1,24 @@
 import ReactTable from '@/components/partials/reacttable/ReactTable'
 import Breadcrumbs from '@/components/ui/Breadcrumbs'
-import Dropdown from '@/components/ui/Dropdown';
 import useProjects from '@/hooks/useProjects';
 import React, { useEffect } from 'react'
-import SkeletionTable from '@/components/skeleton/Table'
-import { Menu } from '@headlessui/react';
 import { Icon } from '@iconify/react';
 import dayjs from 'dayjs';
 import Modal from '@/components/ui/Modal';
 import Button from '@/components/ui/Button';
-import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import Switch from '@/components/ui/Switch';
 
 
 
 function ProjectDashboard() {
 
-  const {projects, updateProject, deleteProject, getAllProjects} = useProjects();
+  const {AxiosPrivate} = useOutletContext()
+  const {projects, updateProject, deleteProject, getAllProjects} = useProjects({AxiosPrivate});
   const navigate = useNavigate()
-  const authHeader = useAuthHeader()
 
   const handleDeleteProject = (e, row) => {
-      deleteProject(row.row.original.id, authHeader)
+      deleteProject(row.row.original.id)
   }
 
   const actions = [
@@ -77,7 +73,7 @@ function ProjectDashboard() {
           value={activeSwitch}
           onChange={() => {
             setActiveSwitch(!activeSwitch);
-            updateProject(row.row.original.id, {active: activeSwitch ? 0 : 1}, authHeader)
+            updateProject(row.row.original.id, {active: activeSwitch ? 0 : 1})
           }}
         />
         )
@@ -141,7 +137,7 @@ function ProjectDashboard() {
   ]
 
   useEffect(() => {
-    getAllProjects(authHeader)
+    getAllProjects()
   }, [])
 
   if(!projects) {

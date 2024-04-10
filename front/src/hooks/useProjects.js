@@ -1,78 +1,62 @@
-import Axios from '@/components/AxiosSubmit'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
-function useProjects() {
-  
-    
-    const [projects, setProjects] = useState([])
-    const [activeProjects, setActiveProjects] = useState([])
+function useProjects ({ AxiosPrivate }) {
+  const [projects, setProjects] = useState([])
+  const [activeProjects, setActiveProjects] = useState([])
 
-    const getActiveProjects = async () => {
-        await Axios.get(`/project/getVisible`).then((res) => {
-            setActiveProjects(res.data)
-        })
-    }
-    const getAllProjects = async (authHeader) => {
-        await Axios.get(`/project/`, {
-            headers: {
-                Authorization: authHeader
-            }
-        }).then((res) => {
-            setProjects(res.data)
-        }).catch((err) => {
-            toast.error(err.response.data.message)
-        })
-    }
+  const getActiveProjects = async () => {
+    await AxiosPrivate.get('/project/getVisible').then((res) => {
+      setActiveProjects(res.data)
+    })
+  }
+  const getAllProjects = async () => {
+    await AxiosPrivate.get('/project/').then((res) => {
+      setProjects(res.data)
+    }).catch((err) => {
+      toast.error(err.response.data.message)
+    })
+  }
 
-    const deleteProject = async (id, authHeader) => {
-        await Axios.delete(`/project/${id}`, 
-        {
-            headers: {
-                Authorization: authHeader
-            }
-        }).then((res) => {
-            setProjects(projects.filter((project) => project.id !== id))
-            toast.success(res.data.message)
-        }).catch((err) => {
-            console.log(err)
-        })
-    }
+  const createProject = async (data) => {
+    AxiosPrivate.post('/project', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }).then((res) => {
+      toast.success(res.data.message)
+    })
+  }
 
-    const updateProject = async (id, data, authHeader) => {
+  const deleteProject = async (id) => {
+    await AxiosPrivate.delete(`/project/${id}`).then((res) => {
+      setProjects(projects.filter((project) => project.id !== id))
+      toast.success(res.data.message)
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
 
-        console.log("newData", data)
+  const updateProject = async (id, data) => {
+    await AxiosPrivate.post(`/project/${id}?_method=PATCH`, data, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }).then((res) => {
+      toast.success(res.data.message)
+      getAllProjects()
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
 
-        await Axios.post(`/project/${id}?_method=PATCH`, data, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-                Authorization: authHeader,
-            }
-        }).then((res) => {
-            toast.success(res.data.message)
-            Axios.get(`/project/`).then((res) => {
-                setProjects(res.data)
-            }).catch((err) => {
-                console.log(err)
-            })
-        }).catch((err) => {
-            console.log(err)
-        })
-    }
+  const getOneProject = async (id) => {
+    return await AxiosPrivate.get(`/project/${id}`).then((res) => {
+      return res.data
+    })
+  }
 
-    const getOneProject = async (id, authHeader) => {
-
-        return await Axios.get(`/project/${id}`, {
-            headers: {
-                Authorization: authHeader
-            }
-        }).then((res) => {
-            return res.data
-        })
-    }
-  
-  
-    return {projects, activeProjects, getAllProjects, getActiveProjects, deleteProject, updateProject, getOneProject}
+  return { projects, activeProjects, getAllProjects, getActiveProjects, createProject, deleteProject, updateProject, getOneProject }
 }
 
 export default useProjects

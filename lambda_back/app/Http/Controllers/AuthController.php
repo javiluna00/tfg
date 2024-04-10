@@ -2,16 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BeatResource;
+use App\Http\Resources\BeatSaveResource;
 use App\Http\Resources\CartResource;
+use App\Http\Resources\PurchaseResource;
 use App\Http\Resources\UserResource;
+use App\Mail\ActivateAccount;
+use App\Mail\ForgotPassword;
+use App\Models\Beat;
 use App\Models\Cart;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Mail;
 
 
 
@@ -25,7 +33,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'loginOauth', 'checkUserGoogle']]);
+        $this->middleware('jwt.verify', ['except' => ['login', 'register', 'loginOauth', 'checkUserGoogle', 'refresh', 'verify', 'sendForgotPasswordEmail', 'resetPassword']]);
     }
 
     /**
@@ -37,18 +45,25 @@ class AuthController extends Controller
     {
         $credentials = $request->only(['email', 'password']);
 
-        if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        if (!$token = auth()->attempt($credentials)) {
+            return response()->json(['error' => 'Credenciales incorrectas'], 401);
         }
+        if (auth()->user()->email_verified_at == null) {
+            return response()->json(['error' => 'Cuenta no activada. Verifica tu correo.'], 401);
+        }
+
         $token = JWTAuth::fromUser(auth()->user());
 
         $user = auth('api')->user();
 
         $cart = Cart::where('user_id', $user->id)->first();
 
-        $saves = $user->savedBeats();
 
-        return response()->json(['token' => $token, 'user' => UserResource::make($user), 'cart' => $cart ? CartResource::make($cart) : null, 'saves' => $saves, 'purchases' => $user->purchases()], 200);
+        $savedBeatsIDS = DB::table('beat_saves')->where('user_id', auth()->user()->id)->get()->pluck('beat_id');
+        $savedBeats = Beat::whereIn('id', $savedBeatsIDS)->get();
+
+
+        return response()->json(['token' => $token, 'user' => UserResource::make($user), 'cart' => $cart ? CartResource::make($cart) : [], 'saves' => BeatResource::collection($savedBeats), 'purchases' => $user->purchases()], 200);
     }
 
     public function checkUserGoogle(Request $request)
@@ -71,13 +86,12 @@ class AuthController extends Controller
     public function profile()
     {
         $user = auth('api')->user();
-        if(!$user)
-        {
+        if (!$user) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-        $user_saved_beats = $user->savedBeats();
-        $user_bought_beats = $user->boughtBeats();
-        return response()->json(['user' => UserResource::make($user), 'savedBeats' => $user_saved_beats, 'boughtBeats' => $user_bought_beats], 200);
+        $user = auth('api')->user();
+        $cart = Cart::where('user_id', $user->id)->first();
+        return response()->json(['user' => UserResource::make($user), 'cart' => $cart ? CartResource::make($cart) : null, 'saves' => $user->savedBeats(), 'purchases' => PurchaseResource::collection($user->purchases)], 200);
     }
 
     /**
@@ -114,7 +128,7 @@ class AuthController extends Controller
 
 
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
 
@@ -122,16 +136,17 @@ class AuthController extends Controller
             'name' => $request->name,
             'artist_name' => $request->artist_name,
             'email' => $request->email,
-            'password' => bcrypt($request->password)
+            'password' => bcrypt($request->password),
+            'email_verification_token' => bcrypt($request->email),
+            'email_verified_at' => null
         ]);
 
         $user->assignRole('user');
 
-
+        Mail::to($user->email)->send(new ActivateAccount($user));
 
         return response()->json([
-            'message' => 'Successfully registered',
-            'user' => $user . $user->getRoleNames(),
+            'message' => 'Cuenta registrada. Verifica tu correo para activar tu cuenta.',
         ], 201);
 
     }
@@ -155,11 +170,11 @@ class AuthController extends Controller
             'email' => $requestUser['email'],
             'google_id' => $requestUser['google_id'],
             'artist_name' => $artistName,
-            'email_verified_at' => now()
+            'email_verified_at' => now(),
+            'email_verification_token' => null
         ]);
 
         $user->assignRole('user');
-        $role = $user->getRoleNames();
 
         $token = JWTAuth::fromUser($user);
 
@@ -167,7 +182,84 @@ class AuthController extends Controller
 
         $saves = $user->savedBeats();
 
-        return response()->json(['token' => $token, 'user' => UserResource::make($user), 'cart' => $cart ? CartResource::make($cart) : null, 'saves' => $saves, 'purchases' => $user->purchases()], 200);
+        return response()->json(['token' => $token, 'user' => UserResource::make($user), 'cart' => $cart ? CartResource::make($cart) : [], 'saves' => $saves, 'purchases' => $user->purchases()], 200);
+    }
+
+    public function verify(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'token' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+        $user = User::where('email_verification_token', $request->token)->first();
+        if (!$user) {
+            return response()->json(['message' => 'Token incorrecto.'], 400);
+        }
+        if ($user->email_verified_at == null) {
+            $user->email_verified_at = now();
+            $user->email_verification_token = null;
+            $user->save();
+            return response()->json(['message' => 'Cuenta verificada.'], 200);
+        } else {
+            return response()->json(['message' => 'Cuenta ya verificada.'], 400);
+        }
+    }
+
+    public function sendForgotPasswordEmail(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255',
+        ]);
+
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+
+        $user = User::where('email', $request->email)->first();
+        if(!$user)
+        {
+            return response()->json(['message' => 'Ese email no existe.'], 400);
+        }
+        if($user->google_id != null){
+            return response()->json(['message' => 'No puedes cambiar la contraseña en este tipo de cuenta. Inicia sesión desde Google.'], 409);
+        }
+
+
+        $user->reset_password_token = bcrypt($request->email . now());
+        $user->save();
+        Mail::to($user->email)->send(new ForgotPassword($user->id));
+        return response()->json(['message' => 'Se envió un enlace a tu correo para cambiar la contraseña.'], 200);
+    }
+
+    public function resetPassword(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|string|min:6|confirmed',
+            'reset_password_token' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        $user = User::where('reset_password_token', $request->reset_password_token)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'Token incorrecto.'], 400);
+        }
+
+
+        $user->password = bcrypt($request->password);
+        $user->reset_password_token = null;
+        $user->save();
+        return response()->json(['message' => 'Contraseña cambiada con éxito.'], 200);
     }
 
     /**

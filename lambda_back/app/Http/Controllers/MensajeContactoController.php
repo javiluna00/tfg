@@ -11,7 +11,7 @@ class MensajeContactoController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['store', 'getOne']]);
+        $this->middleware('jwt.verify', ['except' => ['store', 'getOne']]);
     }
 
     public function index() {

@@ -1,16 +1,13 @@
 import Button from '@/components/ui/Button'
 import Modal from '@/components/ui/Modal'
 import useGenres from '@/hooks/useGenres'
-import useMoods from '@/hooks/useMoods'
-import { Icon } from '@iconify/react'
 import React, { useEffect, useState } from 'react'
-import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader'
 
-function GenreItem({genre}) {
+function GenreItem({genre, AxiosPrivate}) {
 
-    const {deleteGenre, updateGenre} = useGenres()
+    const {deleteGenre, updateGenre} = useGenres({AxiosPrivate})
 
-    const authHeader = useAuthHeader()
+
 
     const [name, setName] = useState('')
 
@@ -20,12 +17,12 @@ function GenreItem({genre}) {
 
     const handleDeleteGenreButton = (e) => {
         e.preventDefault()
-        deleteGenre(genre.id, authHeader)
+        deleteGenre(genre.id)
     }
 
     const handleUpdateGenreButton = (e) => {
         e.preventDefault()
-        updateGenre({id: genre.id, name}, authHeader)
+        updateGenre({id: genre.id, name})
     }
 
     return (

@@ -38,6 +38,14 @@ class Beat extends Model
         return $this->belongsToMany(User::class, 'beat_saves')->withTimestamps();
     }
 
+    public function purchases()
+    {
+        $beatLicenses = $this->licenses->pluck('id');
+        $numberOfPurchases = Purchase::whereIn('beat_license_id', $beatLicenses)->count();
+        return $numberOfPurchases;
+    }
+
+
     public function mp3_path()
     {
         return BeatLicense::where('beat_id', $this->id)->where('license_id', 1)->first()->file_url;

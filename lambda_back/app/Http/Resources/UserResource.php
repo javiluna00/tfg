@@ -22,6 +22,7 @@ class UserResource extends JsonResource
             'google_id' => $this->google_id,
             'roles' => $this->roles,
             'artist_name' => $this->artist_name,
+            'purchases' => PurchaseResource::collection($this->purchases),
             //'saved_beats' => $this->savedBeats
         ];
     }

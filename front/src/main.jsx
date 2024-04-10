@@ -13,7 +13,7 @@ import { RecoilRoot } from "recoil";
 import Lenis from '@studio-freight/lenis'
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import AuthProvider from "react-auth-kit/AuthProvider";
-import { store } from "./store/authenticationStore";
+// import { store } from "./store/authenticationStore";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -28,12 +28,9 @@ import { loadStripe } from "@stripe/stripe-js";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK);
 
-console.log("Public kay :", import.meta.env.VITE_STRIPE_PK)
-
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <>
-    <AuthProvider store={store}>
       <Elements stripe={stripePromise}>
       <GoogleOAuthProvider clientId="580307751006-9umaamkk0nmhadd739l92f1gacv4pqmm.apps.googleusercontent.com">
         <BrowserRouter>
@@ -45,6 +42,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         </BrowserRouter>
       </GoogleOAuthProvider>
       </Elements>
-    </AuthProvider>
   </>
 );

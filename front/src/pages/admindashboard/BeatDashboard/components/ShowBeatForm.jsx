@@ -8,16 +8,16 @@ import Switch from '@/components/ui/Switch'
 import Button from '@/components/ui/Button'
 import useReproductor from '@/hooks/useReproductor'
 import useBeats from '@/hooks/useBeats'
-import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader'
 import ProgressBar from '@/components/ui/ProgressBar'
 
 
 
-function ShowBeatForm({ beat, editable }) {
+
+function ShowBeatForm({ beat, editable, AxiosPrivate}) {
     
     const { register, handleSubmit, formState: { errors }, reset } = useForm()
-    const {moods, loadMoodsFromAPI} = useMoods()
-    const {genres, loadGenresFromAPI} = useGenres()
+    const {moods, loadMoodsFromAPI} = useMoods({AxiosPrivate})
+    const {genres, loadGenresFromAPI} = useGenres({AxiosPrivate})
     const [exclusiveSwitch, setExclusiveSwitch] = useState(false)
     const [selectedMoods, setSelectedMoods] = useState([])
     const [selectedGenres, setSelectedGenres] = useState([])
@@ -36,8 +36,7 @@ function ShowBeatForm({ beat, editable }) {
     const wavFileRef = useRef()
     const stemsFileRef = useRef()
 
-    const authHeader = useAuthHeader()
-    const {updateBeat, updatedProgress} = useBeats()
+    const {updateBeat, updatedProgress} = useBeats({AxiosPrivate})
 
     const onSubmit = (data) => {
         if(!editable)
@@ -90,7 +89,7 @@ function ShowBeatForm({ beat, editable }) {
                 sendingData['stems_file'] = stemsFile
             }
 
-            updateBeat(beat.id, sendingData, authHeader)
+            updateBeat(beat.id, sendingData)
         }
     }
 
@@ -99,7 +98,6 @@ function ShowBeatForm({ beat, editable }) {
         loadGenresFromAPI()
     }, [])
 
-    const {reproducirCancion} = useReproductor();
     
     useEffect(() => {
         setExclusiveSwitch(beat.still_exclusive == 1 ? true : false)

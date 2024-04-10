@@ -1,16 +1,15 @@
-import Axios from '@/components/AxiosSubmit';
 import Button from '@/components/ui/Button';
 import Switch from '@/components/ui/Switch';
 import Textinput from '@/components/ui/Textinput';
+import useProjects from "@/hooks/useProjects";
 import React, { useEffect, useState } from 'react'
-import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify';
 
-function NewProjectForm() {
+function NewProjectForm({AxiosPrivate}) {
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
-    const authHeader = useAuthHeader()
+    const {createProject} = useProjects({AxiosPrivate})
     const [coverFile, setCoverFile] = useState(null)
     const [previewCover, setPreviewCover] = useState(null)
     const [active, setActive] = useState(1)
@@ -42,16 +41,12 @@ function NewProjectForm() {
         formData.append('image', coverFile);
         formData.append('active', active);
 
-
-        Axios.post('/project', formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-                Authorization: authHeader
-            }
-        }).then((res) => {
-            toast.success(res.data.message)
+        createProject(formData).then((res) => {
             reset()
+        }).catch((err) => {
+            console.log(err)
         })
+
     }
 
     return (

@@ -1,17 +1,13 @@
 import { Icon } from "@iconify/react";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import { motion, useCycle } from "framer-motion";
 import CartPanel from "../../cart";
-import { cartState } from "@/store/cartStore";
-import { useRecoilState } from "recoil";
 import { useCartActions } from "@/hooks/useCartActions";
 
-const HeaderCart = () => {
-  const { items } = useSelector((state) => state.cart);
-  const [isOpen, toggleOpen] = useCycle(false, true);
+const HeaderCart = ({AxiosPrivate}) => {
   
-  const { cart } = useCartActions()
+  const [isOpen, toggleOpen] = useCycle(false, true);
+  const { cart } = useCartActions({AxiosPrivate})
 
 
   const handleOpenCart = () => {
@@ -28,7 +24,7 @@ const HeaderCart = () => {
           {cart.length}
         </span>
       </motion.span>
-      <CartPanel close={handleOpenCart} open={isOpen}/>
+      <CartPanel close={handleOpenCart} open={isOpen} AxiosPrivate={AxiosPrivate}/>
     </div>
   );
 };

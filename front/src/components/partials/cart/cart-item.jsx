@@ -1,9 +1,7 @@
 import React from "react";
 import Icon from "@/components/ui/Icon";
 import { Link } from "react-router-dom";
-import Dropdown from "@/components/ui/Dropdown";
-import Select from "@/components/ui/Select";
-import useAuth from "@/hooks/useAuth";
+import useAuthBien from "@/hooks/useAuthBien";
 
 function CartItem({
   item,
@@ -13,7 +11,7 @@ function CartItem({
 }) {
 
 
-  const {authHeader, isAuthenticated} = useAuth()
+  const {isAuthenticated} = useAuthBien()
 
   return (
     <div className="flex space-x-4 rtl:space-x-reverse bg-white shadow-md p-4">
@@ -71,7 +69,7 @@ function CartItem({
       </div>
       <div>
         <button
-            onClick={() => handleRemoveFromCart(item.id, authHeader, isAuthenticated())}
+            onClick={() => handleRemoveFromCart(item.id, isAuthenticated())}
             className=" text-lg inline-flex flex-col items-center justify-center h-8 w-8 rounded-full bg-gray-500-f7 dark:bg-slate-900 dark:text-slate-400 bg-slate-100 hover:bg-danger-500 hover:text-white dark:hover:bg-danger-500 dark:hover:text-white"
           >
             <Icon icon="heroicons:trash" />

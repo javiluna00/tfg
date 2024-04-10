@@ -1,18 +1,18 @@
 import Breadcrumbs from '@/components/ui/Breadcrumbs'
-import Button from '@/components/ui/Button'
 import useMoods from '@/hooks/useMoods'
-import { Icon } from '@iconify/react'
 import React, { useEffect, useState } from 'react'
-import MoodItem from './components/MoodItem'
 import Modal from '@/components/ui/Modal'
-import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader'
+import ItemList from './components/ItemList'
+import { useOutletContext } from 'react-router-dom'
 
 function ManageMoods() {
 
-    const {moods, loadMoodsFromAPI, addMood} = useMoods()
+
+    const {AxiosPrivate} = useOutletContext()
+    const {moods, loadMoodsFromAPI, addMood} = useMoods({AxiosPrivate})
 
     const [name, setName] = useState('')
-    const authHeader = useAuthHeader()
+
 
     useEffect(() => {
         loadMoodsFromAPI()
@@ -20,7 +20,7 @@ function ManageMoods() {
 
     const handleAddMoodButton = (e) => {
         e.preventDefault()
-        addMood({name}, authHeader)
+        addMood({name})
         setName('')
     }
 
@@ -39,15 +39,7 @@ function ManageMoods() {
                         </Modal>
                     </div>
 
-                    {!moods ? <SkeletionTable/> : 
-                    
-                    <div className='w-full mt-5 grid lg:grid-cols-6 sm:grid-cols-3 gap-5'>
-                        {moods.map((mood) => (
-                            <MoodItem key={mood.id} mood={mood}/>
-                        ))}
-                    </div>
-
-                    }
+                    {!moods ? <SkeletionTable/> : <ItemList data_name={"moods"} items={moods} AxiosPrivate={AxiosPrivate}/>}
                 </div>
             </div>
         </div>

@@ -188,4 +188,7 @@ return [
         'FFMpeg' => ProtoneMedia\LaravelFFMpeg\Support\FFMpeg::class
     ])->toArray(),
 
+
+    'frontend_url' => env('FRONT_URL', 'http://localhost:5173'),
+
 ];

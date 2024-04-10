@@ -1,17 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import Textinput from "@/components/ui/Textinput";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
-import Checkbox from "@/components/ui/Checkbox";
 import Button from "@/components/ui/Button";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { useLoginMutation } from "@/store/api/auth/authApiSlice";
 import { toast } from "react-toastify";
-import useAuth from "@/hooks/useAuth";
-import useSignIn from 'react-auth-kit/hooks/useSignIn'
+import useAuthBien from "@/hooks/useAuthBien";
 
 const schema = yup
   .object({
@@ -19,9 +15,7 @@ const schema = yup
     password: yup.string().required("Contraseña requerida"),
   })
   .required();
-const LoginForm = () => {
-
-  const {logIn, isAuthenticated, isLoading} = useAuth()
+const LoginForm = ({logIn, isAuthenticated, isLoading}) => {
 
   if(isAuthenticated())
   {
@@ -48,8 +42,6 @@ const LoginForm = () => {
       toast.error(error.message);
     }
   };
-
-  const [checked, setChecked] = useState(false);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 ">

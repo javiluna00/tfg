@@ -1,16 +1,18 @@
 import Breadcrumbs from '@/components/ui/Breadcrumbs'
 import React, { useEffect, useState } from 'react'
 import Modal from '@/components/ui/Modal'
-import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader'
 import useGenres from '@/hooks/useGenres'
-import GenreItem from './components/GenreItem'
+import ItemList from './components/ItemList'
+import { useOutletContext } from 'react-router-dom'
+
 
 function ManageGenres() {
 
-    const {genres, loadGenresFromAPI, addGenre, deleteGenre, updateGenre} = useGenres()
+
+    const {AxiosPrivate} = useOutletContext()
+    const {genres, loadGenresFromAPI, addGenre, deleteGenre, updateGenre} = useGenres({AxiosPrivate})
 
     const [name, setName] = useState('')
-    const authHeader = useAuthHeader()
 
     useEffect(() => {
         loadGenresFromAPI()
@@ -18,7 +20,7 @@ function ManageGenres() {
 
     const handleAddGenreButton = (e) => {
         e.preventDefault()
-        addGenre({name}, authHeader)
+        addGenre({name})
         setName('')
     }
 
@@ -37,15 +39,7 @@ function ManageGenres() {
                         </Modal>
                     </div>
 
-                    {!genres ? <SkeletionTable/> : 
-                    
-                    <div className='w-full mt-5 grid lg:grid-cols-6 sm:grid-cols-3 gap-5'>
-                        {genres.map((genre) => (
-                            <GenreItem key={genre.id} genre={genre}/>
-                        ))}
-                    </div>
-
-                    }
+                    {!genres ? <SkeletionTable/> : <ItemList data_name={"genres"} items={genres} AxiosPrivate={AxiosPrivate}/>}
                 </div>
             </div>
         </div>

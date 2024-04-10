@@ -1,15 +1,14 @@
-import React, { Fragment, useEffect } from "react";
+import React from "react";
 import Icon from "@/components/ui/Icon";
-import SimpleBar from "simplebar-react";
-import { useSelector, useDispatch } from "react-redux";
-import { motion, useCycle } from "framer-motion";
+import { useDispatch } from "react-redux";
+import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
-import { removeFromCart, updateQuantity } from "@/store/api/shop/cartSlice";
+import { updateQuantity } from "@/store/api/shop/cartSlice";
 import CartItem from "./cart-item";
 import NoItem from "./no-item";
 import clsx from "clsx";
 import { useCartActions } from "@/hooks/useCartActions";
-import useAuth from "@/hooks/useAuth";
+
 import { useNavigate } from "react-router-dom";
 const variants = {
   open: (height = 1000) => ({
@@ -48,18 +47,18 @@ const variants2 = {
   },
 };
 
-const CartPanel = ({ open, close }) => {
+const CartPanel = ({ open, close, AxiosPrivate }) => {
 
   const navigate = useNavigate()
 
-  const { clearCart, removeItem, totalPrice, cart } = useCartActions();
+  const { clearCart, removeItem, totalPrice, cart } = useCartActions({AxiosPrivate});
 
   
 
   const dispatch = useDispatch();
 
-  const handleRemoveFromCart = (productId, authHeader, isAuthenticated) => {
-    removeItem(productId, authHeader, isAuthenticated);
+  const handleRemoveFromCart = (productId, isAuthenticated) => {
+    removeItem(productId, isAuthenticated);
   };
   const handleIncreaseQuantity = (productId) => {
     const item = items.find((item) => item.id === productId);

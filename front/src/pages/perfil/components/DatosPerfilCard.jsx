@@ -1,18 +1,17 @@
 import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
-import useAuth from '@/hooks/useAuth'
 import useProfile from '@/hooks/useProfile'
 import { Icon } from '@iconify/react'
 import React, { useEffect, useState } from 'react'
 
 
-function DatosPerfilCard() {
+function DatosPerfilCard({user, AxiosPrivate}) {
 
-    const { startEditing, saveEditing, profileData, isEditing, modificarDatos, cancelEditing } = useProfile()
+    const { startEditing, saveEditing, profileData, isEditing, cancelEditing } = useProfile({AxiosPrivate})
 
-    const [inputNombre, setInputNombre] = useState(profileData?.nombre)
-    const [inputEmail, setInputEmail] = useState(profileData?.email)
-    const [inputNombreArtistico, setInputNombreArtistico] = useState(profileData?.nombre_artistico)
+    const [inputNombre, setInputNombre] = useState(user?.name)
+    const [inputEmail, setInputEmail] = useState(user?.email)
+    const [inputNombreArtistico, setInputNombreArtistico] = useState(user?.artist_name)
 
     const [previousData, setPreviousData] = useState(null)
 
@@ -24,19 +23,18 @@ function DatosPerfilCard() {
 
     const hdlStartEditing = () => {
         setPreviousData({
-            name: profileData?.name,
-            email: profileData?.email,
-            artist_name: profileData?.artist_name,
+            name: user?.name,
+            email: user?.email,
+            artist_name: user?.artist_name,
         })
         startEditing()
     }
     const hdlCancelEditing = () => {
-        setInputNombre(previousData?.nombre)
+        setInputNombre(previousData?.name)
         setInputEmail(previousData?.email)
-        setInputNombreArtistico(previousData?.nombre_artistico)
+        setInputNombreArtistico(previousData?.artist_name)
         cancelEditing()
     }
-    const { userLogged } = useAuth()
 
   return (
     <div className="lg:col-span-4 col-span-12">

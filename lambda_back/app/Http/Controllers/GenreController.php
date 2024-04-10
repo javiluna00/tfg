@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Validator;
 
 class GenreController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('jwt.verify', ['except' => ['index']]);
+    }
+
     public function index()
     {
         return response()->json(Genre::all(), 200);

@@ -9,9 +9,9 @@ import BeatSearch from './BeatSearch'
 import { useRecoilValue } from "recoil";
 import { beatState } from "@/store/beatStore";
 import { Icon } from '@iconify/react'
-function BeatFilter({moods, genres, setGenres, setMoods}) {
+function BeatFilter({moods, genres, setGenres, setMoods, AxiosPrivate}) {
 
-  const {filter, beatData, setBeatData} = useBeatFinder(beatState);
+  const {filter, beatData, setBeatData} = useBeatFinder({AxiosPrivate});
 
   const filters = [
     { name: 'BPM', label: 'BPM' },
@@ -150,7 +150,7 @@ function BeatFilter({moods, genres, setGenres, setMoods}) {
         
         {moods.map((mood, index) => (
 
-            <span className={`font-inter ${mood.active ? 'text-white' : 'text-zinc-400'} cursor-pointer`} onClick={() => handleMoodClick(index)}>{mood.label}</span>
+            <span key={mood.id} className={`font-inter ${mood.active ? 'text-white' : 'text-zinc-400'} cursor-pointer`} onClick={() => handleMoodClick(index)}>{mood.label}</span>
 
         ))}
         </div>
@@ -168,7 +168,7 @@ function BeatFilter({moods, genres, setGenres, setMoods}) {
         
         {genres.map((genre, index) => (
 
-            <span className={`font-inter ${genre.active ? 'text-white' : 'text-zinc-400'} cursor-pointer`} onClick={() => handleGenreClick(index)}>{genre.label}</span>
+            <span key={genre.id} className={`font-inter ${genre.active ? 'text-white' : 'text-zinc-400'} cursor-pointer`} onClick={() => handleGenreClick(index)}>{genre.label}</span>
 
         ))}
         </div>

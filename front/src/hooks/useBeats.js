@@ -1,18 +1,19 @@
-import Axios from "@/components/AxiosSubmit"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 
 
 
-function useBeats() {
+function useBeats({AxiosPrivate}) {
     const [activeBeats, setActiveBeats] = useState()
     const [beats, setBeats] = useState()
     const [uploadedProgress, setUploadedProgress] = useState(0)
     const [updatedProgress, setUpdatedProgress] = useState(0)
     const [loading, setLoading] = useState(false)
+    const navigate = useNavigate()
 
     const loadActiveBeatsFromAPI = async () => {
-        Axios.get(`/beat/`).then((res) => {
+        AxiosPrivate.get(`/beat/`).then((res) => {
             const formattedData = res.data.map((beat) => {
                 return {
                     id: beat.id,
@@ -30,53 +31,57 @@ function useBeats() {
         })
     }
 
-    const getOneBeat = async (id, mode, authHeader) => {
-        return await Axios.get(`/beat/${id}?_mode=${mode}`, mode == "full" && {headers: {Authorization: authHeader}}).then((res) => {
+    const getOneBeat = async (id, mode) => {
+        return await AxiosPrivate.get(`/beat/${id}?_mode=${mode}`).then((res) => {
             return res.data
         }).catch((err) => {
             console.log(err)
         })
     }
 
-    const loadAllBeatsFromAPI = async (authHeader) => {
-        Axios.get(`/beat/all`, {headers: {Authorization: authHeader}}).then((res) => {
+    const loadAllBeatsFromAPI = async () => {
+        AxiosPrivate.get(`/beat/all`).then((res) => {
             setBeats(res.data)
         }).catch((err) => {
             console.log(err)
         })
     }
 
-    const createBeat = async (data, authHeader) => {
+    const createBeat = async (data) => {
         setLoading(true)
-        await Axios.post(`/beat/`, data, {
+        await AxiosPrivate.post(`/beat/`, data, {
             headers: {
                 'Content-Type': 'multipart/form-data',
-                Authorization: authHeader
             },
             onUploadProgress: ({loaded, total}) => {
                 setUploadedProgress(Math.round((loaded / total) * 100))
             }
         }).then((res) => {
-            loadBeatsFromAPI()
+            toast.success(res.data.message)
+            navigate("/dashboard/beats")
         }).catch((err) => {
-            console.log(err)
+            const errors = err.response.data
+            for (const error in errors) {
+                for (const message of errors[error]) {
+                    toast.error(message)
+                }
+            }
         }).finally(() => {
             setLoading(false)
         })
     }
 
-    const updateBeat = async (id, data, authHeader) => {
+    const updateBeat = async (id, data) => {
         setLoading(true)
-        await Axios.post(`/beat/${id}?_method=PATCH`, data, {
+        await AxiosPrivate.post(`/beat/${id}?_method=PATCH`, data, {
             headers: {
                 'Content-Type': 'multipart/form-data',
-                Authorization: authHeader
             },
             onUploadProgress: ({loaded, total}) => {
                 setUpdatedProgress(Math.round((loaded / total) * 100))
             }
         }).then((res) => {
-            loadAllBeatsFromAPI(authHeader)
+            loadAllBeatsFromAPI()
             toast.success(res.data.message)
         }).catch((err) => {
             console.log(err)
@@ -85,13 +90,11 @@ function useBeats() {
         })
     }
 
-    const deleteBeat = (id, authHeader) => {
-        Axios.delete(`/beat/${id}`, {
-            headers: {
-                Authorization: authHeader
-            }
+    const deleteBeat = (id) => {
+        AxiosPrivate.delete(`/beat/${id}`, {
+
         }).then((res) => {
-            loadAllBeatsFromAPI(authHeader)
+            loadAllBeatsFromAPI()
             toast.success(res.data.message)
         }).catch((err) => {
             console.log(err)

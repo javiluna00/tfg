@@ -19,13 +19,13 @@ class BeatController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['getActives', 'getOne', 'testWaterMark']]);
+        $this->middleware('jwt.verify', ['except' => ['getActives', 'getOne', 'testWaterMark']]);
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function getAll()
+    public function getAll(Request $request)
     {
         if(!auth()->user()->isAdmin())
         {

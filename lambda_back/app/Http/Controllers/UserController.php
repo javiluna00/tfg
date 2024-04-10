@@ -14,7 +14,7 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['getOne']]);
+        $this->middleware('jwt.verify', ['except' => []]);
     }
 
     /**
@@ -40,6 +40,10 @@ class UserController extends Controller
      */
     public function getOne(string $id)
     {
+        $authUser = auth()->user();
+        if(!$authUser->isAdmin()){
+            return response()->json(['message' => 'No autorizado'], 403);
+        }
         $user = User::findOrFail($id);
         return response()->json([
             'message' => 'Usuario encontrado',
@@ -73,7 +77,7 @@ class UserController extends Controller
         $roles = $request->roles;
         $user->syncRoles($roles);
 
-        return response()->json(UserResource::make($user), 201);
+        return response()->json(["message" => "Usuario actualizado"], 201);
     }
 
 

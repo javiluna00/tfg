@@ -41,16 +41,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group([
 
-    'middleware' => 'api',
     'prefix' => 'auth'
 
 ], function ($router) {
 
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('verify', [AuthController::class, 'verify']);
     Route::post('check-user-google', [AuthController::class, 'checkUserGoogle']);
-    Route::post('refresh', [AuthController::class, 'refresh']);
-    Route::post('profile', [AuthController::class, 'profile']);
+    Route::post('forgot-password', [AuthController::class, 'sendForgotPasswordEmail']);
+    Route::post('reset-password', [AuthController::class, 'resetPassword']);
+    Route::get('refresh', [AuthController::class, 'refresh']);
+    Route::get('profile', [AuthController::class, 'profile']);
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login-oauth', [AuthController::class, 'loginOauth']);
 
@@ -60,22 +62,18 @@ Route::group([
 //ACCIONES
 
 Route::group([
-
-    'middleware' => 'api',
-    'prefix' => 'action'
-
+    'prefix' => 'beatAction'
 ], function ($router) {
 
     Route::post('/click', [BeatActionController::class, 'storeClick']);
     Route::post('/play', [BeatActionController::class, 'storePlay']);
-    Route::post('/save', [BeatActionController::class, 'storeSave']);
+    Route::post('/save', [BeatActionController::class, 'toogleSave']);
 });
 
 //BEATS
 
 Route::group([
 
-    'middleware' => 'api',
     'prefix' => 'beat'
 
 ], function ($router) {
@@ -94,7 +92,9 @@ Route::group([
 });
 
 Route::group([
+
     'prefix' => 'beatlicense'
+
 ], function ($router) {
     Route::get('/getOne', [BeatLicenseController::class, 'getOne']);
     Route::get("/{id}/download", [BeatLicenseController::class, 'download']);
@@ -103,6 +103,7 @@ Route::group([
 Route::group([
 
     'prefix' => 'mails'
+
 ], function ($router) {
 
     Route::post('/', [EmailController::class, "sendSuccessfulPurchaseEmail"]);
@@ -112,7 +113,7 @@ Route::group([
 
 Route::group([
 
-    'middleware' => 'api',
+
     'prefix' => 'contacto'
 
 ], function ($router) {
@@ -124,8 +125,8 @@ Route::group([
 
 Route::group([
 
-    'middleware' => 'api',
     'prefix' => 'cart'
+
 ], function ($router) {
 
     Route::post("/", [CartController::class, 'store']);
@@ -140,7 +141,6 @@ Route::group([
 
 Route::group([
 
-    'middleware' => 'api',
     'prefix' => 'user'
 
 ], function ($router) {
@@ -153,8 +153,8 @@ Route::group([
 
 Route::group([
 
-    'middleware' => 'api',
     'prefix' => 'genres'
+
 ], function ($router) {
     Route::get("/", [GenreController::class, 'index']);
     Route::post("/", [GenreController::class, 'store']);
@@ -165,8 +165,8 @@ Route::group([
 
 Route::group([
 
-    'middleware' => 'api',
     'prefix' => 'moods'
+
 ], function ($router) {
     Route::get("/", [MoodController::class, 'index']);
     Route::post("/", [MoodController::class, 'store']);
@@ -180,7 +180,6 @@ Route::post("/stripe/getSessionInfo", [StripeController::class, 'getSessionInfo'
 
 Route::group([
 
-    'middleware' => 'api',
     'prefix' => 'project'
 
 ], function ($router) {
@@ -194,3 +193,10 @@ Route::group([
 
 
 Route::post("/testWaterMark/{id}", [BeatController::class, 'testWaterMark']);
+
+Route::group([
+
+    'prefix' => 'mail'
+], function ($router) {
+    Route::post('/', [EmailController::class, 'sendEmail']);
+});

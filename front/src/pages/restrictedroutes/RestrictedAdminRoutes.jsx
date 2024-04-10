@@ -1,10 +1,9 @@
-import useAuth from '@/hooks/useAuth';
 import React from 'react'
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useOutletContext } from 'react-router-dom';
 
 function RestrictedAdminRoutes() {
 
-    const {isAdmin} = useAuth();
+    const {isAdmin, auth, AxiosPrivate} = useOutletContext();
 
     if(!isAdmin()) {
         return <Navigate to="/404" />
@@ -12,7 +11,7 @@ function RestrictedAdminRoutes() {
     else
     {
         return(
-            <Outlet />
+            <Outlet context={{auth, AxiosPrivate}} />
         )
     }
 

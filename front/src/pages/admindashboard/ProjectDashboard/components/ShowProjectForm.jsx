@@ -1,21 +1,17 @@
-import Axios from '@/components/AxiosSubmit';
 import SkeletionTable from '@/components/skeleton/Table';
 import Button from '@/components/ui/Button';
-import Textinput from '@/components/ui/Textinput';
 import useProjects from '@/hooks/useProjects';
 import React, { useEffect, useRef, useState } from 'react'
-import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 
 
 
-function ShowProjectForm({editable = false}) {
+function ShowProjectForm({editable = false, AxiosPrivate}) {
 
     const { id } = useParams()
     const [project, setProject] = useState({})
-    const {getOneProject, updateProject} = useProjects()
-    const authHeader = useAuthHeader()
+    const {getOneProject, updateProject} = useProjects({AxiosPrivate})
     const [loading, setLoading] = useState(false)
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
@@ -41,7 +37,7 @@ function ShowProjectForm({editable = false}) {
 
     useEffect(() => {
         setLoading(true)
-        getOneProject(id, authHeader).then((res) => {
+        getOneProject(id).then((res) => {
             setProject(res)
             setImagePath(res.image)
             setOriginalImagePath(res.image)
@@ -73,7 +69,7 @@ function ShowProjectForm({editable = false}) {
             
 
 
-        updateProject(id, formData, authHeader)
+        updateProject(id, formData)
         
     }
 

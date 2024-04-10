@@ -57,7 +57,7 @@ const MobileMenu = ({open, setOpen}) => {
                     <div className="w-full  flex flex-col items-center justify-center gap-20">
 
                       {topMenu.map((item) => (
-                        <div  key={item.id} onClick={closeModal}>
+                        <div key={item.link} onClick={closeModal}>
                           <Link to={"/" + item.link}>
 
                             <div className={`flex flex-1 items-center space-x-[6px] rtl:space-x-reverse`}>

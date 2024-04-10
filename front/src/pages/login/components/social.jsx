@@ -1,18 +1,8 @@
-import React, { useEffect, useState } from "react";
-// import images
-import Twitter from "@/assets/images/icon/tw.svg";
-import FaceBook from "@/assets/images/icon/fb.svg";
-import LinkedIn from "@/assets/images/icon/in.svg";
+import React from "react";
 import Google from "@/assets/images/icon/gp.svg";
 import { useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
-import useAuth from "@/hooks/useAuth";
-import useSignIn from "react-auth-kit/hooks/useSignIn";
-import { useLocation, useNavigate } from "react-router-dom";
-const Social = ({activeArtistName}) => {
-
-  const {logIn, logOut, isAuthenticated, authUser, googleLogin} = useAuth()
-
+import useAuthBien from "@/hooks/useAuthBien";
+const Social = ({activeArtistName, googleLogin}) => {
 
 
   const errorMessage = (error) => {

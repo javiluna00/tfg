@@ -30,6 +30,9 @@ class BeatResource extends JsonResource
             'licenses' => $this->licenses->each(function ($license) {
                 $license->pivot->makeHidden(['file_url']);
             }),
+            'saves' => count($this->saves),
+            'purchases' => $this->purchases(),
+            'plays' => count($this->plays),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];

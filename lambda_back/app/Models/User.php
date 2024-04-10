@@ -26,7 +26,9 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
         'google_id',
-        'email_verified_at'
+        'email_verified_at',
+        'email_verification_token',
+        'reset_password_token',
     ];
 
     /**
@@ -79,13 +81,15 @@ class User extends Authenticatable implements JWTSubject
 
     public function savedBeats()
     {
-        return $this->belongsToMany(Beat::class, 'saves')->withTimestamps();
+            return $this->belongsToMany(Beat::class, 'beat_saves')->withTimestamps();
     }
 
 
     public function purchases()
     {
-        return $this->hasMany(Purchase::class, 'user_id');
+
+        return $this->hasMany(Purchase::class);
+
     }
 
     public function getRoleIDs()

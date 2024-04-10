@@ -1,15 +1,12 @@
 import Button from '@/components/ui/Button'
 import Modal from '@/components/ui/Modal'
 import useMoods from '@/hooks/useMoods'
-import { Icon } from '@iconify/react'
+
 import React, { useEffect, useState } from 'react'
-import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader'
 
-function MoodItem({mood}) {
+function MoodItem({mood, AxiosPrivate}) {
 
-    const {deleteMood, updateMood} = useMoods()
-
-    const authHeader = useAuthHeader()
+    const {deleteMood, updateMood} = useMoods({AxiosPrivate})
 
     const [name, setName] = useState('')
 
@@ -19,12 +16,12 @@ function MoodItem({mood}) {
 
     const handleDeleteMoodButton = (e) => {
         e.preventDefault()
-        deleteMood(mood.id, authHeader)
+        deleteMood(mood.id)
     }
 
     const handleUpdateMoodButton = (e) => {
         e.preventDefault()
-        updateMood({id: mood.id, name}, authHeader)
+        updateMood({id: mood.id, name})
     }
 
     return (
