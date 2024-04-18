@@ -13,30 +13,29 @@ import {
 
 import Button from '@/components/ui/Button'
 import { useNavigate } from 'react-router-dom'
-import SkeletionTable from '@/components/skeleton/Table'
 
 function ReactTable ({ name, columns, data, isPaginated, isGlobalFiltered, isSortered, hasNewButton = false, newEntityUrl }) {
-  const IndeterminateCheckbox = React.forwardRef(
-    ({ indeterminate, ...rest }, ref) => {
-      const defaultRef = React.useRef()
-      const resolvedRef = ref || defaultRef
+  // const IndeterminateCheckbox = React.forwardRef(
+  //   ({ indeterminate, ...rest }, ref) => {
+  //     const defaultRef = React.useRef()
+  //     const resolvedRef = ref || defaultRef
 
-      React.useEffect(() => {
-        resolvedRef.current.indeterminate = indeterminate
-      }, [resolvedRef, indeterminate])
+  //     React.useEffect(() => {
+  //       resolvedRef.current.indeterminate = indeterminate
+  //     }, [resolvedRef, indeterminate])
 
-      return (
-        <>
-          <input
-            type='checkbox'
-            ref={resolvedRef}
-            {...rest}
-            className='table-checkbox'
-          />
-        </>
-      )
-    }
-  )
+  //     return (
+  //       <>
+  //         <input
+  //           type='checkbox'
+  //           ref={resolvedRef}
+  //           {...rest}
+  //           className='table-checkbox'
+  //         />
+  //       </>
+  //     )
+  //   }
+  // )
 
   const table = useReactTable({
     columns,
@@ -67,68 +66,68 @@ function ReactTable ({ name, columns, data, isPaginated, isGlobalFiltered, isSor
             <div className='inline-block min-w-full align-middle'>
               <div className='overflow-hidden '>
                 {data.length === 0
-                  ? <p className='text-center text-slate-500 font-medium text-2xl'>No hay datos</p>
+                  ? <p className='text-center text-slate-500 font-bold text-md uppercase py-10'>No hay datos</p>
                   : <table
-                            className='bg-slate-100 dark:bg-slate-800 min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700'
-                          >
-                          <thead className=' border-t border-slate-100 dark:border-slate-800'>
-                            {table.getHeaderGroups().map(headerGroup => (
-                              <tr key={headerGroup.id} className='bg-slate-50 dark:bg-slate-700 h-12'>
-                              {headerGroup.headers.map(header => {
+                      className='bg-slate-100 dark:bg-slate-800 min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700'
+                    >
+                    <thead className=' border-t border-slate-100 dark:border-slate-800'>
+                      {table.getHeaderGroups().map(headerGroup => (
+                        <tr key={headerGroup.id} className='bg-slate-50 dark:bg-slate-700 h-12'>
+                          {headerGroup.headers.map(header => {
+                            return (
+                              <th key={header.id} className='table-th'>
+                                {header.isPlaceholder
+                                  ? null
+                                  : (
+                                    <div
+                                      {...{
+                                        className: header.column.getCanSort()
+                                          ? 'cursor-pointer select-none flex items-center space-x-2'
+                                          : '',
+                                        onClick: header.column.getToggleSortingHandler()
+                                      }}
+                                    >
+                                      {flexRender(
+                                        header.column.columnDef.header,
+                                        header.getContext()
+                                      )}
+                                      {{
+                                        asc: <Icon icon='heroicons-outline:arrow-up' />,
+                                        desc: <Icon icon='heroicons-outline:arrow-down' />
+                                      }[header.column.getIsSorted()] ?? null}
+                                    </div>
+                                    )}
+                              </th>
+                            )
+                          })}
+                        </tr>
+                      ))}
+                    </thead>
+
+                    <tbody
+                      className='bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700'
+                    >
+                      {table
+                        .getRowModel()
+                        .rows
+                        .map(row => {
+                          return (
+                            <tr key={row.id}>
+                              {row.getVisibleCells().map(cell => {
                                 return (
-                                  <th key={header.id} className='table-th'>
-                                    {header.isPlaceholder
-                                      ? null
-                                      : (
-                                      <div
-                                        {...{
-                                          className: header.column.getCanSort()
-                                            ? 'cursor-pointer select-none flex items-center space-x-2'
-                                            : '',
-                                          onClick: header.column.getToggleSortingHandler()
-                                        }}
-                                      >
-                                        {flexRender(
-                                          header.column.columnDef.header,
-                                          header.getContext()
-                                        )}
-                                        {{
-                                          asc: <Icon icon='heroicons-outline:arrow-up' />,
-                                          desc: <Icon icon='heroicons-outline:arrow-down' />
-                                        }[header.column.getIsSorted()] ?? null}
-                                      </div>
-                                        )}
-                                  </th>
+                                  <td key={cell.id} className='table-td z-[9999]'>
+                                    {flexRender(
+                                      cell.column.columnDef.cell,
+                                      cell.getContext()
+                                    )}
+                                  </td>
                                 )
                               })}
                             </tr>
-                            ))}
-                          </thead>
-
-                          <tbody
-                            className='bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700'
-                          >
-                            {table
-                              .getRowModel()
-                              .rows
-                              .map(row => {
-                                return (
-                                <tr key={row.id}>
-                                  {row.getVisibleCells().map(cell => {
-                                    return (
-                                      <td key={cell.id} className='table-td z-[9999]'>
-                                        {flexRender(
-                                        cell.column.columnDef.cell,
-                                        cell.getContext()
-                                      )}
-                                      </td>
-                                    )
-                                  })}
-                                </tr>
-                                )
-                              })}
-                          </tbody>
-                          </table>}
+                          )
+                        })}
+                    </tbody>
+                  </table>}
 
               </div>
             </div>
@@ -173,14 +172,14 @@ function ReactTable ({ name, columns, data, isPaginated, isGlobalFiltered, isSor
               <span className='flex items-center gap-1'>
                 | Go to page:
                 <input
-                        type='number'
-                        defaultValue={table.getState().pagination.pageIndex + 1}
-                        onChange={e => {
-                          const page = e.target.value ? Number(e.target.value) - 1 : 0
-                          table.setPageIndex(page)
-                        }}
-                        className='border p-1 rounded w-16'
-                      />
+                  type='number'
+                  defaultValue={table.getState().pagination.pageIndex + 1}
+                  onChange={e => {
+                    const page = e.target.value ? Number(e.target.value) - 1 : 0
+                    table.setPageIndex(page)
+                  }}
+                  className='border p-1 rounded w-16'
+                />
               </span>
               <select
                 value={table.getState().pagination.pageSize}
@@ -191,8 +190,8 @@ function ReactTable ({ name, columns, data, isPaginated, isGlobalFiltered, isSor
               >
                 {[10, 20, 30, 40, 50].map(pageSize => (
                   <option key={pageSize} value={pageSize}>
-                          Mostrar {pageSize}
-                        </option>
+                    Mostrar {pageSize}
+                  </option>
                 ))}
               </select>
             </div>

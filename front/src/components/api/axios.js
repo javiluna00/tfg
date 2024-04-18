@@ -41,7 +41,7 @@ function CustomAxios () {
     async (error) => {
       const originalRequest = error.config
 
-      if (error.response && error.response.status === 401 && error.response.data.message == 'token_not_found') {
+      if (error.response && error.response.status === 401 && error.response.data.message === 'token_not_found') {
         if (!isRefreshing) {
           isRefreshing = true
           try {

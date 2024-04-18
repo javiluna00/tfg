@@ -6,6 +6,7 @@ import SkeletionTable from '@/components/skeleton/Table'
 import { Icon } from '@iconify/react'
 import dayjs from 'dayjs'
 import { useNavigate, useOutletContext } from 'react-router-dom'
+import Tooltip from '@/components/ui/Tooltip'
 
 function UserDashboard () {
   const navigate = useNavigate()
@@ -74,7 +75,15 @@ function UserDashboard () {
         return (
           <div className='flex justify-start items-center gap-5'>
             {actions.map((action, index) => (
-              <Icon key={index} icon={action.icon} className='text-slate-600 cursor-pointer hover:text-red-500 duration-150' fontSize={20} onClick={() => navigate(action.link.replace(':id', row.row.original.id))} />
+              <Tooltip key={index} content={action.name}>
+                <div
+                  className='cursor-pointer hover:text-red-500 dark:hover:bg-slate-800'
+                >
+                  <span className='text-base'>
+                    <Icon key={index} icon={action.icon} className='text-slate-600 cursor-pointer hover:text-red-500 duration-150' fontSize={20} onClick={() => navigate(action.link.replace(':id', row.row.original.id))} />
+                  </span>
+                </div>
+              </Tooltip>
             ))}
           </div>
         )

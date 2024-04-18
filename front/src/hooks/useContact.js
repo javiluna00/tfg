@@ -1,10 +1,12 @@
+import CustomAxios from '@/components/api/axios'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 
-const useContact = ({ AxiosPrivate }) => {
+const useContact = () => {
+  const [contact, setContact] = useState(null)
   const [contacts, setContacts] = useState([])
-  const [loading, setLoading] = useState(false)
-
+  const [isLoading, setIsLoading] = useState(false)
+  const { AxiosPrivate } = CustomAxios()
   const [contactoData, setContactoData] = useState({
 
     nombre: '',
@@ -15,16 +17,10 @@ const useContact = ({ AxiosPrivate }) => {
 
   })
 
-  const checkEmail = (email) => {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    return re.test(String(email).toLowerCase())
-  }
-
   const sendForm = async (data) => {
-    AxiosPrivate.post('contacto/', data)
+    AxiosPrivate.post('contact/', data)
       .then((res) => {
         toast.success(res.data.message)
-        clearForm()
       })
       .catch((err) => {
         toast.error(err.response.data.message)
@@ -32,20 +28,41 @@ const useContact = ({ AxiosPrivate }) => {
   }
 
   const getContacts = () => {
-    setLoading(true)
-    AxiosPrivate.get('/contacto/').then((res) => {
+    setIsLoading(true)
+    AxiosPrivate.get('/contact/').then((res) => {
       setContacts(res.data.data)
+    }).finally(() => {
+      setIsLoading(false)
     })
-    setLoading(false)
+  }
+
+  const getContact = (id) => {
+    setIsLoading(true)
+    AxiosPrivate.get(`/contact/${id}`).then((res) => {
+      setContact(res.data.data)
+    })
+    setIsLoading(false)
+  }
+
+  const updateContact = (id, contactData) => {
+    setIsLoading(true)
+    return AxiosPrivate.patch(`/contact/${id}`, contactData).then((res) => {
+      return res.data
+    }).finally(() => {
+      setIsLoading(false)
+    })
   }
 
   return {
     contactoData,
     setContactoData,
     sendForm,
+    getContact,
     getContacts,
     contacts,
-    loading
+    contact,
+    isLoading,
+    updateContact
   }
 }
 

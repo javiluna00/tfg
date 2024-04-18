@@ -10,7 +10,9 @@ use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MensajeContactoController;
 use App\Http\Controllers\MoodController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebhookController;
@@ -83,6 +85,7 @@ Route::group([
     Route::patch("/{id}", [BeatController::class, 'update']);
     Route::get("/all", [BeatController::class, 'getAll']);
     Route::get("/{id}", [BeatController::class, 'getOne']);
+    Route::get("/random/{id}", [BeatController::class, 'getRandom']);
     Route::delete("/{id}", [BeatController::class, 'destroy']);
     Route::get("/{id}/tagged", [FileController::class, 'getTagged']);
 
@@ -114,11 +117,13 @@ Route::group([
 Route::group([
 
 
-    'prefix' => 'contacto'
+    'prefix' => 'contact'
 
 ], function ($router) {
     Route::post('/', [MensajeContactoController::class, 'store']);
     Route::get('/', [MensajeContactoController::class, 'index']);
+    Route::get('/{id}', [MensajeContactoController::class, 'getOne']);
+    Route::patch('/{id}', [MensajeContactoController::class, 'update']);
 });
 
 //CARRITO
@@ -136,7 +141,7 @@ Route::group([
     Route::get("/", [CartController::class, 'index']);
     Route::get("/{id}", [CartController::class, 'getOne']);
     Route::delete("/{id}", [CartController::class, 'destroy']);
-    Route::post("/payLogged", [CartController::class, 'payLogged']);
+    Route::post("/pay", [CartController::class, 'pay']);
 });
 
 Route::group([
@@ -150,6 +155,13 @@ Route::group([
     Route::get("/{id}", [UserController::class, 'getOne']);
 });
 
+Route::group([
+    'prefix' => 'purchases'
+], function ($router) {
+
+    Route::get("/", [PurchaseController::class, 'index']);
+
+});
 
 Route::group([
 
@@ -199,4 +211,10 @@ Route::group([
     'prefix' => 'mail'
 ], function ($router) {
     Route::post('/', [EmailController::class, 'sendEmail']);
+});
+
+Route::group([
+    'prefix' => 'statistics'
+], function ($route) {
+    Route::get("/", [StatisticsController::class, 'index']);
 });

@@ -1,18 +1,15 @@
-import React from "react";
-import useSkin from "@/hooks/useSkin";
+import React from 'react'
 
 const Card = ({
   children,
   title,
   subtitle,
   headerslot,
-  className = "custom-class",
-  bodyClass = "p-6",
+  className = 'custom-class',
+  bodyClass = 'p-6',
   noborder,
-  titleClass = "custom-class",
+  titleClass = 'custom-class'
 }) => {
-  const [skin] = useSkin();
-
   return (
     <div
       className={`
@@ -24,17 +21,17 @@ const Card = ({
         `}
     >
       {(title || subtitle) && (
-        <header className={`card-header ${noborder ? "no-border" : ""}`}>
+        <header className={`card-header ${noborder ? 'no-border' : ''}`}>
           <div>
             {title && <div className={`card-title ${titleClass}`}>{title}</div>}
-            {subtitle && <div className="card-subtitle">{subtitle}</div>}
+            {subtitle && <div className='card-subtitle'>{subtitle}</div>}
           </div>
-          {headerslot && <div className="card-header-slot">{headerslot}</div>}
+          {headerslot && <div className='card-header-slot'>{headerslot}</div>}
         </header>
       )}
       <main className={`card-body ${bodyClass} w-auto`}>{children}</main>
     </div>
-  );
-};
+  )
+}
 
-export default Card;
+export default Card

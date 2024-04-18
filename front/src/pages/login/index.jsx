@@ -3,13 +3,8 @@ import { Link, useNavigate, useOutletContext } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import useDarkMode from '@/hooks/useDarkMode'
-
-// image import
-
-import LogoWhite from '@/assets/images/logo/logo-white.svg'
 import Logo from '@/assets/images/logo/logo.svg'
-import Illustration from '@/assets/images/login/lambda login.png'
+import Illustration from '@/assets/images/login/logo-transparente.png'
 import LoginForm from './components/login-form'
 import Social from './components/social'
 import Textinput from '@/components/ui/Textinput'
@@ -17,7 +12,6 @@ import Button from '@/components/ui/Button'
 import { toast } from 'react-toastify'
 
 const Login = () => {
-  const [isDark] = useDarkMode()
   const navigate = useNavigate()
   // const {isAuthenticated, endGoogleLogin} = useAuthBien()
 
@@ -83,23 +77,12 @@ const Login = () => {
   return (
     <div className='loginwrapper'>
       <div className='lg-inner-column'>
-        <div className='left-column relative z-[1] bg-slate-800'>
-          <div className='max-w-[520px] pt-20 ltr:pl-20 rtl:pr-20'>
-            <Link to='/'>
-              <img src={isDark ? LogoWhite : Logo} alt='' className='mb-10' />
-            </Link>
-            <h4>
-              Unlockkk your Project
-              <span className='text-slate-800 dark:text-slate-400 font-bold'>
-                performance
-              </span>
-            </h4>
-          </div>
+        <div className='left-column relative z-[1]'>
           <div className='absolute left-0 2xl:bottom-[-160px] bottom-[-130px] h-full w-full z-[-1]'>
             <img
               src={Illustration}
               alt=''
-              className='h-full w-full object-contain'
+              className='w-1/2 h-auto mx-auto object-contain'
             />
           </div>
         </div>
@@ -112,7 +95,7 @@ const Login = () => {
                 <div className='mobile-logo text-center mb-6 lg:hidden block'>
                   <Link to='/'>
                     <img
-                      src={isDark ? LogoWhite : Logo}
+                      src={Logo}
                       alt=''
                       className='mx-auto'
                     />
@@ -145,7 +128,7 @@ const Login = () => {
                 <div className='mobile-logo text-center mb-6 lg:hidden block'>
                   <Link to='/'>
                     <img
-                      src={isDark ? LogoWhite : Logo}
+                      src={Logo}
                       alt=''
                       className='mx-auto'
                     />

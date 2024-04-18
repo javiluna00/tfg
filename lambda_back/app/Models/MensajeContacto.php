@@ -14,5 +14,6 @@ class MensajeContacto extends Model
         'artistic_name',
         'subject',
         'message',
+        'read'
     ];
 }

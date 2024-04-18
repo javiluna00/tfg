@@ -2,94 +2,61 @@ import React, { useEffect, useState } from 'react'
 import Modal from '@/components/ui/Modal'
 import Button from '@/components/ui/Button'
 import { useCartActions } from '@/hooks/useCartActions'
+import Title from '@/components/ui/Title'
 
-function LicensesModal ({ activeModal, setActiveModal, beat, isAuthenticated, AxiosPrivate }) {
-  const [licencias, setLicencias] = useState([])
-  const [selectedLicencia, setSelectedLicencia] = useState(null)
-
-  const { addToCart } = useCartActions({ AxiosPrivate })
-
-  const hdlCarritoButton = () => {
-    if (selectedLicencia) {
-      const licenciaSeleccionada = licencias.find(licencia => licencia.id === selectedLicencia)
-      if (licenciaSeleccionada) {
-        addToCart({ beatId: licenciaSeleccionada.pivot.beat_id, licenseId: licenciaSeleccionada.pivot.license_id, isAuthenticated: isAuthenticated() }) // Añade el item al carrito
-        setActiveModal(false)
-        setSelectedLicencia(null)
-      }
-    }
-  }
-
-  // OBTENER LICENCIAS PARA EL BEAT EN ESPECÍFICO
-  const getLicencias = () => {
-    const licenses = []
-
-    if (beat.licenses) {
-      for (let i = 0; i < beat.licenses.length; i++) {
-        licenses.push(beat.licenses[i])
-      }
-    }
-
-    setLicencias(licenses)
-  }
-
+function LicensesModal ({ activeModal, setActiveModal, beat, isAuthenticated }) {
   useEffect(() => {
-    getLicencias()
+    if (beat) {
+      console.log('Beat :', beat)
+    }
   }, [beat])
+  const [selectedLicense, setSelectedLicense] = useState(null)
 
-  return (
-    <Modal
-      activeModal={activeModal}
-      onClose={() => setActiveModal(false)}
-      title={`Licencias del beat ${beat.name}`}
-      themeClass='bg-zinc-800'
-    >
+  const { addToCart } = useCartActions()
 
-      <div className='w-full'>
-        <div className='w-full flex flex-col justify-center items-center gap-4'>
+  const handleBuyButton = () => {
+    if (selectedLicense) {
+      const selectedLicenseData = beat.licenses.find(license => license.id === selectedLicense)
 
-          {licencias.map((licencia) => (
-            <div
-              className={`w-full ${licencia.id === selectedLicencia ? 'bg-red-800' : 'bg-zinc-800'} p-4 rounded-[6px] relative cursor-pointer`}
-              style={{
-                border: `1px solid ${licencia.id === selectedLicencia ? 'red' : 'transparent'}`
-              }}
-              key={licencia.id}
-              onClick={() => licencia.id === selectedLicencia ? setSelectedLicencia(null) : setSelectedLicencia(licencia.id)}
-            >
-              <div className='max-w-[169px]'>
-                <div className='text-xl font-medium text-white mb-2'>
-                  {licencia.name}
-                </div>
-                <p className='text-sm text-white'>{licencia.description}</p>
-              </div>
-              <div className='absolute top-1/2 -translate-y-1/2 ltr:right-6 rtl:left-6 mt-2 h-12 w-12 bg-white text-slate-900 rounded-full text-xs font-medium flex flex-col items-center justify-center'>
-                {licencia.pivot.price}€
-              </div>
-            </div>
-          ))}
+      addToCart({ beatId: selectedLicenseData.pivot.beat_id, licenseId: selectedLicenseData?.pivot.license_id, isAuthenticated: isAuthenticated() })
+      setActiveModal(false)
+      setSelectedLicense(null)
+    }
+  }
 
+  if (beat && beat.licenses) {
+    return (
+      <Modal
+        activeModal={activeModal}
+        onClose={() => setActiveModal(false)}
+        title={`Licencias del beat ${beat?.name}`}
+      >
+        <div className='w-full bg-zinc-900 rounded-lg'>
+          <div className='w-full flex md:flex-row flex-col justify-center items-center gap-4 mt-4'>
+            {beat?.licenses?.map((license, index) => {
+              if (license?.name === 'Licencia exclusiva') {
+                return (<Button icon='mdi:timer-outline' key={index} onClick={() => setSelectedLicense(license.id)} className={`${selectedLicense === license.id ? 'border-red-400 text-red-400' : 'border-zinc-500 hover:border-red-400 text-white'} border font-semibold text-center text-xs uppercase w-full py-2 px-4 rounded-lg h-14 hover:bg-zinc-800 flex justify-center items-center`}>{license?.name}</Button>)
+              } else {
+                return (<Button key={index} onClick={() => setSelectedLicense(license.id)} className={`${selectedLicense === license.id ? 'border-red-400 text-red-400' : 'border-zinc-500 hover:border-red-400 text-white'} border font-semibold text-center text-xs uppercase w-full py-2 px-4 rounded-lg h-14 hover:bg-zinc-800 flex justify-center items-center`}>{license?.name}</Button>)
+              }
+            })}
+          </div>
+
+          <div className='mt-4 p-4 w-full'>
+            <Title title='Descripción' className='text-white text-sm font-bold uppercase tracking-widest text-center' />
+            <p className='text-zinc-400 font-semibold text-xs mt-2'>{beat?.licenses[selectedLicense - 1]?.description}</p>
+          </div>
+
+          <div className='mt-4 p-4 w-full'>
+            <h4 className='text-white font-semibold text-sm uppercase'>Precio <span className='text-red-400'>{beat?.licenses[selectedLicense - 1]?.pivot.price}€</span></h4>
+          </div>
+          <div className='mt-4 p-4 w-full'>
+            {selectedLicense && <Button text='Añadir al carrito' className='bg-red-500 hover:bg-red-600 text-white' onClick={handleBuyButton} />}
+          </div>
         </div>
-
-        <div className='w-full flex flex-col justify-center items-center gap-4'>
-          {selectedLicencia && licencias.filter(licencia => licencia.id === selectedLicencia)[0].condiciones}
-          {selectedLicencia &&
-
-            <>
-              <div className='h-px w-full bg-red-600 my-5' />
-              <div className='w-full'>
-                <h3 className='text-xl font-inter font-semibold text-white'>Condiciones</h3>
-                <p className='text-sm'>{licencias.filter(licencia => licencia.id === selectedLicencia)[0].conditions}</p>
-              </div>
-
-              <div className='w-full flex justify-start items-start gap-4'>
-                <Button text='Añadir al carrito' className='bg-red-500 hover:bg-red-600 text-white' onClick={hdlCarritoButton} />
-              </div>
-            </>}
-        </div>
-      </div>
-    </Modal>
-  )
+      </Modal>
+    )
+  }
 }
 
 export default LicensesModal

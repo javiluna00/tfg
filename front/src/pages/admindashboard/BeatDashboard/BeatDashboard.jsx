@@ -127,7 +127,7 @@ function BeatDashboard () {
   ]
 
   const { AxiosPrivate } = useOutletContext()
-  const { beats, activeBeats, loadActiveBeatsFromAPI, loadAllBeatsFromAPI, updateBeat, deleteBeat } = useBeats({ AxiosPrivate })
+  const { beats, loadAllBeatsFromAPI, updateBeat, deleteBeat, isLoading } = useBeats({ AxiosPrivate })
   const navigate = useNavigate()
 
   const handleDeleteBeat = (e, row) => {

@@ -157,7 +157,16 @@ class CartController extends Controller
         //
     }
 
-    public function payLogged (Request $request)
+    public function isValidPurchase (Request $request)
+    {
+        $validator = Validator($request->all(), [
+            'cart' => 'required',
+            'email' => 'required|email',
+            'isLogged' => 'required'
+        ]);
+    }
+
+    public function pay (Request $request)
     {
 
         $validator = Validator($request->all(), [
@@ -175,7 +184,7 @@ class CartController extends Controller
         $cart = collect($request->cart);
         $lineItems = $cart->map(function ($item) {
 
-            $license = BeatLicense::find($item['id']);
+            $beatLicense = BeatLicense::find($item['id']);
 
             return [
                 'price_data' => [
@@ -185,7 +194,7 @@ class CartController extends Controller
                         'images' => [$item['beat']['cover_path']],
                         'description' => $item['license']['name'],
                     ],
-                    'unit_amount' => round($item['price']) * 100,
+                    'unit_amount' => round($beatLicense->price) * 100,
                 ],
                 'quantity' => 1,
             ];
@@ -237,4 +246,6 @@ class CartController extends Controller
 
 
     }
+
+
 }

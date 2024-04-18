@@ -78,7 +78,12 @@ class Beat extends Model
 
     public function exclusive_price()
     {
-        return BeatLicense::where('beat_id', $this->id)->where('license_id', 4)->first()->price;
+        if($this->still_exclusive){
+            return BeatLicense::where('beat_id', $this->id)->where('license_id', 4)->first()->price ?: null;
+        }
+
+        return null;
+
     }
 
     public function mp3_download_key()

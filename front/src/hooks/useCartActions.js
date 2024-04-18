@@ -3,9 +3,11 @@ import { cartAtom } from '../store/cartStore'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { loadStripe } from '@stripe/stripe-js'
+import CustomAxios from '@/components/api/axios'
 
-export function useCartActions ({ AxiosPrivate }) {
+export function useCartActions () {
   const [cart, setCart] = useRecoilState(cartAtom)
+  const { AxiosPrivate } = CustomAxios()
 
   useEffect(() => {
     window.localStorage.setItem('cart', JSON.stringify(cart))
@@ -26,7 +28,7 @@ export function useCartActions ({ AxiosPrivate }) {
           toast.error(err.response.data.message)
         })
     } else {
-      await AxiosPrivate.get('/beatlicense/getOne', { params: { beatId, licenseId } }).then((res) => {
+      await AxiosPrivate.get('/beatlicense/getOne', { params: { beat_id: beatId, license_id: licenseId } }).then((res) => {
         const itemExists = cart.find(item => item.id === res.data.id)
         if (!itemExists) {
           setCart((cart) => [...cart, res.data])
@@ -91,23 +93,21 @@ export function useCartActions ({ AxiosPrivate }) {
 
     const stripe = await stripePromise
 
-    if (isLogged) {
-      await AxiosPrivate.post('cart/payLogged', {
-        cart,
-        email,
-        isLogged
-      }).then((res) => {
-        console.log(res.data)
-        stripe.redirectToCheckout({ sessionId: res.data.id })
-      }).catch((err) => {
-        console.log(err)
-      })
-    }
+    await AxiosPrivate.post('cart/pay', {
+      cart,
+      email,
+      isLogged
+    }).then((res) => {
+      console.log(res.data)
+      stripe.redirectToCheckout({ sessionId: res.data.id })
+    }).catch((err) => {
+      console.log(err)
+    })
   }
 
   const isEmpty = () => {
     return cart.length === 0
   }
 
-  return { addToCart, totalPrice, removeItem, cart, clearCart, loadCartFromLoggedUser, pay, isEmpty }
+  return { addToCart, totalPrice, subTotalPrice, removeItem, cart, clearCart, loadCartFromLoggedUser, pay, isEmpty }
 }

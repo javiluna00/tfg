@@ -1,43 +1,42 @@
-import React, { useEffect, useState } from 'react'
-import Beats from './Beats';
-import { useOutletContext } from "react-router-dom";
-import SectionPresentation from './components/SectionPresentation';
-import SectionSocial from './components/SectionSocial';
-import useBeatFinder from '@/hooks/useBeatFinder';
-import { useRecoilValue } from 'recoil';
-import { beatState } from '@/store/beatStore';
-function Feed() {
+import React, { useEffect } from 'react'
+import Beats from './Beats'
+import { useOutletContext } from 'react-router-dom'
+import SectionPresentation from './components/SectionPresentation'
+import SectionSocial from './components/SectionSocial'
+import useGenres from '@/hooks/useGenres'
+import useMoods from '@/hooks/useMoods'
+import useBeats from '@/hooks/useBeats'
 
-  const {setActiveBeat, setModalBeat} = useOutletContext();
-  const {AxiosPrivate} = useOutletContext();
-
-  const {genres, moods, setGenres, setMoods, loading} = useBeatFinder({AxiosPrivate});
-  const {filteredBeats, beatsPopulares, filter, setFilter} = useRecoilValue(beatState);
+function Feed () {
+  const { setActiveBeat, setModalBeat } = useOutletContext()
+  const { genres, loadGenresFromAPI } = useGenres()
+  const { moods, loadMoodsFromAPI } = useMoods()
+  const { activeBeats, loadActiveBeatsFromAPI, isLoading, filteredBeats, filter, setFilter } = useBeats()
 
   useEffect(() => {
-    console.log("setActiveBeat", setActiveBeat)
-    console.log("setModalBeat", setModalBeat)
-  }, [setActiveBeat, setModalBeat])
+    loadGenresFromAPI()
+    loadMoodsFromAPI()
+    loadActiveBeatsFromAPI()
+  }, [])
+
   return (
     <div className='bg-[#000000] h-full'>
 
-            <SectionPresentation/>
-            <SectionSocial/>
-            <Beats 
-              beatsPopularesRender={true} 
-              setActiveBeat={setActiveBeat} 
-              setModalBeat={setModalBeat} 
-              genres={genres}
-              moods={moods}
-              setGenres={setGenres}
-              setMoods={setMoods}
-              loading={loading}
-              filter={filter}
-              setFilter={setFilter}
-              filteredBeats={filteredBeats}
-              beatsPopulares={beatsPopulares}
-              AxiosPrivate = {AxiosPrivate}
-            />
+      <SectionPresentation />
+      <SectionSocial />
+
+      <Beats
+        beatsPopularesRender
+        setActiveBeat={setActiveBeat}
+        setModalBeat={setModalBeat}
+        genres={genres}
+        moods={moods}
+        filterActive
+        isLoading={isLoading}
+        filteredBeats={filteredBeats}
+        filter={filter}
+        setFilter={setFilter}
+      />
 
     </div>
 

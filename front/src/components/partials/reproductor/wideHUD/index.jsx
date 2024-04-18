@@ -2,6 +2,7 @@ import Button from '@/components/ui/Button'
 import { Icon } from '@iconify/react'
 import React, { useState } from 'react'
 import Marquee from 'react-fast-marquee'
+import { useNavigate } from 'react-router-dom'
 
 function WideHUD ({
   reproductorData,
@@ -18,6 +19,7 @@ function WideHUD ({
   setVolume
 }) {
   const [hoveringTrackTime, setHoveringTrackTime] = useState(false)
+  const navigate = useNavigate()
 
   return (
     <div className='h-24 bg-[#000] flex justify-start items-start gap-2 bottom-0 fixed shadow-xl z-[100]' style={{ width: '70%', marginLeft: '15%' }}>
@@ -25,7 +27,7 @@ function WideHUD ({
       <div className='h-24 w-3/12 flex flex-row justify-start items-center gap-5'>
         <img className='hidden sm:block h-full object-cover aspect-square' src={reproductorData.song.cover_path} />
         <div className='ml-2 sm:ml-0 h-full py-3 flex flex-col justify-start items-start w-2/5'>
-          <Marquee><span className='text-white font-semibold text-sm select-none'>{reproductorData.song.name}</span></Marquee>
+          <Marquee><span className='text-white font-semibold text-sm cursor-pointer hover:underline' onClick={() => navigate(`/beat/${reproductorData.song.id}`)}>{reproductorData.song.name}</span></Marquee>
           <div className='mt-2 flex flex-row justify-start items-center gap-2'>
             <Icon icon='ic:baseline-speed' className='text-white' />
             <span className='text-xs text-red-400 truncate'>{reproductorData.song.bpm} bpm</span>

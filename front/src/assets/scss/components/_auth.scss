@@ -8,10 +8,10 @@
   .lg-inner-column {
     height: 100vh;
     height: calc(var(--vh, 1vh) * 100);
-    @apply overflow-y-auto flex flex-wrap w-full;
+    @apply overflow-y-hidden flex flex-wrap w-full;
   }
   .left-column {
-    @apply bg-slate-100 dark:bg-slate-900  lg:block hidden flex-1 overflow-hidden;
+    @apply bg-zinc-900 lg:block hidden flex-1 overflow-hidden;
     h4 {
       @apply text-[40px] leading-[48px] text-slate-600 dark:text-slate-400;
     }

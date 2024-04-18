@@ -1,29 +1,17 @@
 import React from 'react'
-import useFooterType from '@/hooks/useFooterType'
 import { Link } from 'react-router-dom'
 import { Icon } from '@iconify/react'
 
 const Footer = ({ className = 'custom-class' }) => {
-  const [footerType] = useFooterType()
-  const footerclassName = () => {
-    switch (footerType) {
-      case 'sticky':
-        return 'sticky bottom-0 z-[999]'
-      case 'static':
-        return 'static'
-      case 'hidden':
-        return 'hidden'
-    }
-  }
   return (
-    <footer className={className + ' ' + footerclassName()}>
+    <footer className={className + 'static'}>
       <div className='site-footer px-6 bg-zinc-900 text-white py-4 border-t border-red-500 py-[100px]'>
         <div className='container flex flex-col items-center justify-center'>
 
           <div className='w-full flex items-start justify-around p-4'>
             <div className='w-1/3 flex flex-col items-center'>
               <h3 className='text-lg font-medium text-white'>Esquema</h3>
-              <div className='flex justify-around items-center mt-2 w-full'>
+              <div className='flex md:flex-row flex-col justify-around items-center mt-2 w-full'>
                 <Link to='/'><p className='text-sm font-light cursor-pointer text-zinc-300 hover:text-white duration-200'>Feed</p></Link>
                 <Link to='/mixmaster'><p className='text-sm font-normal cursor-pointer text-zinc-300 hover:text-white duration-200'>Mix & Master</p></Link>
                 <Link to='/projects'><p className='text-sm font-normal cursor-pointer text-zinc-300 hover:text-white duration-200'>Proyectos</p></Link>

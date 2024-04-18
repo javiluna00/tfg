@@ -21,24 +21,37 @@ class MensajeContactoController extends Controller
 
     }
 
-    public function getOne(Request $request)
+    public function getOne($id)
     {
-        $validator = Validator::make($request->all(), [
-            'id' => 'required|integer',
-        ]);
 
-        if($validator->fails()){
-            return response()->json($validator->errors(), 400);
-        }
+        $mensaje = MensajeContacto::find($id);
 
-        $mensaje = MensajeContacto::find($request->id);
-
-        if(is_null($mensaje)){
+        if(!$mensaje){
             return response()->json(['message' => 'El mensaje no existe.'], 404);
         }
         return response()->json(['data' => $mensaje], 200);
 
 
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(),[
+            'read' => 'required'
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors(), 400);
+        }
+        $mensaje = MensajeContacto::find($id);
+
+        if(!$mensaje){
+            return response()->json(['message' => 'El mensaje no existe.'], 404);
+        }
+
+        $mensaje->update([
+            'read' => $request->read
+        ]);
+        return response()->json(['message' => 'Mensaje actualizado', 'data' => $mensaje], 200);
     }
 
     public function store(Request $request)

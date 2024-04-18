@@ -58,12 +58,12 @@ const useAuthBien = () => {
         window.localStorage.setItem('user', JSON.stringify(parsedData.user))
         setAuth(parsedData)
         navigate('/')
-        toast.success('Sesión iniciada')
+        return { message: 'Sesión iniciada', error: null }
       })
       .catch((err) => {
         setLoading(false)
-        toast.error(err.response.data.error)
-        return err
+        // toast.error(err.response.data.error)
+        return { message: null, error: err.response.data.error }
       })
   }
 
@@ -103,12 +103,12 @@ const useAuthBien = () => {
   }
 
   const endGoogleLogin = (accessToken, res, artistName) => {
-    const { id, googleId, ...userWithoutId } = res
+    const { id, google_id, ...userWithoutId } = res
 
     const user = {
       ...userWithoutId,
       artist_name: artistName || null,
-      googleId
+      google_id
     }
 
     Axios.post('/auth/login-oauth', {

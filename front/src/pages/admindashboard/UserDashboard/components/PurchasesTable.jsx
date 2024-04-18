@@ -18,7 +18,7 @@ function PurchasesTable ({ userPurchases }) {
         return (
           <>
             <img src={beat.cover_url} className='w-10 h-10' />
-            <span className='font-bold'>{beat.name}</span>
+            <span className='font-bold hover:underline cursor-pointer' onClick={(e) => navigate('/dashboard/beats/show/' + row.original.beatId)}>{beat.name}</span>
           </>
         )
       }

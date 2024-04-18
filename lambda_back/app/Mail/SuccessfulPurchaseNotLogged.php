@@ -2,8 +2,8 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -13,14 +13,18 @@ class SuccessfulPurchaseNotLogged extends Mailable
 {
     use Queueable, SerializesModels;
 
+
+
     /**
      * Create a new message instance.
      */
-    public function __construct(private string $title, private string $email, private array $licenses)
+    public function __construct(public string $title, public string $email, public array $licenses_bought)
     {
         $this->title = $title;
         $this->email = $email;
-        $this->licenses = $licenses;
+        $this->licenses_bought = $licenses_bought;
+
+
     }
 
     /**
@@ -42,7 +46,6 @@ class SuccessfulPurchaseNotLogged extends Mailable
             view: 'emails.SuccessfulPurchaseNotLogged',
         );
     }
-
     /**
      * Get the attachments for the message.
      *

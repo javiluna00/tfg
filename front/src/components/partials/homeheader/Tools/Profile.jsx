@@ -1,12 +1,9 @@
 import React from 'react'
 import Dropdown from '@/components/ui/Dropdown'
 import Icon from '@/components/ui/Icon'
-import { Menu, Transition } from '@headlessui/react'
+import { Menu } from '@headlessui/react'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import UserAvatar from '@/assets/images/all-img/user.png'
-import { useRecoilValue } from 'recoil'
-import { authAtom } from '@/store/authStoreBien'
+
 import useAuthBien from '@/hooks/useAuthBien'
 
 const profileLabel = ({ user }) => {
@@ -35,7 +32,6 @@ const Profile = ({ user }) => {
   const { logOut } = useAuthBien()
 
   const navigate = useNavigate()
-  const dispatch = useDispatch()
 
   const ProfileMenu = [
     {

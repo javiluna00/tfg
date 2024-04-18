@@ -19,7 +19,7 @@ class BeatController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('jwt.verify', ['except' => ['getActives', 'getOne', 'testWaterMark']]);
+        $this->middleware('jwt.verify', ['except' => ['getActives', 'getOne', 'testWaterMark', 'getRandom']]);
     }
 
     /**
@@ -35,9 +35,19 @@ class BeatController extends Controller
         return response()->json(BeatResource::collection($beats), 200);
     }
 
+    public function getRandom($id)
+    {
+        $beat = Beat::find($id);
+        if($beat == null){
+            return response()->json(['message' => "Canción no encontrada"], 404);
+        }
+        $beats = Beat::where('active', 1)->where('id', '!=', $id)->where('stock', '>', 0)->inRandomOrder()->take(5)->get();
+        return response()->json(BeatResource::collection($beats), 200);
+    }
+
     public function getActives()
     {
-        $beats = Beat::where('active', 1)->get();
+        $beats = Beat::where('active', 1)->where('stock', '>', 0)->get();
         return response()->json(BeatResource::collection($beats), 200);
     }
 
@@ -184,7 +194,6 @@ class BeatController extends Controller
     public function getOne(Request $request, string $id)
     {
         if($id){
-
             if($request->input('_mode') == "full" && auth()->user() && auth()->user()->isAdmin())
             {
                 $beat = Beat::where('id', $id)->first();
@@ -208,10 +217,14 @@ class BeatController extends Controller
                         'stems_download_key' => $beat->stems_download_key(),
                         'stems_price' => $beat->stems_price(),
                         'still_exclusive' => $beat->still_exclusive,
-                        'exclusive_price' => $beat->exclusive_price(),
+                        'exclusive_price' => $beat->exclusive_price() ?: null,
                         'stock' => $beat->stock,
+                        'licenses' => $beat->licenses->each(function ($license) {
+                            $license->pivot->makeHidden(['file_url']);
+                        }),
                         'moods' => $beat->moods->pluck('name'),
-                        'genres' => $beat->genres->pluck('name')
+                        'genres' => $beat->genres->pluck('name'),
+                        'purchases' => $beat->purchases(),
                     ];
 
                     return response()->json($returnedBeat, 200);
@@ -236,8 +249,8 @@ class BeatController extends Controller
             }
             else{
                 return response()->json([
-                    'message' => 'Error al obtener el beat'
-                ], 404);
+                    'message' => 'token_not_found'
+                ], 401);
             }
 
         }

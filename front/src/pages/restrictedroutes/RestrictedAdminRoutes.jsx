@@ -1,20 +1,16 @@
 import React from 'react'
-import { Navigate, Outlet, useOutletContext } from 'react-router-dom';
+import { Navigate, Outlet, useOutletContext } from 'react-router-dom'
 
-function RestrictedAdminRoutes() {
+function RestrictedAdminRoutes () {
+  const { isAdmin, auth, AxiosPrivate } = useOutletContext()
 
-    const {isAdmin, auth, AxiosPrivate} = useOutletContext();
-
-    if(!isAdmin()) {
-        return <Navigate to="/404" />
-    }
-    else
-    {
-        return(
-            <Outlet context={{auth, AxiosPrivate}} />
-        )
-    }
-
+  if (!isAdmin()) {
+    return <Navigate to='/404' />
+  } else {
+    return (
+      <Outlet context={{ auth, AxiosPrivate }} />
+    )
+  }
 }
 
 export default RestrictedAdminRoutes

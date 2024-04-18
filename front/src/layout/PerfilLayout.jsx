@@ -16,26 +16,11 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs'
 import CustomAxios from '@/components/api/axios'
 
 function PerfilLayout () {
-  const { width, breakpoints } = useWidth()
-  const [collapsed] = useSidebar()
-  const [menuType] = useMenulayout()
-  const [menuHidden] = useMenuHidden()
-
   const [modalBeat, setModalBeat] = React.useState(false)
   const [activeBeat, setActiveBeat] = React.useState({})
-
+  const { width, breakpoints } = useWidth()
   const { auth, logIn, logOut, register, isAuthenticated, isLoading, isAdmin, endGoogleLogin, googleLogin } = useAuthBien()
   const AxiosPrivate = CustomAxios()
-
-  const switchHeaderClass = () => {
-    if (menuType === 'horizontal' || menuHidden) {
-      return 'ltr:ml-0 rtl:mr-0'
-    } else if (collapsed) {
-      return 'ltr:ml-[72px] rtl:mr-[72px]'
-    } else {
-      return 'ltr:ml-[248px] rtl:mr-[248px]'
-    }
-  }
 
   if (isAuthenticated() === false) {
     return <Navigate to='/' />
@@ -46,7 +31,7 @@ function PerfilLayout () {
           <Suspense fallback={<Loading />}>
             <ToastContainer />
             <div className='bg-zinc-700'>
-              <HomeHeader className={width > breakpoints.xl ? switchHeaderClass() : ''} isAuthenticated={isAuthenticated} isAdmin={isAdmin} AxiosPrivate={AxiosPrivate} auth={auth} />
+              <HomeHeader isAuthenticated={isAuthenticated} isAdmin={isAdmin} AxiosPrivate={AxiosPrivate} auth={auth} />
               <div className='flex flex-col container mx-auto gap-4 min-h-screen bg-zinc-700 py-6'>
 
                 <Breadcrumbs />

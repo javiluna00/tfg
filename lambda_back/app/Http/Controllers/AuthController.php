@@ -44,7 +44,10 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only(['email', 'password']);
-
+        $existingUser = User::where('email', $request->email)->first();
+        if($existingUser && $existingUser->google_id != null){
+            return response()->json(['error' => 'No puedes iniciar sesión en este tipo de cuenta. Inicia sesión desde Google.'], 409);
+        }
         if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Credenciales incorrectas'], 401);
         }
@@ -180,9 +183,10 @@ class AuthController extends Controller
 
         $cart = Cart::where('user_id', $user->id)->first();
 
-        $saves = $user->savedBeats();
+        $savedBeatsIDS = DB::table('beat_saves')->where('user_id', $user->id)->get()->pluck('beat_id');
+        $savedBeats = Beat::whereIn('id', $savedBeatsIDS)->get();
 
-        return response()->json(['token' => $token, 'user' => UserResource::make($user), 'cart' => $cart ? CartResource::make($cart) : [], 'saves' => $saves, 'purchases' => $user->purchases()], 200);
+        return response()->json(['token' => $token, 'user' => UserResource::make($user), 'cart' => $cart ? CartResource::make($cart) : [], 'saves' => BeatResource::collection($savedBeats), 'purchases' => $user->purchases()], 200);
     }
 
     public function verify(Request $request)

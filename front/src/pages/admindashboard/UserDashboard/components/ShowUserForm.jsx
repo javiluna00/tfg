@@ -91,13 +91,13 @@ function ShowUserForm ({ editable = false, AxiosPrivate }) {
   return (
     <div className='w-full p-5 bg-zinc-900 rounded-lg'>
       <h2 className='text-3xl text-white font-bold p-5'>{editable ? 'Editar' : 'Ver'} usuario</h2>
-      <div className='w-full mx-auto flex justify-center items-start gap-10 p-5'>
-        <div className='w-1/3'>
+      <div className='w-full mx-auto flex md:flex-row flex-col justify-center items-start gap-10 p-5'>
+        <div className='w-full md:w-1/3'>
           {loading
             ? <SkeletionTable />
             : <RenderUserInfo />}
         </div>
-        <div className='w-2/3'>
+        <div className='w-full md:w-2/3'>
           {loading
             ? <SkeletionTable />
             : <PurchasesTable userPurchases={user.purchases} />}
