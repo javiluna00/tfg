@@ -36,11 +36,11 @@ function Mixmaster () {
   }, [])
 
   return (
-    <div className='bg-zinc-700 py-10'>
+    <div className='py-10 bg-zinc-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(236,23,27,0.3),rgba(255,255,255,0))]'>
       <div className='container'>
 
-        <div id='tarifas' className='flex flex-col justify-center items-start bg-white rounded-xl p-10'>
-          <h3 className='text-3xl font-semibold text-center w-full'>¡Profesionaliza tu canción y saca un buen sonido!</h3>
+        <div id='tarifas' className='flex flex-col justify-center items-startrounded-xl p-10'>
+          <h3 className='text-5xl md:text-7xl font-semibold text-center w-full text-white'>¡<span className='text-red-500 text-ellipsis'>Profesionaliza</span> tu canción!</h3>
           <div className='xl:flex xl:flex-row xl:justify-center xl:items-center flex flex-col justify-center items-center w-full gap-4 mt-10'>
             {tarifas.map((tarifa) => (
 
@@ -50,15 +50,20 @@ function Mixmaster () {
           </div>
           <div className='my-10 h-px w-[70%] mx-auto bg-red-500' />
           <div className='flex flex-col justify-center items-center  w-full gap-4'>
-            <p className='text-xl'>Si necesitas alguno de estos <span className='text-red-500 font-bold'>servicios</span>, ponte en contacto conmigo</p>
-            <Link to='/contact'><Button className='text-white hover:text-white duration-300 text-xl bg-red-500 rounded-full'>¡Contáctame!</Button></Link>
+            <p className='text-xl text-white'>Si necesitas alguno de estos <span className='text-red-500 font-bold'>servicios</span>, ponte en contacto conmigo</p>
+            <Link to='/contact'><Button className='text-red-500 hover:text-white duration-300 text-xl border border-red-500 rounded-full mt-10'>¡Contáctame!</Button></Link>
           </div>
         </div>
 
-        <div className='flex flex-col justify-center items-start my-10 bg-white p-10 rounded-xl'>
-          <h3 className='text-3xl font-semibold '>¡Escucha el cambio!</h3>
-          <CompararMix title='Vocal example' />
-          <CompararMix />
+        <div className='flex justify-center items-center my-10 p-10 rounded-xl min-h-[70vh]'>
+          <div className='w-1/2 flex flex-col gap-5'>
+            <h3 className='text-8xl font-semibold text-white'>Escucha el <span className='text-red-500'>cambio</span></h3>
+            <p className='text-4xl text-white'>El proceso de mezcla y master <span className='text-red-500'>transforma</span> completamente tu canción</p>
+          </div>
+          <div className='w-1/2'>
+            <CompararMix title='Vocal example' />
+            <CompararMix />
+          </div>
         </div>
       </div>
     </div>

@@ -54,19 +54,20 @@ const useReproductor = () => {
   }
 
   const reproducirCancion = (song) => {
+    console.log('Ha entrado en reproducirCancion')
     if (song != null) {
       AxiosPrivate.get(`/beat/${song.id}/tagged`, { responseType: 'blob' }).then((res) => {
+        const audioBlob = new Blob([res.data], { type: 'audio/mpeg' })
+        setData({ song, song_file: URL.createObjectURL(audioBlob), isPlaying: false, currentDuration: 0, totalDuration: res.data.length, looping: false, volume: 100, isMuted: false })
+        setShown(true)
+
         AxiosPrivate.post('/beatAction/play', { beat_id: song.id }).catch((err) => {
           console.log(err)
         })
-        const audioBlob = new Blob([res.data], { type: 'audio/mpeg' })
-        setData({ song, song_file: URL.createObjectURL(audioBlob), isPlaying: true, currentDuration: 0, totalDuration: res.data.length, looping: false, volume: 100, isMuted: false })
-        setShown(true)
       }).catch((err) => {
         console.log(err)
       })
     } else {
-      console.log('Por qué entra aquí si song no es null?')
       setData({ song: null, isPlaying: false, currentDuration: 0, totalDuration: 0, looping: false, volume: 100, isMuted: false })
       setPorcentagePlayed(0)
       setShown(false)

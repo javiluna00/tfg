@@ -16,18 +16,18 @@ function BeatInfo ({ beat }) {
 
       <div className='flex flex-col justify-start items-center gap-4 w-full'>
         <Title title='Moods' className='text-white text-xs font-bold uppercase tracking-widest text-center w-full' />
-        <div className='grid grid-cols-4 p-4 grid-flow-row text-center w-full bg-white rounded-lg'>
+        <div className='grid grid-cols-3 p-4 grid-flow-row text-center w-full bg-white rounded-lg'>
           {beat.moods.map((mood, index) => (
-            <p key={index} className='text-zinc-900 font-semibold text-center text-xs uppercase'>{mood}</p>
+            <p key={index} className='text-zinc-900 font-semibold text-center text-xs uppercase py-2'>{mood}</p>
           ))}
         </div>
       </div>
 
       <div className='flex flex-col justify-start items-center gap-4 w-full'>
         <Title title='Géneros' className='text-white text-xs font-bold uppercase tracking-widest text-center w-full' />
-        <div className='grid grid-cols-4 p-4 grid-flow-row text-center w-full bg-white rounded-lg '>
+        <div className='grid grid-cols-3 p-4 grid-flow-row text-center w-full bg-white rounded-lg '>
           {beat.genres.map((genre, index) => (
-            <p key={index} className='text-zinc-900 font-semibold text-center text-xs uppercase'>{genre}</p>
+            <p key={index} className='text-zinc-900 font-semibold text-center text-xs uppercase py-2'>{genre}</p>
           ))}
         </div>
       </div>

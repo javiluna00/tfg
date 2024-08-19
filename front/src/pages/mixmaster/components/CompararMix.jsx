@@ -31,14 +31,14 @@ function CompararMix ({ cancion, title }) {
 
   return (
 
-    <div className='flex justify-between items-center gap-10 mt-10 w-[70%] rounded-full m-auto h-24 shadow-xl bg-red-50'>
+    <div className='flex justify-between items-center gap-10 mt-10 w-full rounded-full m-auto h-20 shadow-xl bg-red-50'>
       <audio ref={refUnmixed} src='http://localhost:8000/storage/mixedcomparation/1-unmixed.mp3' />
       <audio ref={refMixed} src='http://localhost:8000/storage/mixedcomparation/1-mixed.mp3' />
-      <div className='flex justify-center items-center cursor-pointer rounded-full w-24 h-24 bg-red-500 hover:scale-110 duration-300' onClick={handlePlayPause}>
+      <div className='flex justify-center items-center cursor-pointer rounded-full w-20 h-20 bg-red-500 hover:scale-110 duration-300' onClick={handlePlayPause}>
         {isPlaying ? <Icon icon='ic:baseline-pause' className='text-white text-5xl' /> : <Icon icon='ic:baseline-play-arrow' className='text-white text-5xl' />}
       </div>
       <h3 className='text-3xl text-red-500 font-semibold'>{title}</h3>
-      <div className={`${mixxed ? 'bg-red-500 text-white' : 'text-red-500'} flex justify-center items-center cursor-pointer rounded-full w-24 h-24 border-2 border-red-500 hover:border-none hover:scale-110 hover:bg-red-500 duration-300`} onClick={() => setMixxed(!mixxed)}><Button className='hover:text-white duration-300 text-xl'>Mix!</Button></div>
+      <div className={`${mixxed ? 'bg-red-500 text-white' : 'text-red-500'} flex justify-center items-center cursor-pointer rounded-full w-20 h-20 border-2 border-red-500 hover:border-none hover:scale-110 hover:bg-red-500 duration-300`} onClick={() => setMixxed(!mixxed)}><Button className='hover:text-white duration-300 text-xl'>Mix!</Button></div>
     </div>
   )
 }

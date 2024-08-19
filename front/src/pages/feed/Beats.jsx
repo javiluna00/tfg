@@ -30,7 +30,7 @@ function Beats ({
               <hr className='mt-2 mb-2' />
 
               {isLoading && <SkeletonBeats />}
-              {!isLoading && filteredBeats?.length === 0 && <span className='block w-full text-xl text-white text-center mt-10'>No hay beats que mostrar</span>}
+              {!isLoading && filteredBeats?.length === 0 && <span className='block w-full text-xl text-white text-center mt-10 h-64'>No hay beats que mostrar</span>}
               {!isLoading && filteredBeats?.length > 0 &&
                 <div className='w-full grid gap-y-20 md:grid-cols-3 lg:grid-cols-5 sm:grid-cols-3 justify-center items-center mt-10'>
                   {filteredBeats.map((beat, index) => (
@@ -51,13 +51,13 @@ function Beats ({
 
               {filterActive &&
                 <div className='p-5 rounded-lg bg-zinc-900 w-full'>
-                  <BeatFilter filter={filter} setFilter={setFilter} genres={genres} moods={moods} setSelectedGenres={setSelectedGenres} setSelectedMoods={setSelectedMoods} />
+                  <BeatFilter filter={filter} setFilter={setFilter} genres={genres} moods={moods} selectedGenres={selectedGenres} selectedMoods={selectedMoods} setSelectedGenres={setSelectedGenres} setSelectedMoods={setSelectedMoods} />
                 </div>}
               <hr className='w-full' />
             </div>
 
             {isLoading && <SkeletonBeats />}
-            {!isLoading && filteredBeats?.length === 0 && <span className='block w-full text-xl text-white text-center'>No hay beats que mostrar</span>}
+            {!isLoading && filteredBeats?.length === 0 && <span className='block w-full text-xl text-white text-center mt-10 h-64'>No hay beats que mostrar</span>}
             {!isLoading && filteredBeats?.length > 0 &&
               <div className='w-full grid gap-y-20 md:grid-cols-3 lg:grid-cols-5 sm:grid-cols-3 justify-center items-center mt-10'>
                 {filteredBeats?.map((beat, index) => (

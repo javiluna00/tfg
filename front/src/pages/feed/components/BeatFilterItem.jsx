@@ -24,7 +24,7 @@ function BeatFilterItem ({ filter, options }) {
   }, [])
 
   return (
-    <div className='relative inline-block text-left' ref={menuRef}>
+    <div className='w-full relative inline-block text-left' ref={menuRef}>
       <button
         onClick={toggleMenu}
         type='button'

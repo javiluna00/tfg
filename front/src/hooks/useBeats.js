@@ -20,19 +20,18 @@ function useBeats () {
   }, [filter, activeBeats])
 
   useEffect(() => {
-    console.log('Filtered : ', filteredBeats)
-  }, [filteredBeats])
+    console.log('Filter : ', filter)
+  }, [filter])
 
   const updateFilteredBeats = () => {
     const filtered = activeBeats.filter(beat => {
-      console.log('Beat filtrando : ', beat)
       const { bpm, price, name, genres, moods } = filter
       return (
         beat.bpm >= bpm.bpm_from && beat.bpm <= bpm.bpm_to &&
-        beat?.licenses[0]?.pivot.price >= price.price_from && beat?.licenses[0]?.pivot.price <= price.price_to
-        // beat.name.includes(name) &&
-        // genres.every(genre => beat.genres.includes(genre)) &&
-        // moods.every(mood => beat.moods.includes(mood))
+        beat?.licenses[0]?.pivot.price >= price.price_from && beat?.licenses[0]?.pivot.price <= price.price_to &&
+        beat.name.includes(name) &&
+        genres.every(genre => beat.genres.includes(genre)) &&
+        moods.every(mood => beat.moods.includes(mood))
       )
     })
 

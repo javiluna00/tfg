@@ -36,6 +36,16 @@ function MobileHUD ({
           </div>
 
         </div>
+        <div className='flex flex-col justify-start items-start h-full p-2'>
+          <div className='mt-2 flex flex-row justify-start items-center gap-2'>
+            <Icon icon='ic:baseline-speed' className='text-white' />
+            <span className='text-xs text-red-400 truncate'>{reproductorData.song.bpm} bpm</span>
+          </div>
+          <div className='mt-2 flex flex-row justify-start items-center gap-2'>
+            <Icon icon='ic:baseline-music-note' className='text-white' />
+            <span className='text-xs text-red-400 truncate'>{reproductorData.song.scale}</span>
+          </div>
+        </div>
       </div>
       <div className='h-24 basis-3/12'>
         <div className='flex flex-col h-full justify-center items-center'>

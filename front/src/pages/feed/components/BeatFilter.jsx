@@ -1,70 +1,52 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import BeatFilterItem from './BeatFilterItem'
 import { Icon } from '@iconify/react'
+import BeatSearch from './BeatSearch'
 
-function BeatFilter ({ filter, setFilter, moods, genres, setSelectedMoods, setSelectedGenres }) {
-  useEffect(() => {
-    console.log('Filter : ', filter)
-  }, [filter])
+function BeatFilter ({ filter, setFilter, moods, genres }) {
   const filters = [
     { name: 'BPM', label: 'BPM' },
-    { name: 'Precio', label: 'Precio' }
+    { name: 'Precio', label: 'Precio' },
     { name: 'Mood', label: 'Mood' },
     { name: 'Género', label: 'Género' }
   ]
 
-  const [anyGenreActive, setAnyGenreActive] = useState(false)
-  const [anyMoodActive, setAnyMoodActive] = useState(false)
-
-  const handleGenreClick = (index) => {
-    setSelectedGenres((prevGenres) => {
-
-    })
+  const handleGenreClick = (genre) => {
+    if (!filter.genres.includes(genre.name)) {
+      setFilter({ ...filter, genres: [...filter.genres, genre.name] })
+    } else {
+      setFilter({ ...filter, genres: filter.genres.filter(g => g !== genre.name) })
+    }
   }
 
-  const handleMoodClick = (index) => {
-    setSelectedMoods((prevMoods) => {
-
-    })
+  const handleMoodClick = (mood) => {
+    if (!filter.moods.includes(mood.name)) {
+      setFilter({ ...filter, moods: [...filter.moods, mood.name] })
+    } else {
+      setFilter({ ...filter, moods: filter.moods.filter(m => m !== mood.name) })
+    }
   }
 
   const handleClearAllGenres = () => {
-    setSelectedGenres()
+    setFilter({ ...filter, genres: [] })
   }
   const handleClearAllMoods = () => {
-    setSelectedMoods()
+    setFilter({ ...filter, moods: [] })
   }
 
-  useEffect(() => {
-    setAnyGenreActive()
-    setAnyMoodActive()
-  }, [setSelectedGenres, setSelectedMoods])
-
   const activeGenres = () => {
-    const texto = genres.filter((genre) => genre.active).map((genre) => genre.name)
+    if (filter.genres.length === 0) {
+      return 'Todos'
+    }
+    const texto = filter.genres.map((genre) => genre)
     return texto.join(', ')
   }
   const activeMoods = () => {
-    const texto = moods.filter((mood) => mood.active).map((mood) => mood.name)
+    if (filter.moods.length === 0) {
+      return 'Todos'
+    }
+    const texto = filter.moods.map((mood) => mood)
     return texto.join(', ')
-  }
-
-  const handleChangeNumber = (e, filterName) => {
-    const value = e.target.value
-    console.log('El tipo de dato es : ', typeof (value))
-    console.log('El valor es : ', value)
-    console.log('El valor convertido es : ', parseInt(value))
-    // if (isNaN(value) || value < 0) {
-    //   if (filterName === 'bpm_from') { setFilter({ ...filter, bpm_from: 0 }) }
-    //   if (filterName === 'bpm_to') { setFilter({ ...filter, bpm_to: 999 }) }
-    //   if (filterName === 'price_from') { setFilter({ ...filter, price_from: 0 }) }
-    //   if (filterName === 'price_to') { setFilter({ ...filter, price_to: 1000 }) }
-    // } else {
-    //   if (filterName === 'bpm_from') { setFilter({ ...filter, bpm_from: parseInt(value) }) }
-    //   if (filterName === 'bpm_to') { setFilter({ ...filter, bpm_to: parseInt(value) }) }
-    //   if (filterName === 'price_from') { setFilter({ ...filter, price_from: parseInt(value) }) }
-    //   if (filterName === 'price_to') { setFilter({ ...filter, price_to: parseInt(value) }) }
-    // }
   }
 
   const options = {
@@ -119,15 +101,15 @@ function BeatFilter ({ filter, setFilter, moods, genres, setSelectedMoods, setSe
       <div className='py-6 px-3'>
         <div className='px-3'>
           <div className='flex items-center gap-3'>
-            <span className='font-inter text-white font-semibold text-xs'>{anyMoodActive ? activeMoods() : 'Todos'}</span>
-            {anyMoodActive ? <Icon icon='heroicons-outline:x' className='cursor-pointer' onClick={handleClearAllMoods} /> : null}
+            <span className='font-inter text-white font-semibold text-xs'>{activeMoods()}</span>
+            {filter.moods.length > 0 ? <Icon icon='heroicons-outline:x' className='cursor-pointer' onClick={handleClearAllMoods} /> : null}
           </div>
         </div>
         <div className='grid grid-cols-4 p-8 grid-flow-row gap-4 text-center w-max'>
 
           {moods.map((mood, index) => (
 
-            <span key={mood.id} className={`font-inter ${mood.active ? 'text-white' : 'text-zinc-400'} cursor-pointer`} onClick={() => handleMoodClick(index)}>{mood.label}</span>
+            <span key={mood.id} className={`font-inter ${filter.moods.includes(mood.name) ? 'text-white' : 'text-zinc-400'} cursor-pointer`} onClick={() => handleMoodClick(mood)}>{mood.name}</span>
 
           ))}
         </div>
@@ -137,15 +119,15 @@ function BeatFilter ({ filter, setFilter, moods, genres, setSelectedMoods, setSe
       <div className='py-6 px-3'>
         <div className='px-3'>
           <div className='flex items-center gap-3'>
-            <span className='font-inter text-white font-semibold text-xs'>{anyGenreActive ? activeGenres() : 'Todos'}</span>
-            {anyGenreActive ? <Icon icon='heroicons-outline:x' className='cursor-pointer' onClick={handleClearAllGenres} /> : null}
+            <span className='font-inter text-white font-semibold text-xs'>{activeGenres()}</span>
+            {filter.genres.length > 0 ? <Icon icon='heroicons-outline:x' className='cursor-pointer' onClick={handleClearAllGenres} /> : null}
           </div>
         </div>
         <div className='grid grid-cols-4 p-8 grid-flow-row gap-4 text-center w-max'>
 
           {genres.map((genre, index) => (
 
-            <span key={genre.id} className={`font-inter ${genre.active ? 'text-white' : 'text-zinc-400'} cursor-pointer`} onClick={() => handleGenreClick(index)}>{genre.label}</span>
+            <span key={genre.id} className={`font-inter ${filter.genres.includes(genre.name) ? 'text-white' : 'text-zinc-400'} cursor-pointer`} onClick={() => handleGenreClick(genre)}>{genre.name}</span>
 
           ))}
         </div>
@@ -158,11 +140,11 @@ function BeatFilter ({ filter, setFilter, moods, genres, setSelectedMoods, setSe
 
     <>
 
-      <div className='flex justify-center items-center gap-3 '>
+      <div className='flex md:flex-row flex-col justify-center items-center gap-3 '>
         {filters.map((filter) => (
           <BeatFilterItem filter={filter} options={options[filter.name]} key={filter.name} />
         ))}
-        {/* <BeatSearch filter={filter} setBeatData={setBeatData}/> */}
+        <BeatSearch filter={filter} setFilter={setFilter} />
       </div>
 
     </>

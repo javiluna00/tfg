@@ -118,13 +118,10 @@ class BeatActionController extends Controller
         if(Beat::find($request->input('beat_id')) == null){
             return response()->json(['message' => 'Beat not found!'], 404);
         }
-
-        if($request->has('user_id') && User::find($request->input('user_id')) == null){
-            return response()->json(['message' => 'User not found!'], 404);
-        }
+        $userLogged = auth()->user();
 
         $beat_id = $request->input('beat_id');
-        $user_id = $request->has('user_id') ? $request->input('user_id') : null;
+        $user_id = $userLogged->id ? $userLogged->id : null;
 
 
 

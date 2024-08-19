@@ -42,7 +42,7 @@ function WideHUD ({
           <Button className='h-10 bg-red-500 text-white hover:bg-red-600 hover:border-white' onClick={hdlClickComprar}>
             <div className='flex flex-row justify-center items-center gap-2'>
               <Icon icon='ic:round-shopping-cart' />
-              <span className='hidden sm:block'>{reproductorData.song.licenses[0].pivot.price}€</span>
+              <span className='text-xs hidden lg:block'>{reproductorData.song.licenses[0].pivot.price}€</span>
             </div>
           </Button>
         </div>
