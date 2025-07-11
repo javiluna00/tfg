@@ -1,9 +1,0 @@
-# tfg
-mi tfg
-
-## TODO
-
-- [ ] MODIFICAR/ELIMINAR BEAT
-- [x] ACTIVO SI/NO
-- [ ] REPRODUCIR CANCIÓN
-- [ ] PROBAR DESCARGA

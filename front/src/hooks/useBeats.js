@@ -43,7 +43,15 @@ function useBeats () {
   const loadActiveBeatsFromAPI = async () => {
     setIsLoading(true)
     AxiosPrivate.get('/beat/').then((res) => {
-      setActiveBeats(res.data)
+      console.log("Res data : ", res.data)
+      setActiveBeats(res.data.map((beat) => {
+        return {
+          ...beat, 
+          cover_path : `${import.meta.env.VITE_API_URL}/storage/${beat.cover_path}`,
+          tagged_path : `${import.meta.env.VITE_API_URL}/storage/${beat.tagged_path}`,
+
+        }
+      }))
     }).catch((err) => {
       console.log(err)
     }).finally(() => {
@@ -54,7 +62,11 @@ function useBeats () {
   const getOneBeat = async (id, mode) => { // <----------- Modes : 'full' or 'client'
     setIsLoading(true)
     return await AxiosPrivate.get(`/beat/${id}?_mode=${mode}`).then((res) => {
-      return res.data
+      return {
+        ...res.data,
+        cover_path : `${import.meta.env.VITE_API_URL}/storage/${res.data.cover_path}`,
+        tagged_path : `${import.meta.env.VITE_API_URL}/storage/${res.data.tagged_path}`,
+      }
     }).catch((err) => {
       console.log(err)
     }).finally(() => {
@@ -65,7 +77,13 @@ function useBeats () {
   const getRandomBeats = async ({ currentBeatId }) => {
     setIsLoading(true)
     return AxiosPrivate.get(`/beat/random/${currentBeatId}`).then((res) => {
-      return res.data
+      return res.data.map((beat) => {
+        return {
+         ...beat,
+          cover_path : `${import.meta.env.VITE_API_URL}/storage/${beat.cover_path}`,
+          tagged_path : `${import.meta.env.VITE_API_URL}/storage/${beat.tagged_path}`,
+        }
+      })
     }).catch((err) => {
       console.log(err)
     }).finally(() => {
@@ -76,7 +94,13 @@ function useBeats () {
   const loadAllBeatsFromAPI = async () => {
     setIsLoading(true)
     AxiosPrivate.get('/beat/all').then((res) => {
-      setBeats(res.data)
+      setBeats(res.data.map((beat) => {
+        return {
+          ...beat,
+          cover_path : `${import.meta.env.VITE_API_URL}/storage/${beat.cover_path}`,
+          tagged_path : `${import.meta.env.VITE_API_URL}/storage/${beat.tagged_path}`,
+        }
+      }))
     }).catch((err) => {
       console.log(err)
     }).finally(() => {

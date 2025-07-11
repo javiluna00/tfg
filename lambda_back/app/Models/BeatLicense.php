@@ -12,6 +12,7 @@ class BeatLicense extends Model
     protected $table = 'beat_licenses';
 
     protected $fillable = [
+        'id',
         'beat_id',
         'license_id',
         'download_key',

@@ -8,6 +8,7 @@ function BeatDetailsCard ({ beat, reproductorData, reproducirCancion, setData, a
   const [selectedLicense, setSelectedLicense] = useState(null)
   const [randomBeats, setRandomBeats] = useState([])
 
+
   useEffect(() => {
     getRandomBeats({ currentBeatId: beat.id }).then((res) => {
       console.log('Random beats : ', res)

@@ -10,7 +10,7 @@ function NewProject() {
     const {AxiosPrivate} = useOutletContext()
 
     return (
-        <div className='bg-slate-50 py-10 w-full h-full min-h-screen'>
+    <div className='bg-zinc-50 py-10 w-full h-full min-h-screen'>
         <div className='container'>
             <Breadcrumbs/>
             <NewProjectForm AxiosPrivate={AxiosPrivate}/>

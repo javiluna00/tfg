@@ -18,33 +18,36 @@ function BeatCard ({ beat, setModalBeat, setActiveBeat, size = 'normal', shadowe
 
   const navigate = useNavigate()
 
-  const handleClickCover = () => {
-    if (width > breakpoints.md) {
-      navigate(`/beat/${beat.id}`)
-      reproducirCancion(beat)
-    } else {
-      reproducirCancion(beat)
-    }
+  const handleClickInfo = () => {
+    navigate(`/beat/${beat.id}`)  
   }
+
+  const handleClickPlay = (beat) => {
+    console.log("Beat : ", beat)
+    reproducirCancion(beat)
+  }
+
   if (size === 'normal') {
     return (
-      <div className='w-48 h-64 rounded-lg flex flex-col justify-center items-center gap-2'>
+      <div className='flex flex-col justify-start h-72 items-center gap-6'>
+      <div className='w-48 h-48 rounded-lg flex flex-col justify-center items-center gap-2' onClick={() => handleClickPlay(beat)}>
         <div className='h-9/12 ' onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
           <div className={`w-full h-full rounded-xl relative cursor-pointer overflow-hidden border-red-600 ${isHovered || beat.id === reproductorData?.song?.id ? 'border-0' : ''}`}>
-            <img className={`w-full h-full object-cover aspect-square ${isHovered || beat.id === reproductorData?.song?.id ? 'blur-none' : 'blur-none brightness-75'} transition duration-300`} src={beat.cover_path} onClick={handleClickCover} />
+            <img className={`w-full h-full object-cover aspect-square ${isHovered || beat.id === reproductorData?.song?.id ? 'blur-none' : 'blur-none brightness-75'} transition duration-300`} src={beat.cover_path}/>
 
-            {isHovered &&
+            {/* {isHovered &&
               <div className='w-full h-full flex justify-center items-center absolute inset-0 opacity-0 hover:opacity-100 transition duration-300'>
                 {beat.id === reproductorData?.song?.id
                   ? reproductorData.isPlaying
                     ? <Icon icon='ic:baseline-pause-circle' className='w-12 h-12 text-white hover:text-red-600 transition duration-300' onClick={() => setData({ ...reproductorData, isPlaying: false })} />
                     : <Icon icon='ic:baseline-play-circle' className='w-12 h-12 text-white hover:text-red-600 transition duration-300' onClick={() => setData({ ...reproductorData, isPlaying: true })} />
-                  : <Icon icon='ic:baseline-play-circle' className='w-12 h-12 text-white hover:text-red-600 transition duration-300' onClick={() => reproducirCancion(beat)} />}
-              </div>}
+                  : <Icon icon='ic:baseline-play-circle' className='w-12 h-12 text-white hover:text-red-600 transition duration-300' onClick={() => handleClickPlay(beat)} />}
+              </div>
+              } */}
           </div>
 
         </div>
-        <div className='h-3/12 w-full flex flex-col justify-center items-center'>
+        {/* <div className='h-3/12 w-full flex flex-col justify-center items-center'>
           <div className='h-1/2 w-full flex justify-start items-center px-2 gap-2 py-2'>
             <span className='font-inter text-white text-xs font-semibold'>{beat.bpm} bpm</span>
             <span className='cursor-pointer font-inter text-red-400 text-xs font-semibold' onClick={hdlClick}>{beat?.licenses[0]?.pivot.price}€</span>
@@ -54,7 +57,20 @@ function BeatCard ({ beat, setModalBeat, setActiveBeat, size = 'normal', shadowe
             <span className='font-inter text-white font-semibold cursor-pointer hover:underline truncate' onClick={() => navigate(`/beat/${beat.id}`)}>{beat?.name}</span>
           </div>
 
-        </div>
+        </div> */}
+      </div>
+      {beat.id === reproductorData?.song?.id && 
+      <div className='flex flex-col justify-start items-center gap-2'>
+      <div className='flex justify-center items-start gap-4 h-[15px] text-zinc-900'>
+        <Icon icon={"heroicons:arrow-up"} className='font-bold'/>
+        <Icon icon={"heroicons:arrow-up"} className='font-bold'/>
+        <Icon icon={"heroicons:arrow-up"} className='font-bold'/>
+      </div>
+      <div>
+        <span className='font-inter text-zinc-950 font-regular cursor-pointer hover:underline truncate uppercase text-xs ' style={{letterSpacing:"0.2em"}} onClick={handleClickInfo}>info</span>
+      </div>
+      </div>
+      }
       </div>
     )
   }

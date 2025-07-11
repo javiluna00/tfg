@@ -3,6 +3,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 function ProjectList ({ activeProjects, totalRef, fotosRef, fotoRef }) {
+
+  console.log("PROJECTS", activeProjects)
+
   return (
     <section className='total flex' ref={totalRef}>
       <div className='izq relative w-[50%] z-2'>

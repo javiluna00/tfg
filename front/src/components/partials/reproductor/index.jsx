@@ -68,11 +68,12 @@ function Reproductor ({ setActiveBeat, setModalBeat, AxiosPrivate }) {
 
   if (reproductorData.song) {
     return (
-      <div className='audio-player'>
+      <div className='audio-player w-full fixed bottom-4 flex justify-center items-center'>
         <audio
           src={reproductorData.song_file}
           controls={false}
           ref={audioRef}
+          onEnded={() => setData({...reproductorData, isPlaying: false })}
           onTimeUpdate={(e) => setData({ ...reproductorData, currentDuration: e.target.currentTime })}
           onLoadedMetadata={(e) => setData({ ...reproductorData, totalDuration: e.target.duration, isPlaying: true })}
           loop={reproductorData.looping}

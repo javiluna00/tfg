@@ -12,7 +12,7 @@ class GenreSeeder extends Seeder
     public function run()
     {
 
-        $genres = [['name' => 'Boom bap'], ['name' => 'Trap'], ['name' => 'New jazz'], ['name' => 'House'], ['name' => 'Pluggnb'], ['name' => 'Detroit'], ['name' => 'Reggaeton']];
+        $genres = [['name' => 'Boom bap', 'slug' => 'boom-bap'], ['name' => 'Trap', "slug" => 'trap'], ['name' => 'New jazz', 'slug' => 'new-jazz'], ['name' => 'House', 'slug' => 'house'], ['name' => 'Pluggnb', 'slug' => 'pluggnb'], ['name' => 'Detroit', 'slug' => 'detroit'], ['name' => 'Reggaeton', 'slug' => 'reggaeton']];
 
         foreach ($genres as $genre) {
             Genre::create($genre);

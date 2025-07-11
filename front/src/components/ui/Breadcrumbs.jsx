@@ -9,7 +9,14 @@ const Breadcrumbs = () => {
   const [currentPath, setCurrentPath] = useState([])
 
   useEffect(() => {
-    setCurrentPath(location.pathname.split('/').filter((item) => item !== ''))
+    let currentPath = location.pathname.split('/').filter((item) => item !== '')
+    
+    // Si el último elemento es un número, eliminamos los dos últimos elementos
+    if (!isNaN(currentPath[currentPath.length - 1])) {
+      currentPath = currentPath.slice(0, -2)
+    }
+    
+    setCurrentPath(currentPath)
   }, [location, locationName])
 
   useEffect(() => {
@@ -18,7 +25,7 @@ const Breadcrumbs = () => {
 
   return (
     <>
-      <div className='md:mb-6 mb-4 flex space-x-3 rtl:space-x-reverse w-full rounded-lg bg-white h-10 p-2 overflow-x-auto' style={{ scrollbarWidth: 'none' }}>
+      <div className='md:mb-6 mb-4 flex space-x-3 rtl:space-x-reverse w-full rounded-lg bg-white h-10 p-2 overflow-x-auto shadow-md' style={{ scrollbarWidth: 'none' }}>
         <ul className='breadcrumbs'>
           <li className='text-primary-500'>
             <NavLink to='/dashboard' className='text-lg'>

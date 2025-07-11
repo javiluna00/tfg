@@ -17,16 +17,16 @@ const Header = ({ className = 'custom-class', isAuthenticated, isAdmin, AxiosPri
   const [mobileMenu, setMobileMenu] = useState(false)
 
   return (
-    <header className='h-[10vh] sticky top-0 z-[999]'>
-      <div className='h-full app-header md:px-6 px-[15px]  dark:bg-slate-800 shadow-base dark:shadow-base3 bg-zinc-900 border-b border-red-400 '>
+    <header className='h-[6vh] sticky top-0 z-[999]'>
+      <div className='h-full app-header md:px-6 px-[15px]  dark:bg-slate-800 shadow-base dark:shadow-base3 bg-zinc-900 border-b border-zinc-800'>
         <div className='flex justify-between items-center h-full'>
           <div className='basis-1/3 sm:basis-1/6 flex justify-start items-center'>
             <Logo />
             {width < '867' && <div
-              className='cursor-pointer text-slate-900 dark:text-white text-2xl'
+              className='cursor-pointer text-slate-900 dark:text-amber-50 text-2xl'
               onClick={() => setMobileMenu(!mobileMenu)}
                               >
-              <Icon icon='heroicons-outline:menu-alt-3' className='text-white' />
+              <Icon icon='heroicons-outline:menu-alt-3' className='text-red-500' />
             </div>}
 
           </div>
@@ -42,7 +42,7 @@ const Header = ({ className = 'custom-class', isAuthenticated, isAdmin, AxiosPri
           <div className='basis-2/4 md:basis-1/4 nav-tools flex justify-center items-center lg:space-x-6 space-x-3 rtl:space-x-reverse'>
             {isAdmin() === true
 
-              ? <Link to='/dashboard'><Button className='h-8 w-full bg-red-500 text-white flex items-center' color='light' icon='heroicons:arrow-left-20-solid'>Dashboard</Button></Link>
+              ? <Link to='/dashboard'><Button className='h-8 w-full bg-red-500 text-amber-50 flex items-center' color='light' icon='heroicons:arrow-left-20-solid'>Dashboard</Button></Link>
 
               : <></>}
             <HeaderCart AxiosPrivate={AxiosPrivate} auth={auth} />
@@ -52,8 +52,8 @@ const Header = ({ className = 'custom-class', isAuthenticated, isAdmin, AxiosPri
               ? <Profile user={auth.user} />
 
               : <>
-                <button className='btn btn-primary btn-sm bg-white text-[#000000]' onClick={(e) => navigate('/login')}>Iniciar sesión</button>
-                <button className='btn btn-outline btn-sm text-white' onClick={(e) => navigate('/register')}>Registrarse</button>
+                <button className='btn btn-primary btn-sm bg-amber-50 text-zinc-950' onClick={(e) => navigate('/login')}>Iniciar sesión</button>
+                <button className='btn btn-outline btn-sm text-amber-50' onClick={(e) => navigate('/register')}>Registrarse</button>
               </>}
           </div>
 

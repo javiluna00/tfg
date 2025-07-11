@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Action;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 
 class Beat extends Model
 {
@@ -16,6 +17,7 @@ class Beat extends Model
         'name',
         'scale',
         'bpm',
+        'slug',
         'cover_path',
         'stock',
         'still_exclusive',
@@ -36,6 +38,14 @@ class Beat extends Model
     public function saves()
     {
         return $this->belongsToMany(User::class, 'beat_saves')->withTimestamps();
+    }
+
+    public function isNew()
+    {
+        $createdAt = $this->created_at;
+        $currentTime = Carbon::now();
+        $difference = $currentTime->diffInDays($createdAt);
+        return $difference <= 7;
     }
 
     public function purchases()
@@ -79,7 +89,10 @@ class Beat extends Model
     public function exclusive_price()
     {
         if($this->still_exclusive){
-            return BeatLicense::where('beat_id', $this->id)->where('license_id', 4)->first()->price ?: null;
+            $licenseExclusive = BeatLicense::where('beat_id', $this->id)->where('license_id', 4)->first();
+            if($licenseExclusive){
+                return $licenseExclusive->price;
+            }
         }
 
         return null;
@@ -101,9 +114,20 @@ class Beat extends Model
         return BeatLicense::where('beat_id', $this->id)->where('license_id', 3)->first()->download_key;
     }
 
-    public function licenses()
-    {
-        return $this->belongsToMany(License::class, 'beat_licenses')->withPivot('price', 'file_url')->withTimestamps();
+    public function licenses($mode = '_client')
+    {   
+        if($mode == '_full')
+        {
+            return $this->belongsToMany(License::class, 'beat_licenses')
+                        ->withPivot('price', 'file_url', 'download_key')
+                        ->withTimestamps();
+        }
+        else
+        {
+            return $this->belongsToMany(License::class, 'beat_licenses')
+                        ->withPivot('price', 'file_url', 'id')
+                        ->withTimestamps();
+        }
     }
 
     public function moods()
@@ -115,4 +139,10 @@ class Beat extends Model
     {
         return $this->belongsToMany(Genre::class, 'beat_genre')->withTimestamps();
     }
+
+    public function types()
+    {
+        return $this->belongsToMany(Type::class, 'beat_type')->withTimeStamps();
+    }
+
 }

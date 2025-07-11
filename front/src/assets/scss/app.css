@@ -13,17 +13,18 @@
 }
 
 @layer base {
+  
   body {
-    @apply h-full overflow-x-hidden dark:text-slate-300 text-slate-600 font-normal bg-[#000000];
+    @apply h-full overflow-x-hidden dark:text-slate-300 text-amber-50 font-normal bg-zinc-50;
   }
   body.light, body.skin--default {
-    @apply bg-[#000000];
+    @apply bg-zinc-50;
   }
   body.lght, body.skin--bordered {
-    @apply bg-[#000000];
+    @apply bg-zinc-50;
   }
   body.dark {
-    @apply bg-[#000000] text-slate-300;
+    @apply bg-zinc-50 text-slate-300;
   }
   html,
   body {

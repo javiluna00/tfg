@@ -55,11 +55,11 @@ const CartPanel = ({ open, close, AxiosPrivate }) => {
   }
 
   return (
-    <div className='bg-white dark:bg-slate-800'>
+    <div className='bg-amber-50 dark:bg-slate-800'>
       <motion.div
         className={`
         setting-wrapper fixed ltr:right-0 rtl:left-0 top-0 md:w-[400px] w-[300px]
-         bg-white h-screen z-[9999]   shadow-base2
+         bg-amber-50 h-screen z-[9999]   shadow-base2
           dark:shadow-base3 border border-slate-200 dark:border-slate-700 
           ${open ? 'ml-0' : ' ml-[-400px]'}
         `}
@@ -67,7 +67,7 @@ const CartPanel = ({ open, close, AxiosPrivate }) => {
         variants={variants}
       >
         <div className='px-6 h-full overflow-y-auto flex flex-col'>
-          <header className=' sticky flex-none top-0 bg-white dark:bg-slate-800 flex items-center justify-between border-b border-slate-100 dark:border-slate-700 -mx-5 px-6 py-[15px] mb-6'>
+          <header className=' sticky flex-none top-0 bg-amber-50 dark:bg-slate-800 flex items-center justify-between border-b border-slate-100 dark:border-slate-700 -mx-5 px-6 py-[15px] mb-6'>
             <div>
               <span className='block text-xl text-slate-900 font-medium dark:text-[#eee]'>
                 Carro
@@ -111,7 +111,7 @@ const CartPanel = ({ open, close, AxiosPrivate }) => {
                 )}
           </motion.div>
 
-          <footer className='bg-white dark:bg-slate-800 py-6 sticky  flex-none bottom-0 -mx-6 px-6  space-y-4 border-t border-slate-200 dark:border-slate-700'>
+          <footer className='bg-amber-50 dark:bg-slate-800 py-6 sticky  flex-none bottom-0 -mx-6 px-6  space-y-4 border-t border-slate-200 dark:border-slate-700'>
             <div className=' flex justify-between text-base font-medium leading-none text-slate-900 dark:text-white '>
               <span>Subtotal:</span>
               <span>{totalPrice(cart)}€</span>

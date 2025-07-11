@@ -11,12 +11,16 @@ class MoodController extends Controller
 
     public function __construct()
     {
-        $this->middleware('jwt.verify', ['except' => ['index']]);
+        $this->middleware('jwt.verify', ['except' => ['index', 'getOne']]);
     }
 
     public function index()
     {
-        return response()->json(Mood::all(), 200);
+        $moods = Mood::all();
+        foreach ($moods as $mood) {
+            $mood->beatsCount = $mood->beats()->count();
+        }
+        return response()->json($moods, 200);
     }
     public function store(Request $request)
     {
@@ -28,6 +32,17 @@ class MoodController extends Controller
         }
         $mood = Mood::create($request->all());
         return response()->json(['message' => 'Mood creado', 'mood' => $mood], 201);
+    }
+
+    public function getOne($slug)
+    {
+
+        $mood = Mood::where('slug', $slug)->first();
+
+        if(!$mood){
+            return response()->json(['message' => 'Mood no encontrado'], 404);
+        }
+        return response()->json($mood, 200);
     }
 
     public function destroy($id)

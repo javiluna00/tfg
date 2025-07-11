@@ -22,11 +22,10 @@ function Feed () {
   return (
     <div className='bg-[#000000] h-full'>
 
-      <SectionPresentation />
-      <SectionSocial />
+      {/* <SectionPresentation /> */}
 
       <Beats
-        beatsPopularesRender
+        
         setActiveBeat={setActiveBeat}
         setModalBeat={setModalBeat}
         genres={genres}
@@ -38,6 +37,7 @@ function Feed () {
         setFilter={setFilter}
       />
 
+      <SectionSocial />
     </div>
 
   )

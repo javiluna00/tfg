@@ -17,7 +17,7 @@ class FileController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['getTagged']]);
+        $this->middleware('auth:api', ['except' => ['getTagged', 'downloadTagged']]);
     }
 
     public function storeCover(Request $request)
@@ -62,6 +62,7 @@ class FileController extends Controller
         Storage::makeDirectory($request->folder_name);
     }
 
+
     public function getTagged($id)
     {
         $beat = Beat::find($id);
@@ -72,11 +73,11 @@ class FileController extends Controller
             ], 404);
         }
 
-        $path = $beat->tagged_path;
+        $relativePath = $beat->tagged_path;
         // Asumiendo que $path es una URL completa, necesitas convertirla a una ruta de archivo local.
         // Esto dependerá de cómo estés almacenando los archivos físicamente.
         // Por ejemplo, si están almacenados en "public/storage", podrías hacer algo como esto:
-        $localPath = str_replace('http://localhost:8000/storage', public_path('storage'), $path);
+        $localPath = Storage::disk('public')->path($relativePath);
 
         if (!file_exists($localPath)) {
             return response()->json([
@@ -95,5 +96,26 @@ class FileController extends Controller
             ->header('Accept-Ranges', 'bytes')
             ->header('Content-Range', 'bytes 0-' . ($length-1) . '/' . $length);
 
+    }
+
+    public function downloadTagged($id)
+    {
+        $beat = Beat::find($id);
+        if (!$beat) {
+            return response()->json([
+                'error' => 'Beat not found'
+            ], 404);
+        }
+        $relativePath = $beat->tagged_path;
+        // Asumiendo que $path es una URL completa, necesitas convertirla a una ruta de archivo local.
+        // Esto dependerá de cómo estés almacenando los archivos físicamente.
+        // Por ejemplo, si están almacenados en "public/storage", podrías hacer algo como esto:
+        $localPath = Storage::disk('public')->path($relativePath);
+        if (!file_exists($localPath)) {
+            return response()->json([
+                'error' => 'File not found'
+            ]);
+        }
+        return response()->download($localPath, "lambda_" . $beat->name .".mp3");
     }
 }

@@ -56,17 +56,51 @@ const useReproductor = () => {
   const reproducirCancion = (song) => {
     console.log('Ha entrado en reproducirCancion')
     if (song != null) {
-      AxiosPrivate.get(`/beat/${song.id}/tagged`, { responseType: 'blob' }).then((res) => {
-        const audioBlob = new Blob([res.data], { type: 'audio/mpeg' })
-        setData({ song, song_file: URL.createObjectURL(audioBlob), isPlaying: false, currentDuration: 0, totalDuration: res.data.length, looping: false, volume: 100, isMuted: false })
-        setShown(true)
-
-        AxiosPrivate.post('/beatAction/play', { beat_id: song.id }).catch((err) => {
-          console.log(err)
-        })
-      }).catch((err) => {
-        console.log(err)
+      // Primero actualizamos el estado para indicar que estamos cargando
+      setData({ 
+        ...data, 
+        song, 
+        isPlaying: false, // Inicialmente false mientras carga
+        currentDuration: 0,
+        totalDuration: 0,
+        looping: false,
+        volume: 100,
+        isMuted: false
       })
+      
+      AxiosPrivate.get(`/beat/${song.id}/tagged`, { responseType: 'blob' })
+        .then((res) => {
+          const audioBlob = new Blob([res.data], { type: 'audio/mpeg' })
+          const audioUrl = URL.createObjectURL(audioBlob)
+          
+          // Actualizamos el estado con la URL del audio y activamos la reproducción
+          setData(prevData => ({ 
+            ...prevData,
+            song_file: audioUrl,
+            isPlaying: true
+          }))
+          
+          setShown(true)
+      
+          // Registramos la reproducción
+          AxiosPrivate.post('/beatAction/play', { beat_id: song.id })
+            .catch((err) => {
+              console.log('Error al registrar reproducción:', err)
+            })
+        })
+        .catch((err) => {
+          console.log('Error al cargar el audio:', err)
+          // En caso de error, limpiamos el estado
+          setData({ 
+            song: null, 
+            isPlaying: false, 
+            currentDuration: 0, 
+            totalDuration: 0, 
+            looping: false, 
+            volume: 100, 
+            isMuted: false 
+          })
+        })
     } else {
       setData({ song: null, isPlaying: false, currentDuration: 0, totalDuration: 0, looping: false, volume: 100, isMuted: false })
       setPorcentagePlayed(0)

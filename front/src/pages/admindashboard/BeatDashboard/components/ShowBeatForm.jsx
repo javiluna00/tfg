@@ -131,7 +131,7 @@ function ShowBeatForm ({ beat, editable, AxiosPrivate }) {
 
     <div className='w-full'>
 
-      <div className='w-[70%] mx-auto flex flex-col justify-center items-center rounded-lg'>
+      <div className='w-full md:w-[70%] mx-auto flex flex-col justify-center items-center rounded-lg'>
 
         <form onSubmit={handleSubmit(onSubmit)} className='rounded-lg bg-white w-full'>
           <div className='flex justify-center items-center bg-zinc-900 rounded-t-lg'>
@@ -162,7 +162,7 @@ function ShowBeatForm ({ beat, editable, AxiosPrivate }) {
 
             <hr className='my-5' />
 
-            <h5 className='text-lg text-slate-900 font-medium mt-5 mb-2'>Instrumental con tag de voz</h5>
+            <h5 className='text-lg text-slate-900 font-medium mt-5 mb-5'>Instrumental con tag de voz</h5>
             <div className='flex justify-start items-center gap-5'>
               <div className='w-1/2 flex flex-col gap-5'>
                 {editable === true &&
@@ -172,42 +172,42 @@ function ShowBeatForm ({ beat, editable, AxiosPrivate }) {
               </div>
             </div>
 
-            <h5 className='text-lg text-slate-900 font-medium mt-5 mb-2'>Licencia mp3</h5>
-            <div className='flex justify-center items-start gap-5'>
-              <div className='w-1/2 flex flex-col justify-center items-start'>
+            <h5 className='text-lg text-slate-900 font-medium mt-5 mb-5'>Licencia mp3</h5>
+            <div className='flex flex-col md:flex-row justify-center items-start gap-5'>
+              <div className='w-full md:w-1/2 flex flex-col justify-center items-start'>
                 <label htmlFor='mp3_file' className='class-label block text-sm font-medium mb-2.5 pt-1'>Archivo MP3</label>
                 {editable === true &&
                   <input type='file' className='w-full px-5 py-2.5 border border-slate-300 rounded-md' ref={mp3FileRef} label='Archivo MP3' placeholder='Archivo MP3' name='mp3_file' onChange={(e) => setMp3File(e.target.files[0])} />}
                 {mp3File && <Button icon='mdi:remove' text='Eliminar archivo' className='btn bg-zinc-900 text-white block w-full text-center mt-2' onClick={() => handleUndoMp3File()} />}
                 <Button text='Descargar' className='' icon='heroicons-outline:download' onClick={(e) => window.open('http://localhost:8000/api/beatlicense/' + beat.mp3_download_key + '/download')} />
               </div>
-              <div className='w-1/2'>
+              <div className='w-full md:w-1/2'>
                 <Textinput classGroup='w-full' disabled={!editable} label='Precio' type='number' placeholder='Precio mp3' name='mp3_price' register={register} error={errors.mp3_price} />
               </div>
             </div>
 
-            <h5 className='text-lg text-slate-900 font-medium mt-5 mb-2'>Licencia wav</h5>
-            <div className='flex justify-center items-center gap-5'>
-              <div className='w-1/2'>
+            <h5 className='text-lg text-slate-900 font-medium mt-5 mb-5'>Licencia wav</h5>
+            <div className='flex flex-col md:flex-row justify-center items-center gap-5'>
+              <div className='w-full md:w-1/2'>
                 <label htmlFor='wav_file' className='class-label block text-sm font-medium mb-2.5 pt-1'>Archivo WAV</label>
                 {editable === true &&
                   <input type='file' label='Archivo WAV' ref={wavFileRef} className='w-full px-5 py-2.5 border border-slate-300 rounded-md' placeholder='Archivo WAV' name='wav_file' onChange={(e) => setWavFile(e.target.files[0])} />}
                 {wavFile && <Button icon='mdi:remove' text='Eliminar archivo' className='btn bg-zinc-900 text-white block w-full text-center mt-2' onClick={() => handleUndoWavFile()} />}
                 <Button text='Descargar' className='' icon='heroicons-outline:download' onClick={(e) => window.open('http://localhost:8000/api/beatlicense/' + beat.wav_download_key + '/download')} />
               </div>
-              <Textinput classGroup='w-1/2' disabled={!editable} label='Precio' type='number' placeholder='Precio wav' name='wav_price' register={register} error={errors.wav_price} />
+              <Textinput classGroup='w-full md:w-1/2' disabled={!editable} label='Precio' type='number' placeholder='Precio wav' name='wav_price' register={register} error={errors.wav_price} />
             </div>
 
-            <h5 className='text-lg text-slate-900 font-medium my-2'>Licencia stems</h5>
-            <div className='flex justify-center items-center gap-5'>
-              <div className='w-1/2'>
+            <h5 className='text-lg text-slate-900 font-medium my-5'>Licencia stems</h5>
+            <div className='flex flex-col md:flex-row justify-center items-center gap-5'>
+              <div className='w-full md:w-1/2'>
                 <label htmlFor='stems_file' className='class-label block text-sm font-medium mb-2.5 pt-1'>Archivo STEMS</label>
                 {editable === true &&
                   <input type='file' label='Archivo STEMS' ref={stemsFileRef} className='w-full px-5 py-2.5 border border-slate-300 rounded-md' placeholder='Archivo STEMS' name='stems_file' onChange={(e) => setStemsFile(e.target.files[0])} />}
                 {stemsFile && <Button icon='mdi:remove' text='Eliminar archivo' className='btn bg-zinc-900 text-white block w-full text-center mt-2' onClick={() => handleUndoStemsFile()} />}
                 <Button text='Descargar' className='' icon='heroicons-outline:download' onClick={(e) => window.open('http://localhost:8000/api/beatlicense/' + beat.stems_download_key + '/download')} />
               </div>
-              <Textinput classGroup='w-1/2' disabled={!editable} label='Precio' type='number' placeholder='Precio stems' name='stems_price' register={register} error={errors.stems_price} />
+              <Textinput classGroup='w-full md:w-1/2' disabled={!editable} label='Precio' type='number' placeholder='Precio stems' name='stems_price' register={register} error={errors.stems_price} />
             </div>
 
             {/* <div className='flex justify-start  items-center gap-5'>
@@ -242,8 +242,8 @@ function ShowBeatForm ({ beat, editable, AxiosPrivate }) {
             </div>
 
             {editable && (
-              <div className='flex justify-center items-center gap-5'>
-                <Button text='Guardar' className='bg-primary-500 text-white scale-90 hover:scale-110 duration-300' onClick={handleSubmit(onSubmit)} />
+              <div className='flex justify-center items-center mt-5'>
+                <Button text='Guardar' className='bg-primary-500 text-white duration-300 w-full' onClick={handleSubmit(onSubmit)} />
               </div>
             )}
 

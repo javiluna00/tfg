@@ -43,6 +43,13 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'beats' => [
+            'driver' => 'local',
+            'root' => storage_path('app/beats'),
+            'url' => env('APP_URL').'/storage/beats',
+            'visibility' => 'private',
+            'throw' => true,
+        ],
 
         's3' => [
             'driver' => 's3',

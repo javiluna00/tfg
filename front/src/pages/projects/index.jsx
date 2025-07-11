@@ -82,7 +82,7 @@ function Projects () {
   }
 
   return (
-    <>
+    <div className='bg-zinc-50'>
       <div className='container'>
         <div className='flex justify-center items-center mt-10'>
           <h1 className=' text-white font-laira text-10xl tracking-widest '>Lambda Beats</h1>
@@ -101,11 +101,11 @@ function Projects () {
       <div className='spacer h-[50vh]' style={{ backgroundImage: 'linear-gradient(180deg, #000000 0%, #f87171 100%)' }} />
       {width > breakpoints.md
         ? <div className='wrapper relative h-auto w-[100vw] z-1 py-20'><ProjectList activeProjects={activeProjects} totalRef={totalRef} fotosRef={fotosRef} fotoRef={fotosRef} /></div>
-        : <div className='wrapper relative h-auto w-[100vw] z-1'><ProjectListMobile activeProjects={activeProjects} totalRef={totalRef} fotosRef={fotosRef} fotosRef={fotosRef} /></div>}
+        : <div className='wrapper relative h-auto w-[100vw] z-1'><ProjectListMobile activeProjects={activeProjects} totalRef={totalRef} fotosRef={fotosRef} fotoRef={fotosRef} /></div>}
 
       <div className='spacer h-[50vh]' style={{ backgroundImage: 'linear-gradient(180deg, #fbbf24 0%, #000000 100%)' }} />
 
-    </>
+    </div>
   )
 }
 

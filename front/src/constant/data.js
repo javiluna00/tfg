@@ -544,20 +544,21 @@ export const topMenu = [
   {
     title: 'Beats',
     link: '',
-    icon: 'fa6-solid:headphones'
+    icon: 'fa6-solid:headphones',
+    important:true,
   },
   {
-    title: 'Mix & Master',
+    title: 'Services',
     link: 'mixmaster',
     icon: 'fa6-solid:file-audio'
   },
   {
-    title: 'Lambda Beats',
+    title: 'Projects',
     link: 'projects',
     icon: 'heroicons:briefcase'
   },
   {
-    title: 'Contacto',
+    title: 'Contact',
     link: 'contact',
     icon: 'ri:customer-service-2-fill'
   }

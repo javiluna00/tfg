@@ -10,6 +10,7 @@ import PerfilLayout from './layout/PerfilLayout'
 import RestrictedAdminRoutes from '@/pages/restrictedroutes/RestrictedAdminRoutes'
 import VerifyAccount from '@/pages/verifyaccount/'
 
+
 // home pages  & dashboard
 // import Dashboard from "./pages/dashboard";
 
@@ -46,6 +47,11 @@ const SuccessCheckout = lazy(() => import('./pages/checkout/SuccessCheckout'))
 const ErrorCheckout = lazy(() => import('./pages/checkout/ErrorCheckout'))
 
 const PurchasesDashboard = lazy(() => import('./pages/admindashboard/PurchasesDashboard/PurchasesDashboard'))
+
+const MixMasterDashboard = lazy(() => import('./pages/admindashboard/MixMasterDashboard/MixMasterDashboard'))
+const ShowMixMaster = lazy(() => import('./pages/admindashboard/MixMasterDashboard/ShowMixMaster'))
+const EditMixMaster = lazy(() => import('./pages/admindashboard/MixMasterDashboard/EditMixMaster'))
+const NewMixMaster = lazy(() => import('./pages/admindashboard/MixMasterDashboard/NewMixMaster'))
 
 const ManageMoods = lazy(() => import('./pages/admindashboard/BeatDashboard/ManageMoods'))
 const ManageGenres = lazy(() => import('./pages/admindashboard/BeatDashboard/ManageGenres'))
@@ -118,6 +124,13 @@ function App () {
 
             <Route path='purchases'>
               <Route index element={<PurchasesDashboard />} />
+            </Route>
+
+            <Route path='mixmaster'>
+              <Route index element={<MixMasterDashboard/>} />
+              <Route path='new' element={<NewMixMaster />} />
+              <Route path='show/:id' element={<ShowMixMaster />} />
+              <Route path='edit/:id' element={<EditMixMaster />} />
             </Route>
           </Route>
           <Route path='*' element={<Navigate to='/404' />} />

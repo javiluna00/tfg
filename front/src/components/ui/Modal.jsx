@@ -5,6 +5,7 @@ import Icon from '@/components/ui/Icon'
 const Modal = ({
   disabled = false,
   activeModal,
+  setActiveModal,
   onClose,
   noFade,
   disableBackdrop,
@@ -28,7 +29,10 @@ const Modal = ({
   }
 
   const openModal = () => {
-    setShowModal(!showModal)
+    if(uncontrol)
+      setShowModal(!showModal)
+    else
+      setActiveModal(!activeModal)
   }
   const returnNull = () => {
     return null
@@ -88,7 +92,7 @@ const Modal = ({
                     >
                       <Dialog.Panel
                         className={`w-full transform overflow-hidden rounded-md
-                 bg-zinc-950 dark:bg-slate-800 text-left align-middle shadow-xl transition-alll ${className}`}
+                 bg-amber-50 text-left align-middle shadow-xl transition-alll ${className}`}
                       >
                         <div
                           className={`relative overflow-hidden py-4 px-5 text-white flex justify-between  ${themeClass}`}
@@ -121,6 +125,19 @@ const Modal = ({
           </>
           )
         : (
+          <>
+            <button
+              disabled={disabled}
+              type='button'
+              onClick={openModal}
+              className={`btn ${labelClass} ${disabled ? 'cursor-not-allowed' : ''}`}
+            >
+            <div className='flex items-center justify-center gap-4'>
+              {icon && <Icon icon={icon} />}
+              {label}
+            </div>
+
+            </button>
           <Transition appear show={activeModal} as={Fragment}>
             <Dialog as='div' className='relative z-[99999]' onClose={onClose}>
               <Transition.Child
@@ -154,7 +171,7 @@ const Modal = ({
                   >
                     <Dialog.Panel
                       className={`w-full transform overflow-hidden rounded-md
-                  bg-zinc-900  text-left align-middle shadow-xl transition-alll ${className}`}
+                  bg-amber-50  text-left align-middle shadow-xl transition-alll ${className}`}
                     >
                       <div
                         className={`relative overflow-hidden py-4 px-5 text-white flex justify-between ${themeClass}`}
@@ -184,6 +201,7 @@ const Modal = ({
               </div>
             </Dialog>
           </Transition>
+          </>
           )}
     </>
   )

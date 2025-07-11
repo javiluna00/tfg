@@ -7,6 +7,7 @@ use App\Models\BeatLicense;
 use App\Models\Genre;
 use App\Models\License;
 use App\Models\Mood;
+use App\Models\Type;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Ramsey\Uuid\Uuid;
@@ -20,8 +21,8 @@ class BeatSeeder extends Seeder
                'name' => 'Beat 1',
                'scale' => 'C',
                'bpm' => 120,
-               'cover_path' => 'https://i.pinimg.com/564x/cc/b9/18/ccb918bec9cec5c1baec3d4f827529e3.jpg',
-               'tagged_path' => "http://localhost:8000/storage/mp3/BAYyXcGvKa8dhYRMx65i7Ic3oONY5O5BsNQEMl43.mp3",
+               'cover_path' => 'covers/6rjTChJJzQsHYwBQHcNR9OFMvMkhjaqZWiITo3eX.jpg',
+               'tagged_path' => "tagged/V4pclZjktsFpvJGW8kF7rRMZASHWGuIOZbroxQcV.mp3",
                'stock' => 5,
                'still_exclusive' => true,
                'created_at' => now(),
@@ -31,9 +32,9 @@ class BeatSeeder extends Seeder
             'name' => 'Beat 2',
             'scale' => 'D',
             'bpm' => 80,
-            'cover_path' => 'https://i.pinimg.com/564x/88/de/38/88de383fb46f344b4f5b84836733a2ea.jpg',
+            'cover_path' => 'covers/GlEKhK6DzDpc3n87RK4xxCrKdyvzT5o0hzQ6KOTS.png',
             'stock' => 5,
-            'tagged_path' => "http://localhost:8000/storage/mp3/BAYyXcGvKa8dhYRMx65i7Ic3oONY5O5BsNQEMl43.mp3",
+            'tagged_path' => "tagged/91a876f8-bf65-41b7-8c44-8eaa4281ad6d.mp3",
             'still_exclusive' => true,
             'created_at' => now(),
             'updated_at' => now()
@@ -42,10 +43,10 @@ class BeatSeeder extends Seeder
             'name' => 'Beat 3',
             'scale' => 'E',
             'bpm' => 140,
-            'cover_path' => 'https://i.pinimg.com/564x/78/ab/80/78ab809c799d2b0eb24e266be47a0a11.jpg',
+            'cover_path' => 'covers/m9jQ9EllVqtT5qa9pc80bKvmpbe10V7Y1zH7VxOp.png',
             'stock' => 5,
             'still_exclusive' => false,
-            'tagged_path' => "http://localhost:8000/storage/mp3/BAYyXcGvKa8dhYRMx65i7Ic3oONY5O5BsNQEMl43.mp3",
+            'tagged_path' => "tagged/p5uFdzUGDQK0MwS66ORc1FnTuPM9QIorzN4AOp8S.mp3",
             'created_at' => now(),
             'updated_at' => now()
            ],
@@ -53,9 +54,9 @@ class BeatSeeder extends Seeder
             'name' => 'Beat 4',
             'scale' => 'F',
             'bpm' => 120,
-            'cover_path' => 'https://i.pinimg.com/564x/41/f9/01/41f901f5ead0160204dde9fb422e6bf6.jpg',
+            'cover_path' => 'covers/thyir0XMFzlYegm7B0IQrLMo6mzG4w9JNOCLYvk5.jpg',
             'stock' => 5,
-            'tagged_path' => "http://localhost:8000/storage/mp3/BAYyXcGvKa8dhYRMx65i7Ic3oONY5O5BsNQEMl43.mp3",
+            'tagged_path' => "tagged/V4pclZjktsFpvJGW8kF7rRMZASHWGuIOZbroxQcV.mp3",
             'still_exclusive' => true,
             'created_at' => now(),
             'updated_at' => now()
@@ -64,9 +65,9 @@ class BeatSeeder extends Seeder
             'name' => 'Beat 5',
             'scale' => 'G',
             'bpm' => 120,
-            'cover_path' => 'https://i.pinimg.com/564x/8b/a1/e4/8ba1e42a1844cecbe1b674a4c312f8b9.jpg',
+            'cover_path' => 'covers/yqlYibPqzUwI4fefpc7xVBBGBxIfeIsuEUwbUIA1.jpg',
             'stock' => 5,
-            'tagged_path' => "http://localhost:8000/storage/mp3/BAYyXcGvKa8dhYRMx65i7Ic3oONY5O5BsNQEMl43.mp3",
+            'tagged_path' => "tagged/0Djyb1tuJCxTfrtoXgWCfjxfI6Z0wuCkNnMf5NA5.mp3",
             'still_exclusive' => true,
             'created_at' => now(),
             'updated_at' => now()
@@ -86,6 +87,18 @@ class BeatSeeder extends Seeder
             foreach ($moodsAleatorios as $mood) {
                 $beat->moods()->attach($mood->id); // Suponiendo que existe una opción muchos a muchos entre beats y moods
             }
+            $slug = strtolower(str_replace(' ', '-', $beat->name));
+
+            $typesAleatorios = Type::inRandomOrder()->limit(3)->get(); // Obtener 3 types aleatorios
+            foreach ($typesAleatorios as $type) {
+                $beat->types()->attach($type->id); // Suponiendo que existe una opción muchos a muchos entre beats y types
+                $slug .= '-' . str_replace(' ', '-', $type->name);
+            }
+            
+            $beat->slug = strtolower($slug);
+            $beat->save();
+            
+            
 
             // Asignar todas las licencias disponibles
             $licencias = License::all(); // Obtener todas las licencias disponibles
@@ -96,7 +109,7 @@ class BeatSeeder extends Seeder
                     'license_id' => $licencia->id, // Usar el ID de la licencia actual en la iteración
                     'price' => rand(1, 100),
                     'download_key' => Uuid::uuid4(),
-                    'file_url' => 'mp3/BAYyXcGvKa8dhYRMx65i7Ic3oONY5O5BsNQEMl43.mp3',
+                    'file_url' => 'mp3/2TBUIuZG2dd5QLcICsAYV1xoljJVw94OsYLYEkfq.mp3',
                     'created_at' => now(),
                     'updated_at' => now()
                 ]);

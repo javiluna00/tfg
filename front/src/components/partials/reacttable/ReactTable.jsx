@@ -58,7 +58,7 @@ function ReactTable ({ name, columns, data, isPaginated, isGlobalFiltered, isSor
             {hasNewButton && newEntityUrl &&
 
               <div className='flex items-center space-x-3 justify-center h-[40px]'>
-                <Button className='btn btn-primary flex items-center justify-center h-10' onClick={() => navigate(newEntityUrl)}><Icon icon='heroicons-outline:plus' className='mr-2' />Nuevo</Button>
+                <Button className='btn btn-primary flex items-center justify-center h-10 md:w-60 w-full mt-4 md:mt-0' onClick={() => navigate(newEntityUrl)}><Icon icon='heroicons-outline:plus' className='mr-2' />Nuevo</Button>
               </div>}
 
           </div>
@@ -164,12 +164,12 @@ function ReactTable ({ name, columns, data, isPaginated, isGlobalFiltered, isSor
               </Button>
               <span className='flex items-center gap-1'>
                 <div>Page</div>
-                <strong>
+                <strong className='text-xs'>
                   {table.getState().pagination.pageIndex + 1} of{' '}
                   {table.getPageCount()}
                 </strong>
               </span>
-              <span className='flex items-center gap-1'>
+              {/* <span className='flex items-center gap-1'>
                 | Go to page:
                 <input
                   type='number'
@@ -180,7 +180,7 @@ function ReactTable ({ name, columns, data, isPaginated, isGlobalFiltered, isSor
                   }}
                   className='border p-1 rounded w-16'
                 />
-              </span>
+              </span> */}
               <select
                 value={table.getState().pagination.pageSize}
                 onChange={e => {

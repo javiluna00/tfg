@@ -146,7 +146,7 @@ function ProjectDashboard () {
           <Breadcrumbs />
         </div>
 
-        <div className='mt-10'>
+        <div className='mt-10 shadow-md'>
           {isLoading && <SkeletionTable />}
           {!isLoading && <ReactTable name='Proyectos' hasNewButton newEntityUrl='/dashboard/projects/new' columns={COLUMNS} data={projects} />}
         </div>

@@ -24,14 +24,18 @@ class BeatResource extends JsonResource
             'cover_path' => $this->cover_path,
             'tagged_path' => $this->tagged_path,
             'stock' => $this->stock,
+            'slug' => $this->slug,
             'still_exclusive' => $this->still_exclusive,
-            'moods' => $this->moods->pluck('name'),
-            'genres' => $this->genres->pluck('name'),
-            'licenses' => $this->licenses->each(function ($license) {
+            'types' => $this->types(),
+            'moods' => $this->moods,
+            'genres' => $this->genres,
+            'licenses' => $this->licenses('_client')->get()->each(function ($license) {
                 $license->pivot->makeHidden(['file_url']);
             }),
+            'types' => $this->types,
             'saves' => count($this->saves),
             'purchases' => $this->purchases(),
+            'is_new' => $this->isNew(),
             'plays' => count($this->plays),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at

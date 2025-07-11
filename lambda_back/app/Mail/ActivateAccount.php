@@ -34,7 +34,7 @@ class ActivateAccount extends Mailable
     {
         return new Envelope(
             subject: '¡Completa tu registro!',
-            from: new Address('lambdabeats2017@gmail.com', 'Lambda Beats'),
+            from: new Address("beats@lambdabeats.com", 'Lambda Beats'),
         );
     }
 

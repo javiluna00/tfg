@@ -50,6 +50,7 @@ const Admindashboard = () => {
           <Link to='/dashboard/projects'><Button className='h-16 w-full bg-red-500 text-white flex items-center' color='light' icon='heroicons:arrow-left-20-solid'>Proyectos</Button></Link>
           <Link to='/dashboard/contacts'><Button className='h-16 w-full bg-red-500 text-white flex items-center' color='light' icon='heroicons:arrow-left-20-solid'>Contacto</Button></Link>
           <Link to='/dashboard/users'><Button className='h-16 w-full bg-red-500 text-white flex items-center' color='light' icon='heroicons:arrow-left-20-solid'>Usuarios</Button></Link>
+          <Link to='/dashboard/mixmaster'><Button className='h-16 w-full bg-red-500 text-amber-50 flex items-center' color='light' icon='heroicons:arrow-left-20-solid'>Mix Master</Button></Link>
         </div>
       </Card>
       <div className='flex justify-center items-center gap-5'>

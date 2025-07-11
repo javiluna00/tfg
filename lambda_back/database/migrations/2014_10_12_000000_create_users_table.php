@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('clerk_id')->nullable();
+            $table->string('name')->nullable();
             $table->string("artist_name")->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->string('reset_password_token')->nullable();
             $table->string('password')->nullable();
             $table->string('google_id')->nullable();
+            $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -32,5 +34,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('users');
+
     }
 };

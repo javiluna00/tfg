@@ -14,24 +14,26 @@ const HorizentalMenu = () => {
         {topMenu?.map((item, i) => (
           <li
             key={i}
-            className={
-              item.child
+            className={`
+              ${item.important ? 'text-red-500' : 'text-amber-50'}
+              ${item.child
                 ? 'menu-item-has-children'
                 : '' || item.megamenu
                   ? 'menu-item-has-children has-megamenu'
                   : '' +
                 'ml-6 rtl:mr-6'
-            }
+                }
+            `}
           >
             {/* Single menu */}
             {!item.child && !item.megamenu && (
               <Link to={'/' + item.link}>
 
-                <div className='flex flex-1 items-center space-x-[6px] rtl:space-x-reverse'>
+                <div className='flex flex-1 items-center justify-center space-x-[10px] rtl:space-x-reverse'>
                   <span className='icon-box'>
                     <Icon icon={item.icon} />
                   </span>
-                  <div className={`text-white  ${subruta === item.link ? 'border-b border-slate-200 dark:border-slate-700' : ''}`}>{item.title}</div>
+                  <div className={`uppercase tracking-widest text-xs font-regular ${item.important ? 'text-red-400 font-bold text-lg' : 'text-amber-50'} ${subruta === item.link ? 'border-b border-red-400 dark:border-slate-700' : ''}`}>{item.title}</div>
                 </div>
               </Link>
             )}

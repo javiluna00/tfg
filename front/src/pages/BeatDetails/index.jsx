@@ -20,8 +20,9 @@ function BeatDetails () {
     setBeatId(location.pathname.split('/')[2])
   }, [location.pathname])
 
+
   return (
-    <div className='w-full h-full bg-zinc-950 min-h-[90vh]'>
+    <div className='w-full h-full bg-amber-50 min-h-[90vh]'>
       {/* <div className='absolute inset-0 filter blur-lg' style={{ backgroundImage: `url(${beat?.cover_path})`, backgroundSize: 'cover', backgroundPosition: 'center' }} /> */}
       <div className='container py-10 z-20 h-full'>
         {loading && <SkeletionTable count={3} />}

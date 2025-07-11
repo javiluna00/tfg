@@ -6,13 +6,8 @@
 @tailwind utilities;
 
 @layer components {
-    input[type=range] {
-      @apply appearance-none bg-transparent;
-    }
-  
-    input[type=range]::-webkit-slider-runnable-track {
-      @apply  bg-red-500;
-    }
+
+
   
     input[type=range]::-moz-range-track {
       @apply hidden cursor-pointer;

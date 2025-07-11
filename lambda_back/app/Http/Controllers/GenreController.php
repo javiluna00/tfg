@@ -12,12 +12,28 @@ class GenreController extends Controller
 
     public function __construct()
     {
-        $this->middleware('jwt.verify', ['except' => ['index']]);
+        $this->middleware('jwt.verify', ['except' => ['index', 'getOne']]);
     }
 
     public function index()
     {
-        return response()->json(Genre::all(), 200);
+        $genres = Genre::all();
+        foreach ($genres as $genre) {
+            $genre->beatsCount = $genre->beats()->count();
+        }
+        return response()->json($genres, 200);
+    }
+
+    public function getOne($slug)
+    {
+
+        $genre = Genre::where('slug', $slug)->first();
+
+        if(!$genre){
+            return response()->json(['message' => 'Genero no encontrado'], 404);
+        }
+
+        return response()->json($genre, 200);
     }
 
     public function store(Request $request)

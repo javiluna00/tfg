@@ -10,6 +10,7 @@ use Stripe\Stripe;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;
 use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Facades\Log;
 
 
 class CartController extends Controller
@@ -17,7 +18,18 @@ class CartController extends Controller
 
     public function __construct()
     {
-        $this->middleware('jwt.verify', ['except' => ['pay']]);
+        $this->middleware('clerk.auth');
+        //$this->middleware('jwt.verify', ['except' => ['pay']]);
+    }
+
+    public function getMyCart()
+    {
+        $authUser = auth()->user();
+        $cart = Cart::where('user_id', $authUser->id)->first();
+        if(!$cart) {
+            return response()->json(["message" => "No existe el carrito"], 404);
+        }
+        return response()->json(CartResource::make($cart), 201);
     }
 
     /**
@@ -50,8 +62,8 @@ class CartController extends Controller
 
         $authUser = auth()->user();
         $cart = Cart::where('user_id', $authUser->id)->first();
-
-        $beat_license_id = BeatLicense::where('beat_id', $request->beat_id)->where('license_id', $request->license_id)->first()->id;
+        $beat_license = BeatLicense::where('beat_id', $request->beat_id)->where('license_id', $request->license_id)->first();
+        $beat_license_id = $beat_license->id;
         if(!BeatLicense::find($beat_license_id)){
             return response()->json(["message" => "No existe ese beat"], 404);
         }
@@ -65,14 +77,12 @@ class CartController extends Controller
             $cart->beatLicenses()->attach($beat_license_id);
         }
         else{
-
-            if($cart->beatLicenses->contains($beat_license_id)){
-                return response()->json(["message" => "Ese beat ya está en el carrito", "cart" => CartResource::make($cart)], 401);
+            for ($i = 0; $i < count($cart->beatLicenses); $i++) {
+                if($cart->beatLicenses[$i]->beat_id == $request->beat_id){
+                    return response()->json(["message" => "Ese beat ya está en el carrito", "cart" => CartResource::make($cart)], 401);
+                }
             }
-            else
-            {
-                $cart->beatLicenses()->attach($beat_license_id);
-            }
+            $cart->beatLicenses()->attach($beat_license_id);
 
         }
 

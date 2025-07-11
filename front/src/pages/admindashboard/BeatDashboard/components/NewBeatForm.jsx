@@ -25,7 +25,8 @@ function NewBeatForm ({ AxiosPrivate }) {
       // stems_file: yup.mixed(),
       stems_price: yup.number('El precio debe ser un numero').required('Precio requerido'),
       exclusive_price: yup.number('El precio debe ser un numero'),
-      stock: yup.number('El stock debe ser un numero').required('Stock requerido')
+      stock: yup.number('El stock debe ser un numero').required('Stock requerido'),
+      type_beat: yup.string('Tipo debe ser un string')
     })
     .required()
 
@@ -33,7 +34,9 @@ function NewBeatForm ({ AxiosPrivate }) {
 
   const { moods, loadMoodsFromAPI } = useMoods({ AxiosPrivate })
   const { genres, loadGenresFromAPI } = useGenres({ AxiosPrivate })
-
+  const [name, setName] = useState('')
+  const [slug, setSlug] = useState('')
+  const [types, setTypes] = useState("")
   const { createBeat, uploadedProgress, isLoading } = useBeats({ AxiosPrivate })
 
   const [exclusiveSwitch, setExclusiveSwitch] = useState(false)
@@ -47,6 +50,24 @@ function NewBeatForm ({ AxiosPrivate }) {
   const [taggedFile, setTaggedFile] = useState(null)
 
   const [previewCover, setPreviewCover] = useState(null)
+
+  useEffect(() => {
+    console.log("Types : ", types)
+    console.log("Name : ", name)
+    
+    let slugFormat = name.replace(/\s+/g, '-').toLowerCase()
+    if(types)
+    {
+      let parsedTypes = types.split("x")
+      parsedTypes = parsedTypes.map((type) => {
+        return type.toLowerCase().trim().split(" ").join("-")
+      })
+
+      slugFormat += "-" + parsedTypes.join("-")
+      
+    }
+    setSlug(slugFormat)
+  }, [types, name])
 
   useEffect(() => {
     loadMoodsFromAPI()
@@ -67,18 +88,26 @@ function NewBeatForm ({ AxiosPrivate }) {
   }, [coverFile])
 
   const onSubmit = (data) => {
-    const beat = { ...data, moods: selectedMoods, genres: selectedGenres, exclusive: exclusiveSwitch, cover_file: coverFile, mp3_file: mp3File, wav_file: wavFile, stems_file: stemsFile, tagged_file: taggedFile, active: activeSwitch == true ? 1 : 0 }
+
+    let parsedTypes = types.split("x")
+    parsedTypes = parsedTypes.map((type) => {
+      return type.toLowerCase().trim()
+    })
+
+    const beat = { ...data, moods: selectedMoods, genres: selectedGenres, exclusive: exclusiveSwitch, cover_file: coverFile, mp3_file: mp3File, wav_file: wavFile, stems_file: stemsFile, tagged_file: taggedFile, active: activeSwitch == true ? 1 : 0, slug, types: parsedTypes }
+    
     createBeat(beat)
   }
 
   return (
     <div className='w-full'>
 
-      <div className='w-[70%] mx-auto flex flex-col justify-center items-center'>
+      <div className='w-full md:w-[70%] mx-auto flex flex-col justify-center items-center'>
 
         <form onSubmit={handleSubmit(onSubmit)} className='p-5 rounded-lg bg-white w-full'>
           <h2 className='text-3xl text-slate-900 font-bold mb-5'>Subir nuevo beat</h2>
-          <Textinput label='Nombre' type='text' placeholder='Nombre' name='name' register={register} error={errors.name} />
+          <Textinput label='Nombre' type='text' placeholder='Nombre' name='name' register={register} error={errors.name} onChange={(e) => setName(e.target.value)} />
+          <Textinput label='Slug' type='text' placeholder='Slug' defaultValue={slug} disabled classGroup='mt-5'/>
           <div className='flex justify-center items-center w-full gap-5 mt-5'>
 
             <Textinput classGroup='w-1/2' label='BPM' type='number' placeholder='BPM' name='bpm' register={register} error={errors.bpm} />
@@ -100,37 +129,37 @@ function NewBeatForm ({ AxiosPrivate }) {
 
           <h5 className='text-lg text-slate-900 font-medium mt-5 mb-2'>Instrumental con tag de voz</h5>
           <div className='flex justify-start items-center gap-5'>
-            <div className='w-1/2'>
+            <div className='w-full md:w-1/2'>
               <label htmlFor='tagged_file' className='class-label block text-sm font-medium mb-2.5 pt-1'>Archivo MP3</label>
               <input type='file' className='w-full px-5 py-2.5 border border-slate-300 rounded-md' label='Archivo MP3' placeholder='Archivo MP3' name='tagged_file' onChange={(e) => setTaggedFile(e.target.files[0])} />
             </div>
           </div>
 
           <h5 className='text-lg text-slate-900 font-medium mt-5 mb-2'>Licencia mp3</h5>
-          <div className='flex justify-center items-center gap-5'>
-            <div className='w-1/2'>
+          <div className='flex md:flex-row flex-col justify-center items-center gap-5'>
+            <div className='md:w-1/2 w-full'>
               <label htmlFor='mp3_file' className='class-label block text-sm font-medium mb-2.5 pt-1'>Archivo MP3</label>
               <input type='file' className='w-full px-5 py-2.5 border border-slate-300 rounded-md' label='Archivo MP3' placeholder='Archivo MP3' name='mp3_file' onChange={(e) => setMp3File(e.target.files[0])} />
             </div>
-            <Textinput classGroup='w-1/2' label='Precio' type='number' placeholder='Precio mp3' name='mp3_price' register={register} error={errors.mp3_price} />
+            <Textinput classGroup='md:w-1/2 w-full' label='Precio' type='number' placeholder='Precio mp3' name='mp3_price' register={register} error={errors.mp3_price} />
           </div>
 
           <h5 className='text-lg text-slate-900 font-medium mt-5 mb-2'>Licencia wav</h5>
-          <div className='flex justify-center items-center gap-5'>
-            <div className='w-1/2'>
+          <div className='flex md:flex-row flex-col justify-center items-center gap-5'>
+            <div className='md:w-1/2 w-full'>
               <label htmlFor='wav_file' className='class-label block text-sm font-medium mb-2.5 pt-1'>Archivo WAV</label>
               <input type='file' label='Archivo WAV' className='w-full px-5 py-2.5 border border-slate-300 rounded-md' placeholder='Archivo WAV' name='wav_file' onChange={(e) => setWavFile(e.target.files[0])} />
             </div>
-            <Textinput classGroup='w-1/2' label='Precio' type='number' placeholder='Precio wav' name='wav_price' register={register} error={errors.wav_price} />
+            <Textinput classGroup='w-full md:w-1/2' label='Precio' type='number' placeholder='Precio wav' name='wav_price' register={register} error={errors.wav_price} />
           </div>
 
           <h5 className='text-lg text-slate-900 font-medium my-2'>Licencia stems</h5>
-          <div className='flex justify-center items-center gap-5'>
-            <div className='w-1/2'>
+          <div className='flex md:flex-row flex-col justify-center items-center gap-5'>
+            <div className='w-full md:w-1/2'>
               <label htmlFor='stems_file' className='class-label block text-sm font-medium mb-2.5 pt-1'>Archivo STEMS</label>
               <input type='file' label='Archivo STEMS' className='w-full px-5 py-2.5 border border-slate-300 rounded-md' placeholder='Archivo STEMS' name='stems_file' onChange={(e) => setStemsFile(e.target.files[0])} />
             </div>
-            <Textinput classGroup='w-1/2' label='Precio' type='number' placeholder='Precio stems' name='stems_price' register={register} error={errors.stems_price} />
+            <Textinput classGroup='w-full md:w-1/2' label='Precio' type='number' placeholder='Precio stems' name='stems_price' register={register} error={errors.stems_price} />
           </div>
 
           <div className='flex justify-start  items-center gap-5'>
@@ -140,11 +169,13 @@ function NewBeatForm ({ AxiosPrivate }) {
 
           {exclusiveSwitch && (
             <div className='flex justify-start items-center gap-5'>
-              <Textinput classGroup='w-1/2' label='Precio' type='number' placeholder='Precio' name='exclusive_price' register={register} error={errors.exclusive_price} />
+              <Textinput classGroup='w-full md:w-1/2' label='Precio' type='number' placeholder='Precio' name='exclusive_price' register={register} error={errors.exclusive_price} />
             </div>
           )}
           <hr className='my-5' />
           <Textinput classGroup='w-1/2' label='Número de copias' type='number' placeholder='Número de copias' name='stock' register={register} error={errors.stock} />
+
+          <Textinput classGroup='w-full md:w-1/2' label='Type' type='text' placeholder='Travis Scott x UTOPIA x Ken Carson' onChange={(e) => setTypes(e.target.value)} />
 
           <div className='mt-5'>
             <CustomSelector name='Moods' values={moods} setSelected={setSelectedMoods} selected={selectedMoods} />
@@ -163,7 +194,7 @@ function NewBeatForm ({ AxiosPrivate }) {
             />
           </div>
 
-          <Button disabled={isLoading} type='submit' text={isLoading ? 'Guardando...' : 'Guardar'} className='mt-5 bg-red-500 text-white' />
+          <Button disabled={isLoading} type='submit' text={isLoading ? 'Guardando...' : 'Guardar'} className='mt-5 bg-red-500 text-white w-full' />
 
           {uploadedProgress > 0 && (
             <div className='mt-5'>
